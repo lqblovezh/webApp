@@ -1,0 +1,61 @@
+section{
+	float: left;
+}
+.label-list{
+	float: left;
+	background: #FFFFFF;
+	width: 100%;
+	padding: .12rem 0;
+	border-top: 1px solid #D7D7D7;
+	border-bottom: 1px solid #D7D7D7;
+	overflow-x: scroll;
+}
+.label{
+	float: left;
+	padding: 0;
+	height: .55rem;
+	line-height: .55rem;
+	text-align: center;
+	width: 1.8rem;
+	border-right: 1px solid #D7D7D7;
+	font-size: .32rem;
+	color: #333;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.label:last-child{
+	border-right: none;
+}
+.label[data-curr]{
+	color: #35a2f7;
+}
+.info-list{
+	width: 100%;
+	padding: 0 .3rem .3rem .3rem;
+	background: #FFFFFF;
+	border-bottom: 1px solid #D7D7D7;
+}
+.info{
+	float: left;
+	width: 33.3333%;
+	text-align: center;
+	height: 3rem;
+}
+.info .cover{
+	display: inline-block;
+	padding-top: .3rem;
+	width: 1.8rem;
+	height: 2.4rem;
+}
+.info .title{
+	width: 100%;
+	display: inline-block;
+	padding-top: .2rem;
+	font-size: .28rem;
+	color: #333;
+	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+}

@@ -1,0 +1,131 @@
+section{
+	float: left;
+}
+.collect{
+	position: absolute;
+	top: 50%;
+	margin-top: -0.29rem;
+	right: .3rem;
+	width: .55rem;
+	height: .55rem;
+	background-image: url(../../image/icon_ask_collect_1.png);
+	background-size: .55rem .55rem;
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+.collect.ed{
+	background-image: url(../../image/icon_already_collect.png);
+}
+.share{
+	position: absolute;
+	top: 50%;
+	margin-top: -0.29rem;
+	right: .3rem;
+	width: .58rem;
+	height: .58rem;
+	background-image: url(../../image/icon_ask_share.png);
+	background-size: .55rem .55rem;
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+.book{
+	padding: .3rem;
+	width: 100%;
+	background: #FFFFFF;
+	border-bottom: 1px solid #D7D7D7;
+}
+.book .photo{
+	float: left;
+	width: 1.6rem;
+	height: 2rem;
+}
+.book .info{
+	margin-left: 1.8rem;
+	/*height: 2rem;*/
+}
+.book .book-info{
+	overflow: hidden;
+}
+.book .info .title{
+	font-size: .3rem;
+	color: #000;
+}
+.book .info .author,
+.book .info .press,
+.book .info .pubtime,
+.book .info .pages{
+	font-size: .28rem;
+	color: #959595;
+}
+.book .button{
+	padding-top: .2rem;
+	text-align: center;
+}
+.book .button .buy{
+	display: inline-block;
+	width: 3.2rem;
+	height: .8rem;
+	border: none;
+	margin: 0 auto;
+	color: #FFFFFF;
+	text-align: center;
+	line-height: .8rem;
+	border-radius: 5px;
+	background: #00A1F0;
+}
+.book-intro,
+.book-recommend{
+	margin-top: .2rem;
+	width: 100%;
+	background: #FFFFFF;
+	border-top: 1px solid #D7D7D7;
+	border-bottom: 1px solid #D7D7D7;
+}
+.book-intro .title,
+.book-recommend .title{
+	padding-left: .2rem;
+	font-size: .32rem;
+	color: #333;
+	height: .92rem;
+	line-height: .92rem;
+	border-bottom: 1px solid #D7D7D7;
+}
+.book-intro .title:before,
+.book-recommend .title:before{
+	content: '';
+	display: inline-block;
+	width: .08rem;
+	height: .65rem;
+	background: #00A1F0;
+	position: absolute;
+	top: 50%;
+	left: 0;
+	margin-top: -0.325rem;
+}
+.book-intro .content,
+.book-recommend .content{
+	padding: .2rem;
+	font-size: .28rem;
+	line-height: .42rem;
+	color: #333333;
+}
+.book-recommend .content{
+	float: left;
+}
+.book-recommend .content .book-box{
+	float: left;
+	width: 33.3333%;
+	text-align: center;
+}
+.book-recommend .content .book-box .photo{
+	width: 1.8rem;
+	height: 2.4rem;
+	display: inline-block;
+}
+.book-recommend .content .book-box .name{
+    display: inline-block;
+    width: 2rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

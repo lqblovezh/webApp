@@ -1,0 +1,274 @@
+<article id="lay-unit"  class="ask-answer-index uc-pb-abs uc-pb-fixed" title="问答-首页">
+	<header class="ask-answer-head">
+		<a class="icon-go-back R-back" href="javascript:;" title=""></a>
+		<p>问答</p>
+		<!--<select onchange="selectVal(this);">
+			<option data-index='0' data-tpl="faqs_list_show_one" value="api_ask_list" style="color:#333;">最新问题</option>
+			<option data-index='1' data-tpl="faqs_list_show_two" value="api_ask_noreply" style="color:#333;">0回答</option>
+			<option data-index='2' data-tpl="faqs_list_show_three" value="api_ask_end" style="color:#333;">已解决</option>
+			<option data-index='3' data-tpl="faqs_list_show_four" value="api_ask_difcult" style="color:#333;">难题库</option>
+		</select>-->
+		<a class="icon-search R-go" path="#FAQs/search" path-data="{type:'ask'}" href="javascript:;" title=""></a>
+		<a class="icon-problem R-go" path="#FAQs/question_category" href="javascript:;" title=""></a>
+	</header><!-- ask-answer-head end -->
+	
+	<div class="page_conten main-content">
+		<ul class="tab-ul table-nav-s">
+			<li class="active"><a href="javascript:;" title="" onclick="getInfomatin({domSelector:'faqs_list_show_one',actionUrl:'api_ask_list'});">最新问题</a></li>
+			<li><a href="javascript:;" title="" onclick="getInfomatin({domSelector:'faqs_list_show_two',actionUrl:'api_ask_noreply'});">0回答</a></li>
+			<li><a href="javascript:;" title="" onclick="getInfomatin({domSelector:'faqs_list_show_three',actionUrl:'api_ask_end'});">已解决</a></li>
+			<li><a href="javascript:;" title="" onclick="getInfomatin({domSelector:'faqs_list_show_four',actionUrl:'api_ask_difcult'});">难题库</a></li>
+		</ul>
+		
+		<div id="faqs_list_tpl" style="display:none;">
+			<section class="mb2">
+				<article class="article R-go" path="#FAQs/interlocution_details" path-data="{'ask_id':'[ask_id]'}">
+					<section class="user-info mb2">
+						<div class="img"><img src="[user_photo]" alt=""></div>
+						<div class="content">
+							<p class="p1">
+								<span class="span1">[user_name]</span>
+								<span class="span2">[user_professional]</span>
+							</p>
+							<p class="p2">[ask_create_time]</p>
+						</div>
+					</section>
+					<div class="your-answer">[ask_title]</div>
+					<section class="answer-info">
+						<div class="img"><img src="[pic_path]" alt=""></div>
+						<div class="content">[content_intro]</div>
+					</section>
+				</article>
+				<article class="icon-group">
+					<section>
+						<img src="../image/icon_ask_xs.png" alt="">
+						<p>[ask_status]<span></span></p>
+					</section>
+					<section class="R-go" path="#FAQs/interlocution_details" path-data="{'ask_id':'[ask_id]'}">
+						<img src="../image/icon_ask_df.png" alt="">
+						<p>答复<span>[ask_num]</span></p>
+					</section>
+					<section class="to_my_collection" data-status='[status]' data-id="[ask_id]" data-type="ask">
+						<em></em>
+						<p>[statustext]</p>
+					</section>
+				</article>
+			</section>
+		</div>
+		
+		<!--取消收藏-->
+		<div id="faqs_list_collect_tpl" style="display:none;">
+			<section class="mb2">
+				<article class="article R-go" path="#FAQs/interlocution_details" path-data="{'ask_id':'[ask_id]'}">
+					<section class="user-info mb2">
+						<div class="img"><img src="[user_photo]" alt=""></div>
+						<div class="content">
+							<p class="p1">
+								<span class="span1">[user_name]</span>
+								<span class="span2">[user_professional]</span>
+							</p>
+							<p class="p2">[ask_create_time]</p>
+						</div>
+					</section>
+					<div class="your-answer">[ask_title]</div>
+					<section class="answer-info">
+						<div class="img"><img src="[pic_path]" alt=""></div>
+						<div class="content">[content_intro]</div>
+					</section>
+				</article>
+				<article class="icon-group">
+					<section>
+						<img src="../image/icon_ask_xs.png" alt="">
+						<p>[ask_status]<span></span></p>
+					</section>
+					<section>
+						<img src="../image/icon_ask_df.png" alt="">
+						<p>答复<span>[ask_num]</span></p>
+					</section>
+					<section class="to_my_collection" data-status='true' data-id="[ask_id]" data-type="ask">
+						<em></em>
+						<p>取消收藏</p>
+					</section>
+				</article>
+			</section>
+		</div>
+	
+		<ol class="tab-ol">
+			<!-- 最新问题 -->
+			<li>
+				<article class="question-card"  id="faqs_list_show_one"></article>
+			</li>
+			<li>
+				<article class="question-card"  id="faqs_list_show_two"></article>
+			</li>
+			<li>
+				<article class="question-card"  id="faqs_list_show_three"></article>
+			</li>
+			<li>
+				<article class="question-card"  id="faqs_list_show_four"></article>
+			</li>
+		</ol>
+	</div>
+</article>
+<script type="text/javascript">
+
+(function(w){
+	//分类选择切换
+	w.selectVal = function(that){
+		var i = $(that).find("option:selected").data("index");
+		$(".table-nav-s").children("li").eq(i).addClass("active").siblings("li").removeClass("active");
+		getInfomatin({domSelector:$(that).find("option:selected").data("tpl"),actionUrl:$(that).val()});
+	}
+	
+	//筛选已收藏问题
+	w.getCollect  = function(){
+		//隐藏头部
+		$(".ask-answer-head").find("select").hide();
+		$(".ask-answer-head").find("a:not('.icon-go-back')").hide();
+		$(".tab-ul").hide();
+			
+		var pushdata	= {
+		  	action		: "api_get_collection",
+		  	page_start	: "1",
+		  	page_size	: "100",
+		  	user_id     : we_chat.getStorage("user_id"),
+		  	collection_type: "ask"
+		}
+		we_chat.ajaxEx(we_chat.urlAddress("user"),pushdata,function(json){
+		  	var data 	= json.data.content;
+		  	var array1 = [];
+		  	for(var i=0;i<data.length;i++){
+		  		array1.push(data[i]['record_id']);
+		  	}
+		  	if(array1.length==0){
+		  		we_chat.miniTemplate({
+			  		tpl	: document.getElementById("faqs_list_collect_tpl"),
+			  		show: document.getElementById("faqs_list_show_one"),
+			  	},array1);
+			  	return false;
+		  	}
+		  	
+		  	we_chat.ajaxEx(we_chat.urlAddress("user"),{action:"api_get_ask_by_id",ask_id:array1,type:"0"},function(json){
+			  	//模板显示
+				we_chat.miniTemplate({
+			  		tpl	: document.getElementById("faqs_list_collect_tpl"),
+			  		show: document.getElementById("faqs_list_show_one"),
+			  	},json.data);
+			  	we_chat.deleteBind();
+			  	
+			  	// 同意模板
+			  	var section = $(".question-card .mb2");
+			  	for( var i = 0,length = section.length; i < length; i++ ){
+			  		var $info = $(".question-card .mb2").eq(i).find('.answer-info');
+			  		if( $info.find('img').attr("src") == '' && $info.find('.content').text() == '' ){
+				  		$info.hide();
+				  		
+				  		$info.siblings(".your-answer").css('padding-bottom','.2rem')
+				  	}
+				  	if( $info.find('img').attr("src") == '' ){
+				  		$info.find('.img').hide();
+				  	}
+			  	}
+			  	
+		  	});
+		})
+	}
+	
+	
+	//获取问答index数据
+	w.getInfomatin	= function(option){
+		var $wrapObj 		= $("#"+option.domSelector).closest("li");
+		$("#"+option.domSelector).empty();
+		var funcName 		= new Date().getTime() + "";
+		w[funcName]			= function(page,limit){
+			var pushdata	= {
+			  	action		: option.actionUrl,
+			  	page_start	: page,
+			  	page_size	: limit
+			}
+			we_chat.ajaxEx(we_chat.urlAddress("common"),pushdata,function(json){
+			  	var allData 	= json.data.content;
+			  	//模板显示
+		  		for(var k=0;k<allData.length;k++){
+			  		allData[k]['statustext']	= '收藏';
+		  		}
+			  	if(we_chat.getStorage("user_id")){
+				  	var collectdata	= {
+					  	action		: "api_get_collection",
+					  	user_id     : we_chat.getStorage("user_id"),
+					  	collection_type: "ask"
+					}
+					we_chat.ajaxEx(we_chat.urlAddress("user"),collectdata,function(json){
+					  	var data 	= json.data.content;
+					  	for(var i=0;i<data.length;i++){
+					  		for(var k=0;k<allData.length;k++){
+						  		if(data[i]['record_id']==allData[k]['ask_id']){
+							  		allData[k]['status']	 = "true";
+							  		allData[k]['statustext'] = "取消收藏";
+						  		}
+					  		}
+					  	}
+					  		
+				  		we_chat.miniTemplate({
+					  		tpl	: document.getElementById("faqs_list_tpl"),
+					  		show: document.getElementById(option.domSelector),
+					  	},allData,"add");
+					  	we_chat.deleteBind();
+					  	
+					  	// 同意模板
+					  	var section = $(".question-card .mb2");
+					  	for( var i = 0,length = section.length; i < length; i++ ){
+					  		var $info = $(".question-card .mb2").eq(i).find('.answer-info');
+					  		if( $info.find('img').attr("src") == '' && $info.find('.content').text() == '' ){
+						  		$info.hide();
+						  		
+						  		$info.siblings(".your-answer").css('padding-bottom','.2rem')
+						  	}
+						  	if( $info.find('img').attr("src") == '' ){
+						  		$info.find('.img').hide();
+						  	}
+					  	}
+					},"no")
+				}else{
+					we_chat.miniTemplate({
+				  		tpl	: document.getElementById("faqs_list_tpl"),
+				  		show: document.getElementById(option.domSelector),
+				  	},allData,"add");
+				  	we_chat.deleteBind();
+				  	
+				  	// 同意模板
+					  	var section = $(".question-card>section.mb2");
+					  	for( var i = 0,length = section.length; i < length; i++ ){
+					  		var $info = $(".question-card>section.mb2").eq(i).find('.answer-info');
+					  		if( $info.find('img').attr("src") == '' && $info.find('.content').text() == '' ){
+						  		$info.hide();
+						  		
+						  		$info.siblings(".your-answer").css('padding-bottom','.2rem')
+						  	}
+						  	if( $info.find('img').attr("src") == '' ){
+						  		$info.find('.img').hide();
+						  	}
+					  	}
+				}
+			  	
+			  	// 初始化上拉加载的部件及其数据
+				loadMore.initLoad( $wrapObj, page, json.data.count, limit );
+			  	$("#"+option.domSelector).closest("li").show().siblings().hide();
+			})
+		}
+		w[funcName](1,20);
+		$wrapObj.on("swipeUp",function(){
+			loadMore.handler($wrapObj, w[funcName], 20);
+		})
+	}
+	
+	if(we_chat.getUrl("collection")=="true"){
+		getCollect();
+		return false;
+	}
+	
+	getInfomatin({domSelector:'faqs_list_show_one',actionUrl:'api_ask_list'});
+	
+})(this)
+
+</script>

@@ -1,0 +1,153 @@
+<link rel="stylesheet" type="text/css" href="../css/main.css">
+
+<div id="info_list_info_tpl" style="display: none;">
+	<a href="javascript:;" class="R-go" path="#information/detail" path-data="{'acl_id':'[acl_id]'}" title="">
+		<!--<div class="img"><img src="[path_file]" alt=""></div>-->
+		<div class="content">
+			<h2 style="font-size: .34rem;color:#555454">[acl_title]</h2>
+			<p style="font-size: .26rem;">[acl_text]</p>
+		</div>
+	</a>
+</div>
+
+<div id="info_list_collection_tpl" style="display: none;">
+	<a href="javascript:;" class="R-go" path="#information/detail" path-data="{'acl_id':'[acl_id]',collection:'true'}" title="" style="margin-bottom: .15rem;">
+		<!--<div class="img"><img src="[path_file]" alt=""></div>-->
+		<div class="content">
+			<h2>[acl_title]</h2>
+			<p>[acl_text]</p>
+		</div>
+	</a>
+</div>
+<!---------- 资讯内容 ---------->
+<article class="news-content-page uc-pb-abs"  title="资讯内容">
+	<header>
+		<a class="left icon-back R-back" style="display: none;"></a>
+		<p>资讯</p>
+	</header>
+	<div class="page_conten">
+		<article class="index-search">
+			<input type="text" placeholder="请输入搜索关键词">
+			<a href="javascript:;" onclick="getInfomatin('search',1,500)" title=""></a>
+		</article>
+		
+		<!--头部导航-->
+		<article id="get_all_article">
+			<ul class="tab-ul table-nav-s"></ul>
+		</article>
+	
+		<article class="news-list mb2" id="info_list_info_show"></article>
+	</div>
+</article>
+<script type="text/javascript">
+	(function(w){
+		var $wrapper	= $(".page_conten");
+		if(we_chat.getUrl("collection") == "true"){
+			$("#get_all_article").hide();
+			$(".index-search").hide();
+			$(".icon-back").show();
+			$(".news-content-page").addClass("uc-pb-fixed");
+			var loadList	= function(page , limit){
+				we_chat.ajaxEx(we_chat.urlAddress("user"),{action:"api_get_collection",user_id:we_chat.getStorage("user_id"),collection_type :"art",page_start:page,page_size:limit},function(json){
+			  		var data 	= json.data.content;
+			  		// 初始化上拉加载的部件及其数据
+					loadMore.initLoad( $wrapper, page, json.data.count, limit );
+			  		
+			  		//模板显示
+			  		for(var i=0;i<data.length;i++){
+			  			data[i]['content']['acl_text']	= (data[i]['content']['acl_text']).replace(/<\/?.+?>/g,"").substring(0,30);
+			  		}
+					we_chat.miniTemplate({
+			  			tpl	: document.getElementById("info_list_collection_tpl"),
+			  			show: document.getElementById("info_list_info_show"),
+			  		},data,"add");
+			  	})
+			}
+			
+			loadList(1 , 500);
+			
+			$wrapper.on("swipeUp",function(){
+				loadMore.handler($wrapper, loadList , 500);
+			})
+			return false;
+		}
+		
+	  	//获取分类信息
+	  	we_chat.ajaxEx(we_chat.urlAddress("common"),{action:"api_article_tree"},function(json){
+	  		var data 	= json.data;
+	  		if(data.length==0){
+	  			return false;
+	  		}
+	  		$("#get_all_article").show();
+	  		for(var i=0;i<data.length;i++){
+	  			var $li	= $("<li data-id='"+data[i].tree_id+"'><a >"+data[i].tree_name+"</a></li>").attr("onclick","getInfomatin('"+data[i].tree_id+"',1,500)");
+	  			if(i==0){
+	  				$li.addClass("active");
+	  			}
+	  			$li.appendTo($("#get_all_article >ul"));
+	  		}
+	  		we_chat.deleteBind();
+	  		getInfomatin(data[0].tree_id , 1 , 500);
+	  		$wrapper.on("swipeUp",function(){
+				loadMore.handler($wrapper, getInfomatin , 500,"");
+			})
+	  	})
+	  	
+	  	$(".index-search").on("keyup",function(){
+	  		if($(this).find("input").val()==""){
+	  			getInfomatin('search',1,500);
+	  		}
+	  	})
+	  	
+	  	//获取分类下的所以文章
+	  	w.getInfomatin		= function(tree_id , page , limit){
+		  	var keyword		= $(".index-search").find("input").val();
+		  	var type;
+		  	if(tree_id){
+		  		type		= "";
+		  	}else{
+		  		type		= "add";
+		  	}
+		  	if(tree_id=="search"){
+		  		tree_id		= "";
+		  	}
+		  	var tree_id 	= tree_id || $(".table-nav-s").find(".active").data("id");
+		  	var pushdata	= {
+		  		action		: "api_all_article",
+		  		keyword		: keyword,
+		  		acl_tree	: tree_id,
+		  		page_start	: page,
+		  		page_size	: limit
+		  	}
+		  	if(keyword){
+//		  		delete pushdata.acl_tree;
+		  	}else{
+		  		delete pushdata.keyword;
+		  	}
+		  	we_chat.ajaxEx(we_chat.urlAddress("common"),pushdata,function(json){
+		  		var data 	= json.data.content;
+		  		//修改返回数据中的text过长
+		  		for(var i=0;i<data.length;i++){
+		  			var texts	= data[i].acl_text.replace(/<{1}[/]?[^>]*[/]?>{1}/g,"");
+		  			
+		  			if(texts.length>43){
+			  			data[i].acl_text	= texts.substring(0,43)+"...";
+		  			}else{
+		  				data[i].acl_text = texts
+		  			}
+		  		}
+		  		// 初始化上拉加载的部件及其数据
+				loadMore.initLoad( $wrapper, page, json.data.count, limit );
+		  		
+				we_chat.miniTemplate({
+		  			tpl	: document.getElementById("info_list_info_tpl"),
+		  			show: document.getElementById("info_list_info_show"),
+		  		},data,type);		  			
+		  	})
+	  	}
+	  	
+  		$("#get_all_article").on("touchmove",function(e){
+  			event.stopPropagation();
+  		});
+  	})(this)
+</script>

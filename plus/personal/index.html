@@ -1,0 +1,207 @@
+<div id="user_center" class="uc-pb-abs" title="个人中心">
+	<header>
+		<p>个人中心</p>
+		<a class="right icon-mailbox mailbox-number R-go" style="display: none;" path="#personal/station_message">
+			<span class="message-number" id="">0</span>
+		</a>
+	</header>
+	<div class="page_conten">
+		<div class="user-center-logo">
+			<div class="logo" path="#personal/personal_settings">
+				<div class="box">
+					<img class="personal_lonin_img" src="../image/pic_index_recommended_img.png">
+				</div>
+			</div>
+			<div class="is_login" id="is_login">
+				<p class="uc-pb-30" path="#personal/user_login"><span class="personal_user_name">点击登录</span><span class="uc-btn-df uc-btn-warning uc-btn-ss user_isAuthentication">已认证</span></p>
+				<p class="user-position personal_user_type"></p>
+			</div>
+		</div>
+		<article class="uc-mb-45">
+			<!--<ul class="simple-list simple-list-u uc-mb-20" id="personal_user_islogin">
+				<li class="espect-uc-list">
+					<div>
+						<img src="../image/icon_user_recharge.png"/>
+						金币：<span class="uc-money"><span class="user_surplus">0</span> 金币</span>
+					</div>
+					<input type="button" class="uc-btn-df uc-btn-sm uc-btn-primary R-go" path="#personal/user_recharge" id="" value="充值" />
+				</li>
+			</ul>-->
+			<ul class="simple-list simple-list-u uc-mb-20 user_isExpert">
+				<li>
+					<a class="R-go-online" path="#personal/my_article">
+						<img src="../image/icon_my_article.png"/>
+						我的文章
+					</a>
+				</li>
+				<li>
+					<a class="R-go-online" path="#personal/online_consulting">
+						<img src="../image/icon_online_wire.png"/>
+						在线咨询
+					</a>
+				</li>
+				<li>
+					<a class="R-go-online" path="#personal/my_information">
+						<img src="../image/icon_my_info.png"/>
+						我的资料
+					</a>
+				</li>
+			</ul>
+			<ul class="simple-list simple-list-u">
+				<li>
+					<a class="R-go-online" path="#personal/my_notes">
+						<img src="../image/icon_my_notes.png"/>
+						我的笔记
+					</a>
+				</li>
+				<li>
+					<a class="R-go-online" path="#personal/my_exam">
+						<img src="../image/exam.png"/>
+						我的考试
+					</a>
+				</li>
+				<li>
+					<a class="R-go-online" path="#personal/my_work">
+						<img src="../image/icon_my_work.png"/>
+						我的作品
+					</a>
+				</li>
+				<li>
+					<a class="R-go-online" path="#personal/question_answer">
+						<img src="../image/icon_my_question.png"/>
+						我的问答
+					</a>
+				</li>
+				<li class="user_is_expert">
+					<a class="R-go-online" path="#personal/online_consulting">
+						<img src="../image/icon_online_wire.png"/>
+						我的咨询
+					</a>
+				</li>
+				<li>
+					<a class="R-go-online" path="#personal/my_help">
+						<img src="../image/icon_my_help.png"/>
+						我的求助
+					</a>
+				</li>
+				<!--<li>
+					<a class="" path="#personal/index">
+						<img src="../image/icon_my_circle.png"/>
+						我的圈子
+					</a>
+				</li>
+				<li>
+					<a class="" path="#personal/index">
+						<img src="../image/icon_my_friend.png"/>
+						我的好友	
+					</a>
+				</li>-->
+				<li>
+					<a class="R-go-online" path="#personal/purchase_information">
+						<img src="../image/icon_Purchase info.png"/>
+						已购资料
+					</a>
+				</li>
+				<li>
+					<a class="R-go-online" path="#personal/my_collection">
+						<img src="../image/icon_my_collection.png"/>
+						我的收藏
+					</a>
+				</li>
+				<li>
+					<a class="R-go-online" path="#personal/modify_password">
+						<img src="../image/icon_modify_password.png"/>
+						修改密码
+					</a>
+				</li>
+				<li>
+					<a class="R-go share" path="#personal/share">
+						<img src="../image/icon_payway_wxzf.png"/>
+						邀请好友
+					</a>
+				</li>
+			</ul>
+		</article>
+		<div class="footer-sign-out">退出登录</div>
+	</div>
+</div>
+<script type="text/javascript">
+	(function(){
+		var data = we_chat.getStorage("user_info");					//从本地获取用户信息
+		//在线判断
+		$("#user_center").find(".R-go-online").on("click",function(){
+			if(!we_chat.getStorage("user_id")){
+				window.location.href="../../thirdlogin/weixin_log.php";
+			}else{
+				var m		= $(this).attr('path');
+				route.go({ module: m, data: {}, status: 'forward'});
+			}
+		})
+		if(!data){
+			$(".user-center-logo").on("click",function(){
+				// 09-19 by xiaoer 将个人中心的用户登录，改为跳转到微信登录中
+				window.location.href="../../thirdlogin/weixin_log.php";
+			})
+			$(".share").removeClass('R-go');
+			return false;
+		}else{
+			$(".share").attr("path-data","{'user_id':'"+data.invitation_code+"'}")
+		}
+		$(".user-center-logo").on("click",function(){
+			route.go({ module: '#personal/personal_settings', data: {'user_id':data.user_id}, status: 'forward'});
+		})
+		$(".footer-sign-out").show();								//显示退出按钮
+		$(".personal_user_name").html(data.user_nickname);			//显示用户名称
+		$("#personal_user_islogin").show();							//判断是否登录
+		$(".personal_user_type").html(data.user_type);				//显示用户类型
+		$(".personal_lonin_img").attr("src",data.user_photo);		//显示用户头像
+		
+		
+		if(data.user_type=="专家"){
+			$(".personal_user_type").html(data.user_type);			//显示用户类型
+			$(".user_isExpert").show();								//判断是专家否
+			$(".user_is_expert").hide();							//专家状态不显示我的咨询
+			$(".user_isAuthentication").css("display","inline-block");//显示专家状态
+		}else{
+			$(".personal_user_type").html("普通用户");
+		}
+		//退出按钮
+		$(".footer-sign-out").on("click",function(){
+			we_chat.removeStorage("user_id");
+			we_chat.removeStorage("user_info");
+			route.go({ module: '#home/index', data: {}, status: 'forward'});
+		})
+		
+		//获取消息
+		we_chat.ajaxEx(we_chat.urlAddress("user"),{action:"api_message_count",user_id:we_chat.getStorage("user_id")},function(json){
+			var data = [];
+			try{
+				var message	= json.data.sys || [];
+			}catch(e){
+				//TODO handle the exception
+			}
+			for(var i=0;i<message.length;i++){
+				if(json.data.sys[i].read=="yes"){
+					data.push(json.data.sys[i]);
+				}
+			}
+			$(".mailbox-number").show();//判断消息状态
+			var count = message.length-data.length;
+			if( count == 0 ){
+				$(".message-number").hide();//判断消息状态
+			}else{
+				$(".message-number").show();//判断消息状态
+			}
+			$(".mailbox-number >.message-number").html( message.length-data.length);	//显示用户的消息数量
+			if(message.length-data.length!=0){
+				$(".mailbox-number").attr("path-data","{num:'"+(message.length-data.length)+"'}");
+			}
+	  	})
+		
+		we_chat.ajaxEx(we_chat.urlAddress("user"),{action:"api_user_money",user_id:we_chat.getStorage("user_id")},function(json){
+			$(".user_surplus").html( parseInt( json.data ));
+		});
+		
+		// 将点击头像调到微信登录window.location.href="../../thirdlogin/weixin_log.php";
+	})()
+</script>

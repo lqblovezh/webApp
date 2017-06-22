@@ -1,0 +1,47 @@
+section{
+	float: left;
+}
+ul{
+	float: left;
+	width: 100%;
+	padding: 0 .2rem;
+	background: #fefefe;
+	border-bottom: 1px solid #D7D7D7;
+}
+li{
+	float: left;
+	width: 100%;
+	height: 1.65rem;
+	padding: .3rem 0;
+	border-bottom: 1px dashed #d7d7d7;
+}
+li:last-child{
+	border-bottom: none;
+}
+li .title{
+	display: inline-block;
+	color: #333;
+	font-size: .32rem;
+	width: 80%;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+li .date{
+	display: inline-block;
+	color: #959595;
+	font-size: .26rem;
+	width: 100%;
+	padding-top: .2rem;
+}
+li .status{
+	position: absolute;
+	top: 0;
+	right: 0;
+	font-size: .26rem;
+	color: #b8b8b8;
+	line-height: 1.65rem;
+}
+li .status[data-status=true]{
+	color: #63ca58;
+}

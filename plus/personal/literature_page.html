@@ -1,0 +1,136 @@
+<article class="literature-page uc-pb-abs uc-pb-fixed" title="文献">
+	<header>
+		<a class="left icon-back R-back"></a>
+		<p id="article_title">文献</p>
+	</header>
+	<div class="page_conten uc-pb-fixed">
+		<article class="bjb-reviews">
+			<!--<section class="title">共领取打赏金币：<span>0</span></section>-->
+			<div>
+				<p id="article_content">...</p>
+				<div class="detial_img_box"></div>
+			</div>
+		</article>
+		<article class="ask-card" id="article_reply_show">
+			<!--<section>
+				<article class="user-info">
+					<div class="img"><img src="../image/pic_index_recommended_img.png" alt=""></div>
+					<div class="content">
+						<p class="p1">
+							<span class="span1">用户名称</span>
+							<strong class="rewarded">已获打赏：<span>100</span></strong>
+						</p>
+						<p class="p2">2016-02-03 10:00</p>
+					</div>
+				</article>
+				<div class="other-answer">问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容查询和更新题内容问题内容问; </div>
+			</section>-->
+		</article>
+		<footer>
+			<!--<a class="button-reward" href="javascript:;" title="">打赏</a>-->
+			<input type="text" class="user_comment_content" placeholder="请输入内容">
+			<input type="button" class="uc-btn-df uc-btn-sms uc-btn-primary uc-ft-rt" onclick="add_one_comment();" value="发送">
+		</footer>
+
+	</div>
+</article>
+<script type="text/javascript">
+	(function(w){
+  		//动态绑定
+	  	we_chat.deleteBind();
+	  	var reply_type		= we_chat.getUrl('isWork')=="true"?"lib":"art"
+	  	
+	  	var type = "user";
+	  	if(we_chat.getUrl("isTourist")=="true"){
+	  		$("#my_notes_change").hide()
+	  		type =  "common";
+	  	}
+	  	
+	  	//获取咨询详情
+	  	we_chat.ajaxEx(we_chat.urlAddress(type),{action:"api_get_notes_detail",acl_id:we_chat.getUrl("acl_id")},function(json){
+	  		$("#article_title").html(json.data[0].notes_works_title);//title
+	  		$("#article_content").html(json.data[1][0].notes_works_content);//content
+	  		for(var i=0;i<json.data[2].length;i++){//Image
+	  			$("<img src='"+json.data[2][i]["pic_path"]+"'/>").appendTo($(".detial_img_box"));
+	  		}
+	  		if(json.data[2].length==0){
+	  			$(".detial_img_box").css("display","none");
+	  		}
+	  		var $wrapper	= $(".page_conten");
+	  		var loadList	= function(page , limit){
+			  	we_chat.ajaxEx(we_chat.urlAddress("common"),{action:"api_article_reply",acl_id:we_chat.getUrl("acl_id"),type:reply_type,page_start:page,page_size:limit},function(json){
+			  		var data		= json.data.content;
+			  		// 初始化上拉加载的部件及其数据
+					loadMore.initLoad( $wrapper, page, json.data.count, limit );
+					for(var i=0; i<data.length; i++ ){
+						var path		= data[i].user_type=="专家"?"#personal/expert_homepage":"#personal/personal_homepage";
+				  		var $section	= $("<section data-user='"+data[i].user_id+"' data-type='"+data[i].user_type+"'/>").appendTo($("#article_reply_show"));
+				  		var $article	= $("<article class='user-info mb2'/>").appendTo($section);
+				  		$("<div class='img'><img src='"+data[i].user_photo+"' alt=''></div>").appendTo($article);
+				  		var $content	= $("<div class='content'/>").appendTo($article);
+				  		if(data[i].user_id != we_chat.getStorage("user_id") && data[i].user_type != "管理员" && data[i].user_id != we_chat.getUrl("exp_id")){
+					  		$article.attr({"path":path,"path-data":"{user_id:'"+data[i].user_id+"'}"}).addClass("R-go");
+				  		}
+				  		$("<p class='p1'><span class='span1'>"+data[i].user_name+"</span></p>").appendTo($content);
+				  		$("<p class='p2' />").html(data[i].reply_time).appendTo($content);
+				  		$("<div class='other-answer mb2' />").html(data[i].reply_content).appendTo($section);
+					}
+			  	})
+		  	}
+	  		loadList(1 , 20);
+	  		$wrapper.on("swipeUp",function(){
+				loadMore.handler($wrapper, loadList , 20);
+			})
+	  	},"no")
+	  	
+	  	//添加收藏
+	  	w.infoCollection		= function(){
+	  		var data			= {
+	  			action			: "api_article_collection",
+	  			user_id			: we_chat.getStorage("user_id"),
+	  			record_id 		: we_chat.getUrl("acl_id"),
+	  			collection_type	: "lib"
+	  		}
+	  		we_chat.ajaxEx(we_chat.urlAddress("user"),data,function(json){
+		  		popup.prompt('收藏成功!');
+		  	})
+	  	}
+	  	
+	  	//添加一条新评论
+	  	w.add_one_comment		= function(){
+	  		var comment_content	= $(".user_comment_content").val();
+	  		var userData		= we_chat.getStorage("user_info");
+			if(!we_chat.getStorage("user_info")){
+				route.go({ module: '#personal/user_login', data: {}, status: 'forward'});
+				return false;
+			}
+	  		var data			= {
+	  			action			: "api_add_notes_reply",
+	  			acl_id			: we_chat.getUrl("acl_id"),
+	  			user_id			: userData.user_id,
+	  			user_photo		: userData.user_photo.split('/img')[1],
+	  			user_type		: userData.user_type,
+	  			user_name		: userData.user_name,
+	  			reply_content 	: comment_content,
+	  			reply_type		: reply_type
+	  		}
+	  		if(!comment_content){
+	  			$(".user_comment_content").addClass("shake animated infinite").css("border-color","red");
+				setTimeout(function(){
+					$(".user_comment_content").removeClass("shake").css("border-color","#ddd");
+				},1000)
+	  			return false;
+	  		}
+		  	we_chat.ajaxEx(we_chat.urlAddress("user"),data,function(json){
+		  		var $section	= $("<section />").appendTo($("#article_reply_show"));
+		  		var $article	= $("<article class='user-info mb2'/>").appendTo($section);
+		  		$("<div class='img'><img src='"+userData.user_photo+"' alt=''></div>").appendTo($article);
+		  		var $content	= $("<div class='content'/>").appendTo($article);
+		  		$("<p class='p1'><span class='span1'>"+userData.user_name+"</span></p>").appendTo($content);
+		  		$("<p class='p2' />").html(we_chat.getNowFormatDate()).appendTo($content);
+		  		$("<div class='other-answer mb2' />").html(comment_content).appendTo($section);
+		  		$(".user_comment_content").val("");
+		  	})
+	  	}
+  	})(this)
+</script>

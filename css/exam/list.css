@@ -1,0 +1,31 @@
+ul{
+	/*float: left;*/
+	background: #FFFFFF;
+	border-bottom: 1px solid #D7D7D7;
+	padding: 0 .3rem;
+	clear: both;
+	width: 100%;
+}
+li{
+	/*float: left;*/
+	width: 100%;
+	border-bottom: 1px dashed #D7D7D7;
+	padding: .15rem .1rem;
+}
+li:last-child{
+	border-bottom: none;
+}
+li span.title{
+	display: inline-block;
+	font-size: .32rem;
+	color: #333;
+	width: 100%;
+	line-height: .6rem;
+}
+li span.remark{
+	display: inline-block;
+	font-size: .28rem;
+	color: #959595;
+	width: 100%;
+	line-height: .5rem;
+}

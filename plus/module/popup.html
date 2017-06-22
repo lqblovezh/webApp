@@ -1,0 +1,206 @@
+<style type="text/css">
+	#popup{
+		position: absolute;
+		z-index: 999;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+	}
+	#popup-bg{
+		position: absolute;
+		z-index: 1;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: rgba( 50, 50, 50, .3);
+	}
+	#popup-bg img{
+		max-width: 90%;
+	    max-height: 67%;
+	    width: inherit;
+   		height: inherit;
+	    position: absolute;
+	    top: 50%;
+	    left: 50%;
+	    transform: translate(-50%,-50%);
+	}
+	.beSure{
+		position: fixed;
+		bottom: 0px;
+		left:0px;
+		width: 100%;
+		height: 1rem;
+		border:none;
+		background: #F1F1F1;
+	}
+	#popup-content{
+		position: absolute;
+		z-index: 2;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		padding: 0 15%;
+		margin: auto;
+	}
+	#popup-prompt,
+	#popup-select{
+		float: left;
+		width: 100%;
+		background: #fff;
+	}
+	#prompt-msg,
+	#prompt-group-button{
+		float: left;
+		width: 100%;
+	}
+	#prompt-msg{
+		min-height: .5rem;
+		line-height: .48rem;
+		padding: .3rem .8rem;
+		text-align: center;
+		font-size: .32rem;
+		font-family: "microsoft yahei";
+	}
+	.prompt-button{
+		float: left;
+		width: 100%;
+		height: .7rem;
+		border: none;
+		color: #FFFFFF;
+		background: #00A1F0;
+		font-size: .32rem;
+		font-family: "microsoft yahei";
+	}
+	.prompt-button:nth-child(2n){
+		color: #333;
+		background: #efefef;
+	}
+	.select-button{
+		float: left;
+		width: 100%;
+		min-height: 1rem;
+		border: none;
+		color: #333;
+		background: #fefefe;
+		font-size: .32rem;
+		font-family: "microsoft yahei";
+	}
+	.select-button:nth-child(2n){
+		background: #e3e3e3;
+	}
+</style>
+<div id="popup">
+	<div id="popup-bg"></div>
+	<div id="popup-content">
+		<div id="popup-prompt">
+			<div id="prompt-msg">测试</div>
+			<div id="prompt-group-button">
+				<button class="prompt-button">测试</button>
+			</div>
+		</div>
+		<div id="popup-select">
+			<button class="select-button">1</button>
+			<button class="select-button">2</button>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	(function(_){
+		var Popup = function(){
+			var _self = this;
+			_self.init();
+			$("#popup-bg").on('click','.beSure',function(){
+				_self.hide();
+			})
+//			$('#popup-bg').click(function(){
+//				_self.hide();
+//			});
+		}
+		
+		Popup.prototype = {
+			init: function(){
+				this.hide();
+				$('#popup-prompt').hide();
+				$('#popup-select').hide();
+				$('#prompt-msg').empty();
+				$('#prompt-group-button').empty();
+				$('#popup-select').empty();
+				$("#popup-bg").empty();
+				$("#popup-content").show();
+			},
+			hide: function(){
+				$('#popup').hide();
+			},
+			show: function(){
+				$('#popup').show();
+			},
+			/**
+			 * 提示弹窗
+			 * @param {String}	msg		提示信息（也可以用html标签）
+			 * @param {Array}	button	按钮组（默认为一个确认关闭弹窗按钮）
+			 * 					[{content:'按钮名称',callback: '回调函数（默认为关闭弹窗）'},{...}]
+			 */
+			prompt: function( msg, button){
+				var _self = this;
+				_self.init();
+				
+				$('#prompt-msg').html( msg);
+				var l = $.isArray( button)? button.length: 1;
+				if( l <= 1){
+					var html = '<button class="prompt-button popup-0">确认</button>';
+				}else{
+					var html = '', w = (100 / l).toFixed(4)+'%';
+					for( var i = 0; i < l; i++){
+						var b = typeof button[i].content == 'string'? button[i].content: '';
+						html += '<button class="prompt-button popup-'+i+'" style="width:'+w+';">'+b+'</button>';
+					}
+				}
+				$('#prompt-group-button').append(html);
+				for( var i = 0; i < l; i++){
+					var callback = typeof button == 'object' && typeof button[i].callback == 'function'? button[i].callback: function(){ _self.hide()};
+					$('.popup-'+i+'').click( callback);
+				}
+				_self.show();
+				setTimeout( function(){
+					$('#popup-content').height( $('#popup-prompt').show().height());
+				},1);
+				return true;
+			},
+			/**
+			 * 选择弹窗
+			 * @param {Array}	button	按钮组（默认为一个确认关闭弹窗按钮）
+			 * 					[{content:'按钮名称',callback: '回调函数（默认为关闭弹窗）'},{...}]
+			 */
+			select: function( button){
+				var l = $.isArray( button)? button.length: 0;
+				if( l <= 0 ){
+					return false;
+				}else{
+					var _self = this;
+					_self.init();
+					var html = '';
+					for( var i = 0; i < l; i++){
+						var b = typeof button[i].content == 'string'? button[i].content: '';
+						html += '<button class="select-button popup-'+i+'">'+b+'</button>';
+					}
+					$('#popup-select').empty().append(html);
+				}
+				for( var i = 0; i < l; i++){
+					var callback = typeof button[i].callback == 'function'? button[i].callback: function(){ _self.hide()};
+					$('.popup-'+i+'').click( callback);
+				}
+				_self.show();
+				setTimeout( function(){
+					$('#popup-content').height( $('#popup-select').show().height());
+				},1);
+				return true;
+			}
+		};
+		
+		_.popup = new Popup();
+		
+	})(this);
+</script>

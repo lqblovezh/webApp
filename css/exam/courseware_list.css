@@ -1,0 +1,30 @@
+.courseware-name{
+	display: inline-block;
+	font-size: .32rem;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	color: #333;
+	line-height: 1rem;
+	width: 100%;
+	padding-right: 1.3rem;
+}
+.courseware-date{
+	position: absolute;
+	top: 0;
+	right: 0;
+	font-size: .28rem;
+	color: #959595;
+	line-height: 1rem;
+}
+ul{
+	padding: 0 .3rem;
+	background: #FFFFFF;
+	border-bottom: 1px solid #d7d7d7;
+}
+li{
+	border-bottom: 1px dashed #d7d7d7;
+}
+li:last-child{
+	border-bottom: none;
+}

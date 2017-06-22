@@ -1,0 +1,105 @@
+<article id="" class="online-consultation-page uc-pb-abs uc-pb-fixed"  title="充值">
+	<header>
+		<a class="left icon-back R-back"></a>
+		<p>充值</p>
+	</header>
+
+	<div class="page_conten">
+		<article class="consultation-service">
+			<section class="sec1">
+				<p class="uc-pb-30 write_notes_box">
+					<span data-price="10"><a class="uc-btn-box-one"></a>10元</span>
+					<span data-price="50" class=""><a class="uc-btn-box-one"></a>50元</span>
+					<span data-price="100" class=""><a class="uc-btn-box-one"></a>100元</span>
+					<span data-price="200"><a class="uc-btn-box-one"></a>200元</span>
+					<span data-price="500" class=""><a class="uc-btn-box-one"></a>500元</span>
+					<span data-price="1000" class=""><a class="uc-btn-box-one"></a>1000元</span>
+				</p>
+				<div>
+					<strong>可获<span class="format payment_amount">20</span>个金币</strong>
+					<strong></strong>
+				</div>
+			</section>
+			<section class="sec2">
+				<div class="div1">共需支付</div>
+				<div class="div2">￥<span class="payment_amount">20</span>.00</div>
+			</section>
+		</article>
+
+		<article class="pay-ways">
+			<section class="title">选择支付方式</section>
+			<ul class="table-nav-s">
+				<!--<li class="active">
+					<img src="../image/icon_payway_zfb.png" alt="">
+					<div>
+						<p class="p1">支付宝支付</p>
+						<p class="p2">推荐安装支付宝客户端的用户使用</p>
+					</div>
+					<input type="checkbox">
+				</li>-->
+				<li class="active">
+					<img src="../image/icon_payway_wxzf.png" alt="">
+					<div>
+						<p class="p1">微信支付</p>
+						<p class="p2">推荐安装微信5.0及以上版本的用户使用</p>
+					</div>
+					<input type="checkbox">
+				</li>
+				<!--<li>
+					<img src="../image/icon_payway_yhkzf.png" alt="">
+					<div>
+						<p class="p1">银行卡支付</p>
+						<p class="p2">推荐开通网银的持卡人使用</p>
+					</div>
+					<input type="checkbox">
+				</li>-->
+			</ul>
+		</article>
+		<a class="button-way" >立即支付</a>
+	</div>
+</article>
+<script type="text/javascript">
+	(function(){
+		var index;
+//	  	if(we_chat.getUrl("price")){
+			var price = $(".write_notes_box").find("span").eq(0).data('price');
+	  		var list	= $(".write_notes_box").find("span");
+	  		$(".write_notes_box").find("span").removeClass("active");
+	  		$(".payment_amount").html(price);
+	  		$(".write_notes_box").find("span").eq(0).addClass("active");
+	  		index = 1
+//	  		for(var i=0;i<list.length;i++){
+//	  			if(list.eq(i).data("price") == we_chat.getUrl("price")){
+//	  				list.eq(i).addClass("active");
+//	  				index = i;
+//	  			}
+	  		//}
+//	  	}else{
+//	  		//动态绑定
+//	  		we_chat.deleteBind();
+//	  	}
+	  	
+	  	// 为金额添加选中事件
+	  	$(".write_notes_box span").on('click',function(){
+	  		var price = $(this).data('price');
+	  		var list	= $(".write_notes_box").find("span");
+	  		$(".write_notes_box").find("span").removeClass("active");
+	  		$(".payment_amount").html(price);
+	  		for(var i=0;i<list.length;i++){
+	  			if(list.eq(i).data("price") == price){
+	  				list.eq(i).addClass("active");
+	  				index = i;
+	  			}
+	  		}
+	  	})
+	  
+	  	$(".button-way").click(function(){
+	  		
+	  		var user_id = we_chat.getStorage('user_id');
+	  		if( user_id == null ){
+				window.location.href="../../thirdlogin/weixin_log.php";
+			}
+	  		window.location.href = '../../testpay/jsapi.php?pay_id='+index+'&user_id='+user_id+'&type=recharge&showwxpaytitle=1';
+	  	})
+  	})()
+</script>

@@ -1,0 +1,129 @@
+<div id="identity_authentication" class="uc-pb-abs uc-pb-fixed" title="身份认证">
+	<header>
+		<a class="left icon-back R-back"></a>
+		<p>身份认证</p>
+		<a class="right icon-id-authent" href="javascript:void(0)"></a>
+	</header>
+	<div class="page_conten">
+		<ul class="index-circle-s uc-mb-20">
+			<li>
+				<label for="creat-topic">教育背景</label>
+				<input placeholder="请输入内容" type="text" maxlength="20" name="educational_background" id="" value="" />
+			</li>
+			<li>
+				<label for="creat-topic">成果获奖</label>
+				<input placeholder="请输入内容" type="text" maxlength="20" name="achievement_award" id="" value="" />
+			</li>
+			<li>
+				<label for="creat-topic">擅&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;长</label>
+				<input placeholder="请输入内容" type="text" maxlength="20" name="good_at" id="" value="" />
+			</li>
+			<li>
+				<label for="creat-topic">详细介绍</label>
+				<input placeholder="请输入内容" type="text" maxlength="20" name="detailed_introduction" id="" value="" />
+			</li>
+			<!--<li class="index-sp">
+				<label for="creat-topic">名片上传</label>
+				<div id="uplaod_img_box"></div>
+				<input type="button" class="uc-btn-df uc-btn-sms uc-btn-primary upload_images" onclick="img_input.click();" style="font-size: .28rem;margin-left: 2.5rem;" value="图片上传" />
+				<input type="file" style="display: none;" id="img_input" onchange="upload_img(this);" value="" />
+			</li>-->
+		</ul>
+		<input type="button" class="uc-btn-l uc-btn-df uc-btn-primary save_personal_btn" onclick="save_personal();" value="保存">
+	</div>
+</div>
+<script type="text/javascript">
+	(function(w){
+//		debugger;
+	  	we_chat.ajaxEx(we_chat.urlAddress("user"),{action:'api_getone_exp_auth',user_id:we_chat.getStorage("user_id")},function(json){
+			var dataInfo 	= json.data;
+	  		if(dataInfo.length!=0){
+				/*填写默认信息*/
+			  	$("input[name='educational_background']").val(dataInfo.exp_edu);		//教育背景
+			  	$("input[name='achievement_award']").val(dataInfo.exp_achieve);			//成果获奖 
+			  	$("input[name='good_at']").val(dataInfo.exp_special);					//擅长
+			  	$("input[name='detailed_introduction']").val(dataInfo.exp_intro);		//详细介绍
+			  	$("input[name='user_phonemobi']").val(dataInfo.user_phonemobi);			//上传图片
+			  	if(dataInfo.create_time){
+			  		$(".save_personal_btn").val(dataInfo.exp_ispass).attr({"onclick":""}).css("background","#ccc").removeClass("uc-btn-primary");
+			  		$(".upload_images").hide();
+			  	}
+	  		}
+	  	})
+		
+		//用户认证接口
+	  	w.save_personal	 				= function(){
+			var data					= {};
+			var exp_upload				= [];
+			var list					= $(".creat_img").find("img");
+			var user_set_upload			= $("input[name='user_set_upload']").val();
+			var educational_background	= $("input[name='educational_background']").val();
+			var achievement_award		= $("input[name='achievement_award']").val();
+			var good_at					= $("input[name='good_at']").val();
+			var detailed_introduction	= $("input[name='detailed_introduction']").val();
+			$.each(list, function() {
+				exp_upload.push($(this).data("url"));
+			});
+			if(!(educational_background&&achievement_award&&good_at)){
+				popup.prompt('请填写完整信息!');
+				return false;
+			}
+//			if(exp_upload.length==0){
+//				popup.prompt('请上传图片信息!');
+//				return false;
+//			}
+			data						= {
+				action					: "api_user_apply",
+				user_id					: we_chat.getStorage("user_id"),
+				user_name				: we_chat.getStorage("user_info").user_name,
+				exp_edu					: educational_background,
+				exp_achieve				: achievement_award,
+				exp_intro				: detailed_introduction,
+				exp_special				: good_at
+//				exp_upload				: exp_upload
+			}
+		  	we_chat.ajaxEx(we_chat.urlAddress("user"),data,function(json){
+		  		route.back();
+		  	})
+		}
+	  	
+	  	/*文件上传*/
+	  	w.upload_img		= function(){
+	  		var fileObj 		= document.getElementById("img_input").files[0]; 	// 获取文件对象
+			if(!/image\/\w+/.test(fileObj.type)){									//判断是否是图片格式
+				popup.prompt("请上传正确的图片");
+				return false;
+			}
+	        var FileController 	= we_chat.urlAddress("common");	                  	// 接收上传文件的后台地址 
+	        var form = new FormData();
+	        var base64	= "";
+	        form.append("action","api_upfiles");                        			// 数据
+			form.append("upfile_view", fileObj);                           			// 文件对象
+	        var xhr = new XMLHttpRequest();
+	        xhr.open("post", FileController, true);
+	        var reader = new FileReader();
+			reader.readAsDataURL(fileObj);
+			reader.onload 	= function(e){
+				base64		= this.result;
+			}
+	        xhr.onload = function (json) {
+	            var data =	JSON.parse(json.currentTarget.response);
+	            if(data.status){
+	            	if($(".creat_img").length >= 5){
+	            		popup.prompt("图片最多上传5张");
+	            		return false;
+	            	}
+					$("<div class='creat_img'><img data-url='"+data.data+"' src='"+base64+"'/><input type='button' class='uc-btn-df uc-btn-primary uc-btn-sms' onclick='we_chat.delete_img(this)' value='删除' /></div>").appendTo($("#uplaod_img_box"));
+	            }else{
+	            	popup.prompt(data.error);
+	            }
+	        };
+	        xhr.send(form);
+	  	}
+	  	
+	  	/*删除已上传的图片*/
+	  	w.delete_img		= function(that){
+	  		$(that).closest(".creat_img").remove();
+	  	}
+  	})(this)
+</script>

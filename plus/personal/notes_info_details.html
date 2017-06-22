@@ -1,0 +1,35 @@
+<div id="notes_info_details" class="uc-pb-abs uc-pb-fixed" title="笔记详情">
+	<header>
+		<a class="left icon-back R-back"></a>
+		<p>我的笔记</p>
+		<a class="right button-push R-go" id="my_notes_change" path="#personal/write_notes">修改</a>
+	</header>
+	<div class="page_conten" style="background: #fff;">
+		<article class="my_notes_info">
+			<h3 id="my_notes_name"></h3>
+			<time id="my_notes_tiem" datetime="2016-06-30  10:00"></time>
+			<section id="my_notes_content"></section>
+			<div class="detial_img_box"></div>
+		</article>
+	</div>
+</div>
+<script type="text/javascript">
+	(function(){
+	  	//获取笔记详情
+	  	var type = "user";
+	  	if(we_chat.getUrl("isTourist")=="true"){
+	  		$("#my_notes_change").hide()
+	  		type =  "common";
+	  	}
+	  	
+	  	we_chat.ajaxEx(we_chat.urlAddress(type),{action:"api_get_notes_detail",acl_id:we_chat.getUrl("notes_id")},function(json){
+	  		$("#my_notes_name").html(json.data[0].notes_works_title);
+	  		$("#my_notes_tiem").html(json.data[0].create_time);
+	  		$("#my_notes_content").html(json.data[1][0].notes_works_content);
+	  		$("#my_notes_change").attr("path-data","{notes_id:"+we_chat.getUrl("notes_id")+"}");
+	  		for(var i=0;i<json.data[2].length;i++){
+	  			$("<img src='"+json.data[2][i]["pic_path"]+"'/>").appendTo($(".detial_img_box"));
+	  		}
+	  	},"no")
+  	})()
+</script>

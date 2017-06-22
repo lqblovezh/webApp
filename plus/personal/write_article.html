@@ -1,0 +1,63 @@
+<div id="add_information" class="uc-pb-abs uc-pb-fixed" title="添加文章">
+	<header>
+		<a class="left icon-back R-back"></a>
+		<p>我的文章</p>
+		<a class="right button-push" onclick="save_notes(this);" href="javascript:void(0)">发布</a>
+	</header>
+	<div class="page_conten">
+		<ul class="add-info-list uc-mb-20">
+			<li>
+				<input placeholder="请输入资料标题" type="text" maxlength="20" name="entry_title" id="" value="">
+			</li>
+			<li>
+				<textarea placeholder="请输入资料内容" name="entry_content" rows="" cols=""></textarea>
+			</li>
+		</ul>
+		<section class="uc-footer">
+			<ul class="uc-footer-header uc-pud-20 table-nav">
+				<li class="img_input_remove">
+					<input type="button" onclick="we_chat.choiceImage()" class="uc-btn-df uc-btn-sms uc-btn-primary" id="" value="图片" />
+					<input type="file" style="display: none;" accept="image/jpeg,image/jpg,image/png" onchange="we_chat.user_upload_imgs(this);" id='user_upload_img'/>
+				</li>
+			</ul>
+			<ul class="uc-footer-content tab-ol">
+				<li style="display: block; height: inherit;" class="uplaod_img_box">
+					
+				</li>
+			</ul>
+		</section>
+	</div>
+</div>
+<script type="text/javascript">
+	(function(w){
+		w.save_notes	 		= function(that){
+			var data			= {};
+			var exp_upload		= [];
+			var list			= $(".creat_img").find("img");
+			var entry_title		= $("input[name='entry_title']").val();
+			var entry_content	= $("textarea[name='entry_content']").val();
+//			var entry_open_type	= $(".write_notes_box").find(".active").text()=="公开"?"open":"private";
+			$.each(list, function() {
+				exp_upload.push($(this).data("url"));
+			});
+			if(!(entry_title&&entry_content&&exp_upload)){
+				popup.prompt('请填写完整信息!');
+				return false;
+			}
+			$(that).attr("onclick","");
+			data				= {
+				action				: "api_add_user_notes",
+				notes_works_type	: "art",
+				notes_works_title	: entry_title,
+				notes_works_content	: entry_content,
+				read_type			: "open",
+				pic_path			: exp_upload,
+				user_id				: we_chat.getStorage("user_id")
+			}
+			we_chat.ajaxEx(we_chat.urlAddress("user"),data,function(json){
+//				popup.prompt('保存成功!');
+				route.back();
+			});
+		}
+	})(this)
+</script>

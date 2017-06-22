@@ -1,0 +1,57 @@
+<script type="text/javascript">
+  	$(function(){
+	  	$(".write_notes_box").find("span").on("click",function(){
+	  		if($(this).hasClass("active")){
+		  		return;
+	  		}else{
+	  			$(this).addClass("active").siblings().removeClass("active");
+	  		}
+	  	})
+	  	
+	  	$(".uc-btn-checkbox").on("click",function(){
+	  		if($(this).hasClass("active")){
+		  		$(this).removeClass("active");
+	  		}else{
+	  			$(this).addClass("active");
+	  		}
+	  	})
+	  	
+	  	$("#station_message_nav").find("li").on("click",function(){
+	  		var i = $(this).index();
+	  		$(this).closest(".page_conten").find(".index-list").hide();
+	  		$(this).addClass("active").siblings().removeClass("active");
+	  		$(this).closest(".page_conten").find(".index-list").eq(i).show();
+	  	})
+  	})
+</script>
+<div class="mongolia_layer"></div>
+<article class="user-rating-page uc-pb-abs uc-pb-fixed" title="用户评价">
+	<header>
+		<a class="left icon-back R-back"></a>
+		<p>用户评价</p>
+	</header>
+
+	<div class="page_conten">
+		<article class="evaluate">
+			<div class="top-heading">共<span>3</span>个评价</div>
+			<dl class="user-evaluation-card">
+				<dd>
+					<div class="div1">
+						<h2>用户名称用户名称</h2>
+						<p>非常满意</p>
+					</div>
+					<div class="div2">2016-02-03 10:00</div>
+					<div class="div3">评价内容评价内容评价内容评价内容评价内容评价内容评价内容评价内容评价内容评价内容</div>
+				</dd>
+				<dd>
+					<div class="div1">
+						<h2>用户名称用户名称</h2>
+						<p>非常满意</p>
+					</div>
+					<div class="div2">2016-02-03 10:00</div>
+					<div class="div3">评价内容评价内容评价内容评价内容评价内容评价内容评价内容评价内容评价内容评价内容</div>
+				</dd>
+			</dl>
+		</article>
+	</div>
+</article>

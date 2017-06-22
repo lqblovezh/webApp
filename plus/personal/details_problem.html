@@ -1,0 +1,248 @@
+<div id="details_problem" class="uc-pb-abs uc-pb-fixed" title="问题详情">
+	<header>
+		<a class="left icon-back R-back"></a>
+		<p>问题详情</p>
+		<a class="right icon-news online_consultation"></a>
+		<a class="right rights icon-history"></a>
+	</header>
+	<div class="page_conten uc-pb-fixed-2" style="background: #efefef;">
+		<ul class="chat_record" id="chat_record"></ul>
+	</div>
+	<section class="uc-footer uc-bd-top">
+		<div class="uc-footer-header uc-pud-20 uc-plr-20">
+			<div class="content">
+				<input class="contenteditable" placeholder="请输入内容" contenteditable="true"/>
+			</div>
+			<input type="button" class="uc-btn-df uc-btn-sms uc-btn-primary uc-ft-rt" onclick="add_message();" value="发送" />
+		</div>
+		<div class="uc-footer-content uc-pud-20">
+			<img src="../image/icon_written_words.png"/>
+			<input type="file" style="display: none;" accept="image/jpeg,image/jpg,image/png" onchange="upload_img(this);" name="" id="user_upload_img" value="" />
+			<img onclick="user_upload_img.click();" onclick="" src="../image/icon_p_album.png"/>
+		</div>
+	</section>
+</div>
+<script type="text/javascript">
+	(function(w){
+	  	var isExpert;			//专家id
+	  	var isRoot;				//判断当前咨询是否为专家号
+	  	var expertInfo	= {};	//对方信息
+	  	var chat_timer	= null;	//轮询
+	  	var userImg		= "";	//用户头像
+	  	var userId		= "";	//用户id
+	  	var	other_id	= [];
+	  	if(we_chat.getUrl("is_comment")=="false"){
+	  		$(".page_conten").addClass("uc-pb-fixed-2");
+	  		$(".uc-footer").show();
+	  		$("header").find(".right").show();
+	  		$(".chat_record").html("");
+	  		$('header').find("p").html("问题详情");
+	  		we_chat.ajaxEx(we_chat.urlAddress("user"),{action:"api_advice_detail",cid:we_chat.getUrl("counser_id")},function(json){				//获取一条咨询问题内容
+				isExpert 		= json.data.exp_user_id;
+				userImg			= we_chat.getStorage("user_info").user_photo;
+				userId			= json.data.user_id;
+				isRoot			= we_chat.getStorage("user_id") == isExpert;
+				if(isRoot) $(".online_consultation").hide();
+				isRoot?other_id	= [json.data.user_id]:other_id=[json.data.exp_user_id];
+				var data_detail	= json.data;
+				var $wrappers	= $(".page_conten");
+	  			var loadLists	= function(page , limit){
+					we_chat.ajaxEx(we_chat.urlAddress("user"),{action:"api_no_read_message",counser_id:we_chat.getUrl("counser_id"),user_id:we_chat.getStorage("user_id"),page_start:page,page_size:limit},function(json){	//获取未读信息
+					  	push_page(json.data.content,isRoot);
+					  	// 初始化上拉加载的部件及其数据
+						loadMore.initLoad( $wrappers, page, json.data.count, limit );
+					})
+				}
+	  			
+		  		$wrappers.on("swipeUp",function(){
+					loadMore.handler($wrappers, loadLists , 20);
+				})
+				we_chat.ajaxEx(we_chat.urlAddress("user"),{action:"api_get_exp_auth",user_id:other_id},function(json){							//获取对方信息
+				  	expertInfo	= json.data.content[0];
+				  	loadLists(1 , 20);
+				  	var problemImg		= "";
+					isRoot?problemImg	= expertInfo.user_photo:problemImg = userImg;
+				  	var $li		= $("<li data-data='"+data_detail.comment_time+"'/>");
+				  	
+				  	we_chat.getStorage("user_id") == isExpert ? $li.addClass("left") : $li.addClass("right");
+				  	$("<img src='"+problemImg+"'/>").appendTo($li);
+				    var $section	= $("<section />").html(data_detail.main_content).appendTo($li);
+				    if(data_detail.pic_path){
+					    $("<img />").attr("src",data_detail.pic_path).appendTo($section);
+				    }
+				  	$li.prependTo($(".chat_record"));
+				  	
+				  	get_message();
+				  	chat_timer 	= setInterval(function(){
+					  	if(!we_chat.getUrl("counser_id")){
+					  		clearInterval(chat_timer);
+					  		return false;
+					  	}
+					  	get_message();
+				  	},5000);
+				})
+		  	})
+	  	}else{
+	  		$(".page_conten").removeClass("uc-pb-fixed-2");
+	  		$(".uc-footer").hide();
+	  		$("header").find(".right").hide();
+	  		$('header').find("p").html("历史信息");
+	  		var $wrapper	= $(".page_conten");
+	  		var loadList	= function(page , limit){ 
+		  		we_chat.ajaxEx(we_chat.urlAddress("user"),{action:"api_history_advices",counser_id:we_chat.getUrl("counser_id"),page_start:page,page_size:limit},function(json){
+			  		var data		= json.data;
+			  		isExpert 		= we_chat.getUrl(["expertId"]);
+			  		userImg			= we_chat.getStorage("user_info").user_photo;
+			  		isRoot			= we_chat.getStorage("user_id") == isExpert;
+			  		userId			= we_chat.getUrl(["userId"]);
+					isRoot?other_id	= userId:other_id=isExpert;
+			  		$(".chat_record").html("");
+			  		if(data.length==0){
+		  				$(".chat_record").html("<section style='text-align: center; padding: 1rem; background: #fff;'>暂无数据</section>");
+			  			return false;
+			  		}
+			  		we_chat.ajaxEx(we_chat.urlAddress("user"),{action:"api_get_exp_auth",user_id:other_id},function(json){			//获取专家信息
+					  	expertInfo	= json.data.content[0];
+				  		push_page(data,isRoot);
+					})
+			  		// 初始化上拉加载的部件及其数据
+					loadMore.initLoad( $wrapper, page, json.data.count, limit );
+			  	})
+	  		}
+	  		loadList(1 , 10);
+	  		$wrapper.on("swipeUp",function(){
+				loadMore.handler($wrapper, loadList , 10);
+			})
+	  	}
+	  	
+	  	w.add_message = function(imgs){		//消息发送按钮事件
+	  		var	user_type		= isRoot?1:0;
+	  		var to_user_id		= other_id.join();
+	  		var from_user_id	= we_chat.getStorage("user_id");
+	  		var upfile_view		= "";
+	  		if(!imgs){
+		  		var counsel_content	= $(".contenteditable").val();
+		  		if(counsel_content.length > 100){
+		  			popup.prompt("最多输入100字!");
+		  			return false;
+		  		}
+		  		if(counsel_content.length == 0){
+		  			popup.prompt("请输入!");
+		  			return false;
+		  		}
+	  		}else{
+	  			upfile_view 	= imgs;
+	  			counsel_content	= "";
+	  		}
+	  		we_chat.ajaxEx(
+	  			we_chat.urlAddress("user"),
+	  			{
+	  				action			: "api_add_message",
+	  				counser_id		: we_chat.getUrl("counser_id"),
+	  				user_type		: user_type,
+	  				counsel_content	: counsel_content,
+	  				from_user_id	: from_user_id,
+	  				to_user_id		: to_user_id,
+	  				upfile_view		: upfile_view
+	  			},
+	  			function(json){
+	  				$(".contenteditable").val("");
+	  				get_message();
+		  		}
+  			)
+	  	}
+	  	
+	  	var get_message = function(){		//获取咨询消息(实时)
+	  		var	user_type		= isRoot?1:0;
+	  		we_chat.ajaxEx(we_chat.urlAddress("user"),{action:"api_get_message",counser_id:we_chat.getUrl("counser_id"),user_type:user_type},function(json){
+		  		if(json.data.length>0){
+					var last_time	= $(".chat_record").children("li:last-child").data("data");
+					var data		= [];
+					//遍历获取到的数组用时间比对最后一个li的时间，判断是否为新增的数据
+					for(var i=0;i<json.data.length;i++){
+						if(json.data[i].create_time>last_time){
+							data.push(json.data[i]);
+						}
+					}
+					if(data.length==0) return false;//如果过滤后的数组的长度不为0，说明接收到了新的数据
+					//用新得数组去填写页面信息
+					push_page(data,isRoot);
+					
+					$(".page_conten").scrollTop($(".chat_record").height());
+			  		var counser_ids	= we_chat.getStorage("counser_ids")||{};//所有本地id
+			  		var current_id	= "counser_id_"+we_chat.getUrl("counser_id");
+		  			counser_ids[current_id] = data[0].create_time;
+			  		we_chat.setStorage("counser_ids",counser_ids);
+		  		}
+		  	})
+	  	}
+	  	
+	  	w.upload_img		= function(){
+	  		var fileObj 		= document.getElementById("user_upload_img").files[0]; 	// 获取文件对象
+			if(!/image\/\w+/.test(fileObj.type)){									//判断是否是图片格式
+				popup.prompt("请上传正确的图片");
+				return false;
+			}
+	        var FileController 	= we_chat.urlAddress("common");	                  	// 接收上传文件的后台地址 
+	        var form = new FormData();
+	        form.append("action","api_upfiles");                        			// 数据
+			form.append("upfile_view", fileObj);                           			// 文件对象
+	        var xhr = new XMLHttpRequest();
+	        xhr.open("post", FileController, true);
+	        xhr.onload = function (json) {
+	            var data =	JSON.parse(json.currentTarget.response);
+	            if(data.status){
+	            	add_message(data.data);
+	            }else{
+	            	popup.prompt(data.error);
+	            }
+	        };
+	        xhr.send(form);
+	  	}
+	  	
+	  	var push_page	= function(data,isRoot){//填充页面数据
+	  		for(var i=0;i<data.length;i++){
+				var $li	= $("<li data-data='"+data[i].create_time+"'/>");
+				//user_type=0表示用户,isRoot为真表示当前用户是否为专家
+				if(isRoot){
+					if(data[i].user_type=="1"){
+						$li.addClass("right");
+						$("<img src='"+userImg+"'/>").appendTo($li);
+					}else{
+						$li.addClass("left");
+						$("<img src='"+expertInfo.user_photo+"'/>").appendTo($li);
+					}
+				}else{
+					if(data[i].user_type=="1"){
+						$li.addClass("left");
+						$("<img src='"+expertInfo.user_photo+"'/>").appendTo($li);
+					}else{
+						$li.addClass("right");
+						$("<img src='"+userImg+"'/>").appendTo($li);
+					}
+				}
+			  	var $section	= $("<section />").appendTo($li);
+			  	if(data[i].is_pic != "0"){
+				  	$("<img />").attr("src",data[i].counsel_content).appendTo($section);
+			  	}else{
+				  	$("<p />").html(data[i].counsel_content).appendTo($section);
+			  	}
+			  	$li.appendTo($(".chat_record"));
+			}
+	  	}
+	  	
+	  	$(".icon-history").on("click",function(){		//绑定获取咨询历史信息
+	  		clearInterval(chat_timer);
+	  		route.go({ module: "#personal/details_problem", data:{'counser_id':we_chat.getUrl("counser_id"),'is_comment':true,expertId:isExpert,userId:userId}, status: 'forward'});
+	  	})
+	  	
+	  	$(".R-back").on("click",function(){ 			//返回时清空轮询
+			clearInterval(chat_timer);
+		});
+		
+		$(".online_consultation").on("click",function(){//用户评价时跳转处理
+			clearInterval(chat_timer);
+			route.go({ module: "#personal/online_consultation", data:{'counser_id':we_chat.getUrl("counser_id")}, status: 'forward'});
+		})
+  	})(this)
+</script>

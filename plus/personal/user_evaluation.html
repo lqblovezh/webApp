@@ -1,0 +1,42 @@
+<article class="user-rating-page uc-pb-abs uc-pb-fixed" title="用户评价">
+	<header>
+		<a class="left icon-back R-back"></a>
+		<p>用户评价</p>
+	</header>
+
+	<div class="page_conten">
+		<article class="evaluate">
+			<div class="top-heading">共<span class="exp_commentcount">0</span>个评价</div>
+			<dl class="user-evaluation-card expert_user_evalua"></dl>
+		</article>
+	</div>
+</article>
+<script type="text/javascript">
+	(function(){
+		//获取专家评论
+		var $wrapper	= $(".page_conten");
+  		var loadList	= function(page , limit){
+			we_chat.ajaxEx(we_chat.urlAddress("user"),{action:"api_get_comment",exp_user_id:we_chat.getUrl("user_id"),page_start:page,page_size:limit},function(json){
+		  		var userData	=	json.data.content;
+		  		// 初始化上拉加载的部件及其数据
+				loadMore.initLoad( $wrapper, page, json.data.count, limit );
+				for(var i=0;i<userData.length;i++){
+			  		var $dd			= $("<dd />").appendTo($(".expert_user_evalua"));
+					var $div1		= $("<div class='div1'><h2>"+userData[i].user.user_name+"</h2></div>").appendTo($dd);
+					$("<p />").html(userData[i].comment_degree).appendTo($div1);
+					$("<div class='div2' />").html(userData[i].comment_time).appendTo($dd);
+					$("<div class='div3' />").html(userData[i].comment_content).appendTo($dd);
+				}
+		  	},'no')
+		}
+		loadList(1 , 20);
+  		$wrapper.on("swipeUp",function(){
+			loadMore.handler($wrapper, loadList , 20);
+		})
+		
+		//获取专家评论总数
+		we_chat.ajaxEx(we_chat.urlAddress("user"),{action:"api_get_exp_commentcount",exp_user_id:we_chat.getUrl("user_id")},function(json){
+	  		$(".exp_commentcount").html(json.data.count);
+	  	},'no')
+	})()
+</script>

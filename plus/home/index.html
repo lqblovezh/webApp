@@ -1,0 +1,171 @@
+<link rel="stylesheet" type="text/css" href="../css/home/index.css"/>
+<div id="lay-unit" class="index-page">
+	<!-- header -->
+	<header class="index-head bgc-35a2f7">
+		<p>编辑邦</p>
+		<!--<a class="icon-mail" href="javascript:;" title=""></a>-->
+	</header>
+	<!-- header end -->
+	<section class="main-content">
+		<article class="ask-help mb2">
+			<a class="ask R-go" path="#activity/list" href="javascript:;" title="">
+				<img src="../image/icon_index_enroll.png" alt="">
+				<span>报名</span>
+			</a>
+			<a class="help R-go" path="#exam/index" href="javascript:;" title="">
+				<img src="../image/icon_index_exam.png" alt="">
+				<span>考试</span>
+			</a>
+		</article><!-- ask-help end -->
+	
+		<menu class="index-menu mb2">
+			<a href="javascript:;" class="R-go" path="#specialist/search" title="">找编辑</a>
+			<!--<a href="javascript:;" title="">寻组织</a>-->
+			<a href="javascript:;" class="R-go" path="#FAQs/index" title="">解疑惑</a>
+			<!--<a href="javascript:;" class="R-go" path="#seek-help/index" title="">求助</a>-->
+			<a href="javascript:;" class="R-go" path="#books/list" title="">知识库</a>
+			<!--<a href="javascript:;" class="R-go" path="#exam/index" title="">去培训</a>-->
+		</menu><!-- index-menu end -->
+	
+		<!-- index-banner -->
+		<article class="index-banner mb2">
+		  <div class="swiper-container">
+		    <div class="swiper-wrapper">
+		      <!--<div class="swiper-slide">
+		      	<a href="javascript:;" title="">
+		      		<img src="../image/pic_index_banner_1.png" alt="">
+		      	</a>
+		      </div>
+		      <div class="swiper-slide">
+		      	<a href="javascript:;" title="">
+		      		<img src="../image/pic_index_banner_2.png" alt="">
+		      	</a>
+		      </div>
+		      <div class="swiper-slide">
+		      	<a href="javascript:;" title="">
+		      		<img src="../image/pic_index_banner_3.png" alt="">
+		      	</a>
+		      </div>-->
+		    </div>
+		    <!-- Add Pagination -->
+		    <div class="swiper-pagination"></div>
+		  </div>
+		</article>
+		<!-- index-banner end -->
+	
+		<a class="index-add-info go-user-info mb2 bgc-35a2f7">我要入驻</a>
+	
+		<!--<article class="index-circle mb2">
+			<section class="sec-title">
+				<div class="left">圈子推荐</div>
+				<a class="icon-replace" href="javascript:;" title="">换一批</a>
+			</section>
+			<ul>
+				<li>
+					<div class="img"><img src="../image/pic_index_recommended_img.png" alt=""></div>
+					<div class="content">
+						<p class="p1">家庭教育交流</p>
+						<p class="p2"><span>3000</span>人，<span>100</span>话题</p>
+					</div>
+					<a class="button-join bgc-35a2f7" href="javascript:;" title="">加入</a>
+				</li>
+				<li>
+					<div class="img"><img src="../image/pic_index_recommended_img.png" alt=""></div>
+					<div class="content">
+						<p class="p1">家庭教育交流</p>
+						<p class="p2"><span>3000</span>人，<span>100</span>话题</p>
+					</div>
+					<a class="button-join bgc-35a2f7" href="javascript:;" title="">加入</a>
+				</li>
+				<li>
+					<div class="img"><img src="../image/pic_index_recommended_img.png" alt=""></div>
+					<div class="content">
+						<p class="p1">家庭教育交流</p>
+						<p class="p2"><span>3000</span>人，<span>100</span>话题</p>
+					</div>
+					<a class="button-join bgc-35a2f7" href="javascript:;" title="">加入</a>
+				</li>
+			</ul>
+		</article><!-- index-circle end -->
+	
+		<!--<a class="index-add-info mb2 bgc-35a2f7 R-go" path="#activity/list" href="javascript:;" title="">活动报名</a>-->
+		
+		
+		<!--资讯模板
+			<div id="info_list_tpl" style="display: none;">
+			<li>
+				<a class="R-go" path="#information/detail" path-data="{'acl_id':'[acl_id]'}" href="javascript:;" title="">
+					<div class="img"><img src="[path_file]" alt="暂无图片"></div>
+					<div class="content">
+						<div>[acl_title]</div>
+						<dl>
+							<dt>[tree_name]</dt>
+							<dd><span>[acl_scan]</span>人阅读</dd>
+							<!--<dd><span>10</span>人赞</dd>
+						</dl>
+					</div>
+				</a>
+			</li>
+		</div>-->
+		
+		<!--// 入驻专家模块-->
+		<div style="display: none;" id="Community_index_exp_tpl">
+			<li class="R-go" path="#personal/expert_homepage" path-data="{'user_id':'[user_id]'}">
+				<div class="img"><img src="[user_photo]" alt=""></div>
+				<div class="content">
+					<p class="p1">[user_name]</p>
+					<p class="p2">[exp_org]</p>
+					<p class="p2">[user_regtime]</p>
+				</div>
+			</li>
+		</div>
+		<article class="index-circle mb2">
+			<section class="sec-title ">
+				<div class="left">最新入驻</div>
+			</section>
+			<ul id="info_list_show"></ul>
+		</article>
+	</section>
+</div>
+<script type="text/javascript">
+	//第三方登录
+	if(we_chat.getUrl("is_login")=="true" && we_chat.getUrl("user_id")){
+		var data	 	= {
+			key			: we_chat.getUrl("key"),
+			user_id		: we_chat.getUrl("user_id")
+		}
+		switch (we_chat.getUrl("type")){
+			case 'wechat':	
+				data.action	= "api_weichat_login"
+				break;
+			case 'sina':	
+				data.action	= "api_sina_login"
+				break;
+			case 'qq':
+				data.action	= "api_qq_login"
+				break;
+			default:
+				break;
+		}
+		we_chat.ajaxEx(we_chat.urlAddress("common"),data,function(json){
+	  		var data 	= json.data.content;
+	  		we_chat.setStorage("user_id",json.data.user_id);
+			we_chat.setStorage("user_info",json.data);	
+	  	},"no")
+		
+		
+	}
+	// 获取循环播放的图片
+	we_chat.ajaxEx(we_chat.urlAddress("common"),{action:'api_get_banner'},function(json){
+  		var data 	= json.data.content;
+  		var str = '';
+  		if( json.status ){
+  			for( var i = 0, len = json.data.length; i < len; i++ ){
+	  			str += '<div class="swiper-slide"><a href="javascript:;" title="">'+
+		      		   '<img src="'+json.data[i].banner_img+'" alt=""></a></div>'
+	  		}
+	  		$(".swiper-wrapper").append( str );
+  		}
+  		
+  	},"no")
+</script>

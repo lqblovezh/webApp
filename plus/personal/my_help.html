@@ -1,0 +1,148 @@
+<div id="my_help" class="ask-answer-index uc-pb-abs uc-pb-fixed" title="我的求助">
+	<header>
+		<a class="left icon-back R-back"></a>
+		<p>我的求助</p>
+	</header>
+	<div style="display: none;" id="question_answer_tpl">
+		<section class="uc-mb-20">
+			<article class="article R-go" path="#seek-help/help_details" path-data="{'ask_id':'[ask_id]'}">
+				<section class="user-info uc-mb-20">
+					<div class="img"><img src="[user_photo]" alt=""></div>
+					<div class="content">
+						<p class="p1">
+							<span class="span1">[user_name]</span>
+							<span class="span2">[user_type]</span>
+						</p>
+						<p class="p2">[ask_create_time]</p>
+					</div>
+				</section>
+				<div class="your-answer">[ask_title]</div>
+				<section class="answer-info">
+					<div class="img"><img src="[pic_path]" alt=""></div>
+					<div class="content">[content_intro]</div>
+				</section>
+			</article>
+			<article class="icon-group">
+				<section>
+					<img src="../image/icon_ask_xs.png" alt="">
+					<p>[ask_status]<!--<span>100</span>--></p>
+				</section>
+				<section>
+					<img src="../image/icon_ask_df.png" alt="">
+					<p>答复<span>[ask_num]</span></p>
+				</section>
+				<section class="to_my_collection" data-status='[status]' data-id="[ask_id]" data-type="help">
+					<em></em>
+					<p>[statustext]</p>
+				</section>
+			</article>
+		</section>
+	</div>
+	
+	<div class="page_conten">
+		<nav class="index-nav">
+			<ul class="table-nav">
+				<li class="active">我的求助</li>
+				<li>我的答复</li>
+			</ul>
+		</nav>
+		<ol class="tab-ol">
+			<!-- 我的提问 -->
+			<li style="display: block;">
+				<article class="question-card" id="question_card_one_show"></article>
+			</li>
+			<!-- 我的回答 -->
+			<li style="display: none;">
+				<article class="question-card" id="question_card_two_show"></article>
+			</li>
+		</ol>
+	</div>
+</div>
+<script type="text/javascript">
+	(function(){
+  		//动态绑定
+	  	we_chat.deleteBind();
+	  	
+	  	//获取我的提问内容
+	  	var $wrapperOne	= $(".tab-ol").children("li").eq(0);
+  		var loadListOne	= function(page , limit){
+		  	we_chat.ajaxEx(we_chat.urlAddress("user"),{action:"api_ask_mine",user_id:we_chat.getStorage("user_id"),ask_type:"1",page_start:page,page_size:limit},function(json){
+		  		// 初始化上拉加载的部件及其数据
+				loadMore.initLoad( $wrapperOne, page, json.data.count, limit );
+				
+				var allData 	= json.data.content;
+			  	//模板显示
+		  		for(var k=0;k<allData.length;k++){
+			  		allData[k]['statustext']	= '收藏';
+		  		}
+				var collectdata	= {
+				  	action		: "api_get_collection",
+//				  	page_start	: page,
+//				  	page_size	: limit,
+				  	user_id     : we_chat.getStorage("user_id"),
+				  	collection_type: "help"
+				}
+				we_chat.ajaxEx(we_chat.urlAddress("user"),collectdata,function(json){
+				  	var data 	= json.data.content;
+				  	for(var i=0;i<data.length;i++){
+				  		for(var k=0;k<allData.length;k++){
+					  		if(data[i]['record_id']==allData[k]['ask_id']){
+						  		allData[k]['status']	 = "true";
+						  		allData[k]['statustext'] = "取消收藏";
+					  		}
+				  		}
+				  	}
+			  		we_chat.miniTemplate({
+				  		tpl	: document.getElementById("question_answer_tpl"),
+		  				show: document.getElementById("question_card_one_show"),
+				  	},allData,"add");
+				},"no")
+		  	})
+	  	}
+  		loadListOne(1 , 10);
+  		$wrapperOne.on("swipeUp",function(){
+			loadMore.handler($wrapperOne, loadListOne , 10);
+		})
+  		
+		//获取我的答复内容
+		var $wrapperTwo	= $(".tab-ol").children("li").eq(1);
+  		var loadListTwo	= function(page , limit){
+		  	we_chat.ajaxEx(we_chat.urlAddress("user"),{action:"api_reply_mine",user_id:we_chat.getStorage("user_id"),reply_type:"help",page_start:page,page_size:limit},function(json){
+		  		// 初始化上拉加载的部件及其数据
+				loadMore.initLoad( $wrapperTwo, page, json.data.count, limit );
+				var allData 	= json.data.content;
+			  	//模板显示
+		  		for(var k=0;k<allData.length;k++){
+			  		allData[k]['statustext']	= '收藏';
+		  		}
+				var collectdata	= {
+				  	action		: "api_get_collection",
+//				  	page_start	: page,
+//				  	page_size	: limit,
+				  	user_id     : we_chat.getStorage("user_id"),
+				  	collection_type: "help"
+				}
+				we_chat.ajaxEx(we_chat.urlAddress("user"),collectdata,function(json){
+				  	var data 	= json.data.content;
+				  	for(var i=0;i<data.length;i++){
+				  		for(var k=0;k<allData.length;k++){
+					  		if(data[i]['record_id']==allData[k]['ask_id']){
+						  		allData[k]['status']	 = "true";
+						  		allData[k]['statustext'] = "取消收藏";
+					  		}
+				  		}
+				  	}
+			  		we_chat.miniTemplate({
+					  	tpl	: document.getElementById("question_answer_tpl"),
+			  			show: document.getElementById("question_card_two_show"),
+				  	},allData,"add");
+				  	we_chat.deleteBind();
+				},"no")
+		  	})
+	  	}
+  		loadListTwo(1 , 10);
+  		$wrapperTwo.on("swipeUp",function(){
+			loadMore.handler($wrapperTwo, loadListTwo , 10);
+		})
+  	})()
+</script>

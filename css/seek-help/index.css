@@ -1,0 +1,59 @@
+.pop-select-photo {
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	z-index: 15;
+	display: none;
+	margin-left: -2.8rem;
+	margin-top: -1.53rem;
+	width: 5.6rem;
+	height: 3.06rem;
+	background-color: #fff;
+}
+.pop-select-photo a {
+	width: 100%;
+	height: 1.02rem;
+	line-height: 1.02rem;
+	font-size: .32rem;
+	color: #333;
+	text-align: center;
+}
+.pop-select-photo a.active {
+	background-color: #e5e5e5;
+	border-top: 1px solid #dcdcdc;
+	border-bottom: 1px solid #dcdcdc;
+}
+
+/*删除图片弹窗*/
+.pop-delete-photo {
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	z-index: 15;
+	display: none;
+	margin-left: -2.8rem;
+	margin-top: -1rem;
+	width: 5.6rem;
+	height: 2rem;
+	background-color: #fff;
+}
+.pop-delete-photo div {
+	height: 1.3rem;
+	line-height: 1.3rem;
+	font-size: .32rem;
+	text-align: center;
+}
+.pop-delete-photo section {height: .7rem;}
+.pop-delete-photo section a {
+	float: left;
+	width: 50%;
+	line-height: .7rem;
+	font-size: .32rem;
+	color: #333;
+	text-align: center;
+	background-color: #c9c9c9;
+}
+.pop-delete-photo section a.active {
+	color: #fff;
+	background-color: #35a2f7;
+}

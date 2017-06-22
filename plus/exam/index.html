@@ -1,0 +1,198 @@
+<link rel="stylesheet" type="text/css" href="../css/exam/index.css"/>
+<section id="lay-unit" class="exam-index">
+	<header class="header">
+		<!--<section class="R-back"></section>-->
+		<section class="title">
+			
+		</section>
+		<ul class="courList">
+		</ul>
+	</header>
+	<section class="main-content ">
+		<!--<section class="search">
+			<label for="search"></label>
+			<input type="text" id="search" name="search" placeholder="请输入搜索关键词"/>
+		</section>-->
+		
+		<section class="layout-container">
+			<section class="layout-row">
+				<section class="layout-1-1 layout-title">
+					练习
+				</section>
+			</section>
+			<section class="layout-row">
+				<section class="layout-child-row">
+					<section class="layout-2-1 text-center v-parting font R-go" path="#exam/do_problems" path-data='{"pattern":"practice","type":"order"}'>
+						顺序练习
+						<span id="topic_order_complete" class="label c-success">0/0</span>
+					</section>
+					<section class="layout-2-1 text-center v-parting font R-go" path="#exam/do_problems" path-data='{"pattern":"practice","type":"random"}'>
+						随机练习
+						<!--<span id="topic_random_complete" class="label c-success">0/0</span>-->
+					</section>
+				</section>
+				<section class="layout-child-row">
+					<section class="layout-2-1 text-center v-parting font R-go" path="#exam/special_practice">
+						专项练习
+						<span id="topic_item_complete" class="label c-success">0/0</span>
+					</section>
+					<section class="layout-2-1 text-center v-parting font R-go" path="#exam/courseware">
+						课件
+						<span id="courseware" class="label c-success">0/0</span>
+					</section>
+				</section>
+			</section>
+		</section>
+		
+		<section class="layout-container">
+			<section class="layout-row">
+				<section class="layout-1-1 layout-title">
+					考试
+				</section>
+			</section>
+			<section class="layout-row-full">
+				<section class="layout-child-row">
+					<section class="layout-2-1 text-center v-parting font R-go" path="#exam/list">
+						<span class="test-practice">模拟考试</span>
+					</section>
+					<section class="layout-2-1 text-center v-parting font R-go" path="#exam/result_list">
+						<span class="test-history">考试记录</span>
+					</section>
+				</section>
+			</section>
+		</section>
+		
+		<section class="layout-container">
+			<section class="layout-row">
+				<section class="layout-child-row">
+					<section class="layout-2-1 text-center v-parting font R-go" path="#exam/do_problems" path-data='{"pattern":"practice","type":"error-problems"}'>
+						我的错题
+						<span id="error_totle" class='label c-error'>0题</span>
+					</section>
+					<section class="layout-2-1 text-center v-parting font R-go" path="#exam/do_problems" path-data='{"pattern":"practice","type":"collect-problems"}'>
+						我的收藏
+						<span id="collect_totle" class='label c-success'>0题</span>
+					</section>
+				</section>
+				<section class="layout-child-row">
+					<section class="layout-2-1 text-center v-parting font R-go" path="#exam/do_problems" path-data='{"pattern":"practice","type":"undone-problems"}'>
+						我的未做题
+						<span id="unused_totle" class='label c-error'>0题</span>
+					</section>
+					<section class="layout-2-1 text-center v-parting font R-go" path="#exam/guide">
+						考试指南
+						<span id="guide_totle" class='label c-success'>0个</span>
+					</section>
+				</section>
+			</section>
+		</section>
+		
+		<section class="layout-container">
+			<section class="layout-row teacher">
+				<!--<section class="layout-child-row">
+					<section class="layout-1-1 expert">
+						<div class="photo "></div>
+						<div class="info">
+							<div class="row">
+								<div class="name">李艳</div>
+								<div class="job">主任</div>
+							</div>
+							<div class="row">
+								<div class="expert-org">专家服务机构</div>
+							</div>
+							<div class="row">
+								<div class="expert-infos">专家介绍专家介绍专家介绍专家介绍专家介绍</div>
+							</div>
+						</div>
+					</section>
+				</section>
+				<section class="layout-child-row">
+					<section class="layout-1-1 expert">
+						<div class="photo "></div>
+						<div class="info">
+							<div class="row">
+								<div class="name">李艳</div>
+								<div class="job">主任</div>
+							</div>
+							<div class="row">
+								<div class="expert-org">专家服务机构</div>
+							</div>
+							<div class="row">
+								<div class="expert-infos">专家介绍专家介绍专家介绍专家介绍专家介绍</div>
+							</div>
+						</div>
+					</section>
+				</section>-->
+			</section>
+		</section>
+		
+		<!--<section class="layout-container">
+			<section class="layout-row">
+				<section class="layout-child-row">
+					<section class="layout-1-1 circle">
+						<div class="circle-icon"></div>
+						<div class="circle-info">
+							<div class="circle-name">数字编辑初级考试圈</div>
+							<div class="circle-base">3000人，100话题</div>
+						</div>
+						<div class="circle-join">
+							<button type="button" class="">加入</button>
+						</div>
+					</section>
+				</section>
+			</section>
+		</section>-->
+	</section>
+</section>
+<script>
+	//$action.initProblems();
+	window.localStorage.removeItem("topic");
+</script>
+<!--<script type="text/javascript">
+	(function(_){
+		_.$m = {};
+		_.$f = {};
+		
+		$f.q = function( action, data){
+			var s = false,
+				data = data || {};
+			data.action = action;
+			$.ajax({
+				type: "post",
+				url: "../../api/user/index.php",
+				data: data,
+				dataType: 'json',
+				async: false,
+				success: function( msg){
+					s = msg.status? msg.data: msg.status;
+				}
+			});
+			return s;
+		}
+		
+		$m.user_id = we_chat.getStorage('user_id');
+		$m.user_info = we_chat.getStorage('user_info');
+		
+		$m.topic_totle = $f.q('api_question_count') || 0;
+		$m.topic_order_complete = $f.q('api_recode_count_questions', { user_id: $m.user_info.user_id, type: 1}) || 0;
+		$m.topic_random_complete = $f.q('api_recode_count_questions', { user_id: $m.user_info.user_id, type: 2}) || 0;
+		$m.topic_item_complete = $f.q('api_recode_count_questions', { user_id: $m.user_info.user_id, type: 3}) || 0;
+		$m.courseware_totle = $f.q('api_courseware', { tree_id: $m.user_info.tree_id_user}) || 0;
+		$m.courseware_read = $f.q('api_user_courseware_read', { user_id: $m.user_info.user_id}) || 0;
+		$m.error_totle = $f.q('api_get_wrong_topic', { user_id: $m.user_info.user_id, whether: 0}) || 0;
+		$m.unused_totle = $f.q('') || 0;
+		$m.collect_totle = $f.q('api_get_collection_count', { user_id: $m.user_info.user_id, collection_type: 'qus'}) || 0;
+		$m.guide_totle = $f.q('api_get_guide', { tree_id: $m.user_info.tree_id_user}) || 0;
+		
+		$('#topic_order_complete').text( $m.topic_order_complete+'/'+$m.topic_totle);
+		$('#topic_random_complete').text( $m.topic_random_complete+'/'+$m.topic_totle);
+		$('#topic_item_complete').text( $m.topic_item_complete+'/'+$m.topic_totle);
+		$('#courseware').text( $m.courseware_read+'/'+$m.courseware_totle);
+		$('#error_totle').text( $m.error_totle+'题');
+		$('#unused_totle').text( $m.unused_totle+'题');
+		$('#collect_totle').text( $m.collect_totle+'题');
+		$('#guide_totle').text( $m.guide_totle+'个');
+		
+		
+	})(this);
+</script>-->

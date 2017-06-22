@@ -1,0 +1,103 @@
+<div id="user_register" class="uc-pb-abs uc-pb-fixed" title="手机验证">
+	<header>
+		<a class="left icon-back R-back"></a>
+		<p>手机验证</p>
+	</header>
+	<div class="page_conten user_register" style="background: #fff;">
+		<section>
+			<input maxlength="13" name="user_phone" type="text" id="" placeholder="请输入手机号" value="" />
+			<span id="send_code_btn" class="uc-btn-df uc-btn-sms uc-btn-warning uc-plr-20 uc-ft-rt">
+				发送验证码
+				<span id="get_code" style="display: none;"></span>
+			</span>
+		</section>
+		<p class="user_register_send uc-plr-20" id="">验证码已发送到(<span id="code_by"></span>)</p>
+		<section>
+			<input maxlength="6" id="verification_code" readonly="readonly" type="text" id="" placeholder="请输入手机验证码" value="" />
+		</section>
+		<input type="button" id="next_step_btn" class="uc-btn-l uc-btn-df uc-btn-primary" value="下一步" />
+	</div>
+</div>
+<script type="text/javascript">
+	(function(){
+		//发送验证码
+		var code_timer	= null;
+		var send_code 	= function(){
+			var user_phone			= $("#user_register").find("input[name=user_phone]").val();
+			var t 					= 59;
+			var IsEmail				= false;
+			clearInterval(code_timer);
+			$("#code_by").html(user_phone);
+			if(!(/^1[3-8]\d{9}$/.test(user_phone))){
+				popup.prompt('手机格式不正确');
+				return false;
+			}
+			var data	= {
+				action:"api_send_code",
+				user_phone:user_phone
+			}
+			if(we_chat.getUrl("gopage") == "modify_password"){
+				data.status		= true;
+			}
+			we_chat.ajaxEx(we_chat.urlAddress("common"),data,function(json){
+				$(".user_register_send").css("display","block");
+				$(".uc-btn-warning").css("background-color","#C0C0C0");
+				$("#verification_code").removeAttr("readonly");
+				$("#send_code_btn").off("click",send_code);
+				//开启倒计时定时器
+				code_timer = setInterval(function(){
+					$("#get_code").html(t).show();
+					if(t<0){
+						$(".uc-btn-warning").css("background-color","#f19333");
+						$("#get_code").hide();
+						$("#send_code_btn").on("click",send_code);
+						clearInterval(code_timer);
+					}else{
+						t--;
+					}
+				},1000);
+				$("#next_step_btn").on("click",next_page).attr({"path-data":user_phone,"path":we_chat.getUrl("gopage")});
+			})
+		}
+		
+		// 获取头像，并存储到缓存中
+//		var keyid               = getUrlParam('key');
+//		var logoData = {
+//			action:"api_weixin_logo",
+//			key: keyid
+//		}
+//		we_chat.ajaxEx(we_chat.urlAddress("common"),logoData,function(json){
+//			var url = we_chat.setStorage('lgoImg',json.data);
+//		});
+		
+		//注册下一步
+		var next_page 	= function(){
+			var get_code_s	= $("#verification_code").val();
+			var phone		= $("#code_by").text();
+			var m	 		= "#personal/"+$(this).attr('path');
+			var data		= {};
+			var keyid     	= getUrlParam('key');
+			data.phone		= $(this).attr("path-data");
+			data.keyid    	= keyid;
+			
+			if(!get_code_s.length){
+				popup.prompt('请输入正确的验证码!');
+				return false;
+			}
+			we_chat.ajaxEx(we_chat.urlAddress("common"),{action:"api_check_code",user_phone:phone,code:get_code_s},function(json){
+				clearInterval(code_timer);
+//				var data 	= json.data.content;
+//		  		we_chat.setStorage("user_id",json.data.user_id);
+//				we_chat.setStorage("user_info",json.data);
+				route.go({ module: m, data: data || {}, status: 'forward'});
+			});
+		}
+		
+		//发送验证码
+		$("#send_code_btn").on("click",send_code);
+		
+		$(".R-back").on("click",function(){
+			clearInterval(code_timer);
+		});
+	})()
+</script>

@@ -1,0 +1,50 @@
+<script type="text/javascript">
+  	$(function(){
+	  	$(".uc-btn-checkbox").on("click",function(){
+	  		if($(this).hasClass("active")){
+		  		$(this).removeClass("active");
+	  		}else{
+	  			$(this).addClass("active");
+	  		}
+	  	})
+	  	
+	  	$(".write_notes_box").find("span").on("click",function(){
+	  		if($(this).hasClass("active")){
+		  		return;
+	  		}else{
+	  			$(this).addClass("active").siblings().removeClass("active");
+	  		}
+	  	})
+	  	
+	  	$(".table-nav").find("li").on("click",function(){
+	  		var i = $(this).index();
+	  		$(this).closest(".page_conten").find(".index-list").hide();
+	  		$(this).addClass("active").siblings().removeClass("active");
+	  		$(this).closest(".page_conten").find(".index-list").eq(i).show();
+	  	})
+  	})
+</script>
+<div class="mongolia_layer"></div>
+<article class="pop-select-photo">
+	<a href="javascript:;" title="">拍照</a>
+	<a class="active" href="javascript:;" title="">从相册中选取</a>
+	<a href="javascript:show_image(true);" title="">取消</a>
+</article>
+
+<div id="clear_cache" class="uc-pb-abs" title="清除缓存">
+	<header>
+		<a class="left icon-back R-back"></a>
+		<p>清除缓存</p>
+	</header>
+	<div class="page_conten">
+		<article class="clear_cache">
+			<div class="bigBox">
+				<div class="box">
+					<p>编辑邦占用缓存</p>
+					<p id="cache_number">100M</p>
+				</div>
+			</div>
+		</article>
+		<input type="button" class="uc-btn-l uc-btn-df uc-btnb-primary uc-mt-90" value="清除缓存">
+	</div>
+</div>

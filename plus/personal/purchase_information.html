@@ -1,0 +1,67 @@
+<div id="purchase_information" class="uc-pb-abs uc-pb-fixed" title="已购资料">
+	<header>
+		<a class="left icon-back R-back"></a>
+		<p>已购资料</p>
+	</header>
+	
+	<div id="purchase_information_tpl" style="display: none;">
+		<li class="uc-li-ht R-go" path="#personal/profile_name" path-data="{'resourct_id':'[resourct_id]'}">
+			<div class="content">
+				<p class="p1">[resource_name]</p>
+				<p class="p2"><span>[user_name]</span><span class="uc-pl-50">[tree_name]</span></p>
+			</div>
+			<span class="uc-ft-rt uc-clr-f55c47">￥[resource_money].00</span>
+		</li>
+	</div>
+	
+	<div class="page_conten">
+		<article class="index-circle uc-mb-20">
+			<ul id="purchase_information_show">
+				<!--<li class="uc-li-ht R-go" path="#personal/profile_name" path-data="{'id':'1'}">
+					<div class="content">
+						<p class="p1">古代人生活的居住条件</p>
+						<p class="p2"><span>教师name</span><span class="uc-pl-50">人文科学类</span></p>
+					</div>
+					<span class="uc-ft-rt uc-clr-f55c47">￥20.00</span>
+				</li>
+				<li class="uc-li-ht">
+					<div class="content">
+						<p class="p1">古代人生活的居住条件</p>
+						<p class="p2"><span>教师name</span><span class="uc-pl-50">人文科学类</span></p>
+					</div>
+					<span class="uc-ft-rt uc-clr-f55c47">￥20.00</span>
+				</li>
+				<li class="uc-li-ht">
+					<div class="content">
+						<p class="p1">古代人生活的居住条件</p>
+						<p class="p2"><span>教师name</span><span class="uc-pl-50">人文科学类</span></p>
+					</div>
+					<span class="uc-ft-rt uc-clr-f55c47">￥20.00</span>
+				</li>-->
+			</ul>
+		</article>
+	</div>
+</div>
+<script type="text/javascript">
+	(function(){
+  		//动态绑定
+	  	we_chat.deleteBind();
+	  	
+	  	//获取我的资料
+	  	var $wrapper	= $(".page_conten");
+  		var loadList	= function(page , limit){
+		  	we_chat.ajaxEx(we_chat.urlAddress("user"),{action:"api_buy_resource",user_id:we_chat.getStorage("user_id"),page_start:page,page_size:limit},function(json){
+		  		// 初始化上拉加载的部件及其数据
+				loadMore.initLoad( $wrapper, page, json.data.count, limit );
+		  		we_chat.miniTemplate({
+		  			tpl	: document.getElementById("purchase_information_tpl"),
+		  			show: document.getElementById("purchase_information_show"),
+		  		},json.data.content);
+		  	})
+	  	}
+  		loadList(1 , 20);
+  		$wrapper.on("swipeUp",function(){
+			loadMore.handler($wrapper, loadList , 20);
+		})
+  	})()
+</script>

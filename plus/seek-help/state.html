@@ -1,0 +1,99 @@
+<!---------- 申述页 ------------>
+	<article class="question-categories uc-pb-abs uc-pb-fixed" title="申述">
+		<header class="ask-answer-head">
+			<a class="icon-go-back R-back" href="javascript:;" title=""></a>
+			<p>申述</p>
+		</header><!-- ask-answer-head end -->
+		
+		<div class="page_conten pb1">
+			<article class="form">
+				<form onsubmit="return false;" style="margin-top:.2rem;">
+					<textarea placeholder="描述问题"></textarea>
+					<section class="button-group">
+						<a class="button-xs" href="javascript:;" title="" onclick="trigger_file();">附件</a>
+						<input type="file" style="display: none;" onchange="change_file(this)" name="" id="img_input" value="" />
+						<!--<a class="button-photo" href="javascript:;" title="">图片</a>-->
+						<input type="button" value="发送" onclick="Save_notes();">
+					</section>
+				</form>
+			</article>
+		</div>
+		
+		<footer class="many-foot">
+			<section class="sec2 bdt-n" style="display:none;">
+				<!--<div class="img"><img src="../image/pic_ask_3.png" alt=""></div>
+				<div class="img"><img src="../image/pic_ask_1.png" alt=""></div>-->
+			</section>
+			<section class="sec3 bdt-n" style="display:none;">
+				<a class="a1" href="javascript:;" title="">附件：<span></span></a>
+				<a class="a2" href="javascript:;" title="">删除</a>
+			</section>
+		</footer>
+	</article>
+<!---------- 申述页 end------------>
+	
+<script type="text/javascript">
+	(function(w){
+
+		//动态绑定
+	  	we_chat.deleteBind();
+		
+		var upload_file;
+		
+		$(".many-foot .sec3 .a2").on("click",function(){
+			$(".many-foot .sec3").hide();
+			upload_file	= "";
+		})
+		
+		w.trigger_file	= function(){
+			if($(".many-foot .sec3 .a1").find("span").html() && $(".many-foot section").css("display")=="block") return false;
+			$("input[type='file']").click();
+		}
+		
+		w.change_file	= function(that){
+			var isPic   = true;
+			var data	= that.files[0];
+			$(".many-foot .sec3 .a1").find("span").html(data.name);
+			$(".many-foot .sec3").show();
+			upload_file = data;// 获取文件对象
+			if(!isPic){
+		        if($(".many-foot .sec2 .img").length >= 1){
+		            popup.prompt("图片最多上传1张");
+		            return false;
+		        }
+	        }else{
+	            $(".many-foot .sec3 .a1").find("span").attr("name",upload_file.name);
+	        }
+		}
+		
+		w.Save_notes	 		= function(){
+			var data			= {};
+			var $statInfo       = $(".form textarea").val();//申述内容
+			var entry_filename	= $(".many-foot .sec3 .a1").find("span").html();
+			if(!($statInfo&&entry_filename)){
+				popup.prompt('请填写完整信息!');
+				return false;
+			}
+	        var FileController 	= we_chat.urlAddress("user");	                  	// 接收上传文件的后台地址 
+	        var form = new FormData();
+	        form.append("action","api_add_dispute");                        		// 接口
+	        form.append("ask_id",we_chat.getUrl("ask_id"));
+			form.append("user_id", we_chat.getStorage("user_id"));       			// 上传者id
+			form.append("user_name", we_chat.getStorage("user_info").user_name);    // 上传者name
+			form.append("dispute_content",$statInfo);                               // 申述内容
+			form.append("upfile", upload_file);                           			// 文件对象
+	        var xhr = new XMLHttpRequest();
+	        xhr.open("post", FileController, true);
+	        xhr.onload = function (json) {
+	            var data =	JSON.parse(json.currentTarget.response);
+	            if(data.status){
+	            	route.back();
+	            }else{
+	            	popup.prompt(data.error);
+	            }
+	        };
+	        xhr.send(form);
+		}
+		
+	})(this);
+</script>

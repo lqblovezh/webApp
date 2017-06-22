@@ -1,0 +1,225 @@
+<div id="personal_homepage" class="uc-pb-abs uc-pb-fixed" title="个人主页">
+	<header>
+		<a class="left icon-back R-back"></a>
+		<p>个人主页</p>
+	</header>
+	<div class="page_conten">
+		<div class="user-center-logo">
+			<div class="logo">
+				<div class="box">
+					<img  class="personal_lonin_img" src="../image/pic_index_recommended_img.png">
+				</div>
+			</div>
+			<div class="is_login" id="is_login">
+				<p class="uc-pb-30"><span class="personal_lonin_name">...</span></p>
+				<p class="user-position">普通用户</p>
+			</div>
+			<!--<ul>
+				<li>
+					<a class="uc-pb-ilbk icon-add-friend uc-pl-60 uc-pu-click-icon uc-pb-ilbk">加好友</a>
+				</li>
+				<li>
+					<a class="uc-pb-ilbk icon-mail-ssm uc-pl-60 uc-pu-click-icon uc-pb-ilbk">发私信</a>
+				</li>
+			</ul>				-->
+		</div>
+		<nav class="index-nav index-nav-4 uc-mb-20">
+			<ul class="table-nav">
+				<li class="active"><a class="uc-pb-ilbk icon-purchase-info uc-pl-60 uc-pu-click-icon uc-pb-ilbk">资料</a></li>
+				<li><a class="uc-pb-ilbk icon-my-work uc-pl-60 uc-pu-click-icon uc-pb-ilbk">作品</a></li>
+				<li><a class="uc-pb-ilbk icon-my-notes uc-pl-60 uc-pu-click-icon uc-pb-ilbk">笔记</a></li>
+				<li><a class="uc-pb-ilbk icon-other-circle uc-pl-60 uc-pu-click-icon uc-pb-ilbk">圈子</a></li>
+			</ul>
+		</nav>
+		<ul class="index-list index-circle-s uc-mb-20">
+			<li>
+				<label for="creat-topic">参与问答</label>
+				<input class="question_and_answer" placeholder="0次 / 0次被打赏 " type="text" readonly="readonly" maxlength="20" name="creat-topic" id="" value="">
+				<input type="button" class="uc-btn-m uc-btn-df uc-btn-primary uc-ft-rt R-go check_personal_answer" value="查 看" />
+			</li>
+			<li>
+				<label for="creat-topic">参与求助</label>
+				<input class="in_help_seeking" placeholder="0次 / 0次被打赏 " type="text" readonly="readonly" maxlength="20" name="creat-topic" id="" value="">
+				<input type="button" class="uc-btn-m uc-btn-df uc-btn-primary uc-ft-rt R-go check_personal_help" path="#personal/personal_partake" path-data="{'user_id':'1','type':'help'}" value="查 看" />
+			</li>
+			<li>
+				<label for="creat-topic">姓名</label>
+				<input class="personal_name" placeholder="..." type="text" readonly="readonly" maxlength="20" name="creat-topic" id="" value="">
+			</li>
+			<li>
+				<label for="creat-topic">昵称</label>
+				<input class="personal_nickname" placeholder="..." type="text" readonly="readonly" maxlength="20" name="creat-topic" id="" value="">
+			</li>
+			<li>
+				<label for="creat-topic">性别</label>
+				<span class="uc-pb-30 write_notes_box" style="padding-left: .4rem;">
+					<span class="active"><a class="uc-btn-box-one"></a>男</span>
+					<span><a class="uc-btn-box-one"></a>女</span>
+				</span>
+			</li>
+			<li>
+				<label for="creat-topic">单位</label>
+				<input class="personal_company" placeholder="..." type="text" readonly="readonly" maxlength="20" name="creat-topic" id="" value="">
+			</li>
+			<li>
+				<label for="creat-topic">职称</label>
+				<input class="personal_Title" placeholder="..." type="text" readonly="readonly" maxlength="20" name="creat-topic" id="" value="">
+			</li>
+			<li>
+				<label for="creat-topic">领域</label>
+				<input class="personal_field" placeholder="..." type="text" readonly="readonly" maxlength="20" name="creat-topic" id="" value="">
+			</li>
+			<li>
+				<label for="creat-topic">业务</label>
+				<input class="personal_business" placeholder="..." type="text" readonly="readonly" maxlength="20" name="creat-topic" id="" value="">
+			</li>
+		</ul>
+		<div id="personal_work_tpl" style="display: none;" title="模板-作品">
+			<li class="R-go" path="#personal/literature_page" path-data="{acl_id:'[notes_works_id]',isTourist:true}">
+				<div>
+					<p class="uc-pb-20 uc-pb-clr">
+						<span>[notes_works_title]</span>
+						<a class="uc-pb-ilbk uc-ft-rt icon-message uc-pl-60 uc-pu-click-icon">[content]</a>
+					</p>
+					<time class="uc-pb-20" datetime="[create_time]">[create_time]</time>
+					<section>[notes_works_content]</section>
+				</div>
+			</li>
+		</div>
+		
+		<div id="personal_notes_tpl" style="display: none;" title="模板-笔记">
+			<li class="R-go" path="#personal/notes_info_details" path-data="{notes_id:'[notes_works_id]',isTourist:'true'}">
+				<div>
+					<time class="uc-pb-30" datetime="2016-02-03 10:00">[create_time]</time>
+					<p class="uc-pb-30"><span>[notes_works_title]</span>
+					<section>[notes_works_content]</section>
+				</div>
+			</li>
+		</div>
+		
+		<!--个人作品-->
+		<ul class="index-list" style="display: none;" id="personal_work_show">
+		</ul>
+		
+		<!--个人笔记-->
+		<ul class="index-list" style="display: none;" id="personal_notes_show">
+		</ul>
+		
+		<!--个人圈子-->
+		<div class="index-list index-circle uc-p-none" style="display: none;">
+			<ul>
+				<p style="text-align: center; padding: 1rem; background: #fff;color: #adadad; font-size: .28rem;">暂未开放,敬请期待</p>
+				<!--<li>
+					<div class="img"><img src="../image/pic_index_recommended_img.png" alt=""></div>
+					<div class="content">
+						<p class="p1">家庭教育交流</p>
+						<p class="p2"><span>3000</span>人，<span>100</span>话题</p>
+					</div>
+				</li>
+				<li>
+					<div class="img"><img src="../image/pic_index_recommended_img.png" alt=""></div>
+					<div class="content">
+						<p class="p1">家庭教育交流</p>
+						<p class="p2"><span>3000</span>人，<span>100</span>话题</p>
+					</div>
+				</li>
+				<li>
+					<div class="img"><img src="../image/pic_index_recommended_img.png" alt=""></div>
+					<div class="content">
+						<p class="p1">家庭教育交流</p>
+						<p class="p2"><span>3000</span>人，<span>100</span>话题</p>
+					</div>
+				</li>-->
+			</ul>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	(function(){
+		$(".table-nav").find("li").on("click",function(){
+	  		var i = $(this).index();
+	  		$(this).closest(".page_conten").find(".index-list").hide();
+	  		$(this).addClass("active").siblings().removeClass("active");
+	  		$(this).closest(".page_conten").find(".index-list").eq(i).show();
+	  	})
+		
+		if(!we_chat.getUrl("user_id")) return false;
+		
+		//获取个人信息
+		we_chat.ajaxEx(we_chat.urlAddress("common"),{action:"api_get_userInfo",user_id:we_chat.getUrl("user_id")},function(json){
+	  		var userData	=	json.data;
+	  		$(".personal_name").attr("placeholder",json.data.user_name);							//姓名
+	  		$(".personal_nickname").attr("placeholder",json.data.user_nickname);					//昵称
+	  		$(".personal_company").attr("placeholder",json.data.user_company);						//单位
+	  		$(".personal_Title").attr("placeholder",json.data.user_professional);					//职称
+	  		$(".personal_lonin_img").attr("src",json.data.user_photo);								//头像
+	  		$(".personal_lonin_name").html(json.data.user_name||json.data.user_nickname);			//名字
+	  		$(".personal_field").attr("placeholder",json.data.field_name);							//领域
+	  		$(".personal_business").attr("placeholder",json.data.business_name);					//业务
+	  		if(json.data.user_sex == "0"){															//性别
+	  			$(".write_notes_box").find("span").removeClass("active");
+		  		$(".write_notes_box").find("span:last-child").addClass("active");
+	  		}
+	  		$(".check_personal_answer").attr({"path":"#personal/personal_partake","path-data":"{'user_id':'"+we_chat.getUrl("user_id")+"','type':'answer'}"});
+	  		$(".check_personal_help").attr({"path":"#personal/personal_partake","path-data":"{'user_id':'"+we_chat.getUrl("user_id")+"','type':'help'}"});
+	  	},'no')
+		
+		//获取参与问答
+		we_chat.ajaxEx(we_chat.urlAddress("common"),{action:"api_get_reply_count",user_id:we_chat.getUrl("user_id"),reply_type:"ask"},function(json){
+	  		$(".question_and_answer").attr("placeholder",json.data.count+"次 / "+json.data.give+"次被打赏");
+	  	},'no')
+		
+		//获取求助
+		we_chat.ajaxEx(we_chat.urlAddress("common"),{action:"api_get_reply_count",user_id:we_chat.getUrl("user_id"),reply_type:"help"},function(json){
+	  		$(".in_help_seeking").attr("placeholder",json.data.count+"次 / "+json.data.give+"次被打赏");
+	  	},'no')
+		
+		//获取我的作品
+		var $wrapperOne	= $("#personal_work_show");
+  		var loadListOne	= function(page , limit){
+		  	we_chat.ajaxEx(we_chat.urlAddress("common"),{action:"api_get_user_notes",user_id:we_chat.getUrl("user_id"),notes_works_type:"works",page_start:page,page_size:limit},function(json){
+				var oldArry = [];
+				for(var i=0;i<json.data.content.length;i++){
+					if(json.data.content[i].read_type == "open"){
+						oldArry.push(json.data.content[i]);
+					}
+				}
+				// 初始化上拉加载的部件及其数据
+				loadMore.initLoad( $wrapperOne, page, json.data.count, limit );
+				we_chat.handleArry(oldArry,"notes_works_id","api_article_bat_reply",function(data){
+			  		we_chat.miniTemplate({
+			  			tpl	: document.getElementById("personal_work_tpl"),
+			  			show: document.getElementById("personal_work_show"),
+			  		},data,"add");
+				});
+		  	},'no')
+	 	}
+  		loadListOne(1 , 2);
+  		$wrapperOne.on("swipeUp",function(){
+			loadMore.handler($wrapperOne, loadListOne , 2);
+		})
+	  	
+	  	//获取我的笔记
+	  	var $wrapperTwo	= $("#personal_notes_show");
+  		var loadListTwo	= function(page , limit){
+		  	we_chat.ajaxEx(we_chat.urlAddress("common"),{action:"api_get_user_notes",user_id:we_chat.getUrl("user_id"),notes_works_type:"notes",page_start:page,page_size:limit},function(json){
+		  		var oldArry = [];
+				for(var i=0;i<json.data.content.length;i++){
+					if(json.data.content[i].read_type == "open"){
+						oldArry.push(json.data.content[i]);
+					}
+				}
+				// 初始化上拉加载的部件及其数据
+				loadMore.initLoad( $wrapperTwo, page, json.data.count, limit );
+		  		we_chat.miniTemplate({
+		  			tpl	: document.getElementById("personal_notes_tpl"),
+		  			show: document.getElementById("personal_notes_show"),
+		  		},oldArry,"add");
+		  	},'no')
+	  	}
+  		loadListTwo(1 , 2);
+  		$wrapperTwo.on("swipeUp",function(){
+			loadMore.handler($wrapperTwo, loadListTwo , 2);
+		})
+	})()
+</script>

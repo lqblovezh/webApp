@@ -1,0 +1,93 @@
+<style>
+	.imgWrap{
+		
+		width: 2.14rem;
+		height:2.14rem;
+		border-radius: 50%;
+		overflow: hidden;
+		margin: 0px auto .5rem;
+		
+	}
+	p,h2{
+		text-align: center;
+	}
+	.intro,.unit{
+		line-height: .4rem;
+	}
+	.intro b{
+		margin-right: .3rem;
+		font-size: .3rem;
+	}
+	h2{
+		line-height: 1.5rem;
+		font-size: .6rem;
+		color: #0093c2;
+	}
+	input{
+		border: 1px solid #ddd;
+		height: .8rem;
+		line-height: .8rem;
+		text-indent: 1em;
+		width: 3rem;
+		margin-top: .4rem;
+		margin-bottom: .4rem;
+	}
+	button{
+		border: 1px solid #0093c2;
+		height: .8rem;
+		line-height: .8rem;
+		width: 3rem;
+		border-radius: .1rem;
+		background:transparent;
+		background: #fff;
+		color: #0093c2;
+	}
+</style>
+<div style="width: 100%;height:100%;background:#fff;padding-top:1rem">
+	<div class="imgWrap">
+		<img src="" alt="" class="portrait" />
+	</div>
+	<p class="intro"><b class="name"></b><span class="job"></span></p>
+	<p class="unit"></p>
+	<h2>邀您入驻编辑邦</h2>
+	<!--<p>请复制邀请码，注册激活时粘贴写入</p>-->
+	<p><input type="text" readonly="" value="123456" class="code"/><br>
+		<button class="btn" type="button">我要入驻</button>
+	</p>
+</div>
+<script>
+
+	$(function(){
+		var user_id = we_chat.getStorage('user_id'),
+			code = we_chat.getUrl("user_id");
+			we_chat.ajaxEx(we_chat.urlAddress("common"),{action:"api_userinfo_bycode",code:code},function(json){
+				
+				var user_info = json.data
+				$(".imgWrap img").attr("src", user_info.user_photo);
+				$(".intro b").text( user_info.user_name );
+				if(  user_info.user_professional == null ){
+					$(".intro span").hide();
+				}else{
+					$(".intro span").text( user_info.user_professional);
+				}
+				if(  user_info.user_company == null ){
+					$(".unit").hide();
+				}else{
+					$(".unit").text( user_info.user_company );
+				}
+//				
+//				if( user_id == null ){
+//					$(".btn").show();
+//				}
+			})
+			window.sessionStorage.setItem('code',code);
+
+		$(".code").val(code);
+		
+		$(".btn").on('click',function(){
+			window.location.href="../../thirdlogin/weixin_log.php";
+			
+		})
+	})
+	
+</script>

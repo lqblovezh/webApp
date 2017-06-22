@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="keywords" content="">
+		<meta name="description" content="邀您入驻">
+		<meta name="copyright" content="" />
+		<meta name="viewport" content="initial-scale=1,maximum-scale=1,minimum-scale=1">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no">
+		<metaname="screen-orientation"content="portrait">
+			<metaname="x5-orientation"content="portrait">
+		<title>编辑邦</title>
+		<link rel="stylesheet" type="text/css" href="../css/common/init.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/common/common.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/user_center.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/c-c-s.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/swiper.min.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/main.css"/>
+		
+		<script src="../js/zepto.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/common/jQuery-1.9.1.min.js"></script>
+		<script src="../js/fastclick.js" type="text/javascript" charset="utf-8"></script>
+		<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/common/common.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/swiper.min.js"></script>
+		<script type="text/javascript">
+			//计算屏幕可视宽度
+		  	var deviceWidth = document.documentElement.clientWidth; 
+		  	if(deviceWidth > 720){deviceWidth = 720;}
+		  	document.documentElement.style.fontSize = deviceWidth / 7.2 + 'px';
+		  	
+		  	//阻止全局默认默认菜单
+			window.document.oncontextmenu = function(ev){
+				var oEvent	= event||ev;
+				oEvent.stopPropagation();
+				oEvent.preventDefault();
+				return false;
+			}
+		</script>
+		<style>
+			a[title='站长统计']{
+				visibility: hidden;
+			}
+		</style>
+	</head>
+	<body>
+		<section id="progress">
+			<div class="rail"></div>
+		</section>
+		<section class="lay">
+		</section>
+		<section id="nav">
+			<ul>
+				<li data-R-id="home_index" data-status=true path="#home/index"></li>
+				<li data-R-id="community_index" path="#community/index"></li>
+				<li data-R-id="information_index" class="join"></li>
+				<li data-R-id="exam_index" path="#exam/index"></li>
+				<li data-R-id="personal_index" path="#personal/index"></li>
+			</ul>
+		</section>
+		<script src="../js/common/route.js"></script>
+		<script src="../js/common/init.js"></script>
+		<script type="text/javascript">
+			$("#nav").find("li").on("click",function(){
+				if($(this).attr("data-status")=="true"){
+					return false;
+				}
+				$(this).attr("data-status",true).siblings().attr("data-status",'');
+				var m = $(this).attr('path');
+				try{
+					eval( "var data = "+$(this).attr('path-data'));
+				}catch(e){
+					console.error( e.message);
+				}
+				route.go({ module: m, data: {}, status: 'forward'});
+			})
+			
+			$(function(){
+				we_chat.ajaxEx(we_chat.urlAddress("common"),{action:"api_get_ticket",wechaturl:window.location.href},function(json){
+					we_chat.config	= false;
+					wx.config({
+					    debug: false, 						// 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+					    appId: json.data.appId, 			// 必填，公众号的唯一标识
+					    timestamp: JSON.parse(json.data.timestamp), 	// 必填，生成签名的时间戳
+					    nonceStr: json.data.nonceStr, 		// 必填，生成签名的随机串
+					    signature: json.data.signature,		// 必填，签名，见附录1
+					    jsApiList: ['chooseImage','previewImage','uploadImage'] 	// 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+					});
+					wx.ready(function(){
+						we_chat.config	= true;
+					});
+					
+					wx.error(function(res){
+						console.log(res);
+					})
+			  	})
+				
+//				new FastClick(document.body);
+			})
+			
+			//处理iphone原生的上下拖动问题
+			var startPosition = {};
+			var endPosition = {};
+			$(document).on("touchstart", function(ev){
+				var touch = ev.originalEvent.touches[0];
+	            startPosition = {
+	                x: touch.pageX,
+	                y: touch.pageY
+	            }
+			});
+			$(document).on("touchmove", function(ev){
+				var selcte		= $(".main-content").length !=0 ? $(".main-content") : $(".page_conten");
+				var maxheight 	= selcte[0].scrollHeight-selcte[0].offsetHeight-2;
+				var touch 		= ev.originalEvent.touches[0];
+	            endPosition = {
+	                x: touch.pageX,
+	                y: touch.pageY
+	            }
+	            if(selcte[0].scrollHeight==selcte[0].clientHeight){
+	            	ev.preventDefault();
+		        	ev.stopPropagation();
+	            }
+	            var deltaY = endPosition.y - startPosition.y;
+				if(deltaY > 0){
+					if(selcte.scrollTop() <= 0){
+						ev.preventDefault();
+			        	ev.stopPropagation();
+					}
+				}else{
+					if (selcte.scrollTop()>=maxheight) {
+				        ev.preventDefault();
+				        ev.stopPropagation();
+				   }
+				}
+			    
+			});
+			
+			$(".join").off("click",join).on("click",join);
+			
+			function join(){
+				if(we_chat.getStorage("user_id")){
+					route.go({ module: '#personal/personal_settings', data: {user_id:we_chat.getStorage("user_id")}, status: 'forward'});
+				}else{
+					window.location.href="../../thirdlogin/weixin_log.php";
+					//route.go({ module: '#personal/user_login', data: {}, status: 'forward'});
+				}
+			}
+		</script>
+		<script src="http://s4.cnzz.com/z_stat.php?id=1260380183&web_id=1260380183" language="JavaScript"></script>
+	</body>
+</html>

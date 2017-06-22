@@ -1,0 +1,66 @@
+<article class="expert-articles-page uc-pb-abs uc-pb-fixed" title="专家文章">
+	<header>
+		<a class="left icon-back R-back"></a>
+		<p>专家文章</p>
+	</header>
+	<div id="expert_articles_tpl" style="display: none;">
+		<li class="R-go" path="#personal/literature_page" path-data="{'acl_id':'[notes_works_id]','exp_id':'[user]',isTourist:'true'}">
+			<a href="javascript:;" title="">
+				<h2>[notes_works_title]</h2>
+				<div>
+					<p class="p1">[create_time]</p>
+					<p class="p2">已获打赏金币：[notes_works_reward]</p>
+				</div>
+			</a>
+		</li>
+	</div>
+	
+	<div class="page_conten">
+		<ul id="expert_articles_show">
+			<!--<li class="R-go" path="#personal/literature_page" path-data="{'id':'1'}">
+				<a href="javascript:;" title="">
+					<h2>资料名称资料名称资料名称资料名</h2>
+					<div>
+						<p class="p1">2015-01-01 10:00</p>
+						<p class="p2">已获打赏金币：100</p>
+					</div>
+				</a>
+			</li>-->
+		</ul>
+	</div>
+</article>
+<script type="text/javascript">
+	(function(){
+  		//动态绑定
+	  	we_chat.deleteBind();
+	  	var types			= "user";
+ 	  	if(we_chat.getUrl("user_id")){
+		  	var isUserId	= we_chat.getUrl("user_id");
+		  	var type		= "no";
+		  	types			= "common"
+	  	}else{
+	  		var isUserId	= we_chat.getStorage("user_id");
+		  	var type		= null;
+	  	}
+	  	
+	  	
+	  	//获取专家文章-主人模式
+	  	var $wrapper	= $(".page_conten");
+	  	var loadList	= function(page , limit){
+		  	we_chat.ajaxEx(we_chat.urlAddress(types),{action:"api_get_user_notes",user_id:isUserId,notes_works_type:"art",page_start:page,page_size:limit},function(json){
+		  		// 初始化上拉加载的部件及其数据
+				loadMore.initLoad( $wrapper, page, json.data.count, limit );
+		  		we_chat.miniTemplate({
+		  			tpl	: document.getElementById("expert_articles_tpl"),
+		  			show: document.getElementById("expert_articles_show"),
+		  		},json.data.content,"add");
+		  	},type)
+	  	}
+	  	
+	  	loadList(1 , 20);
+			
+		$wrapper.on("swipeUp",function(){
+			loadMore.handler($wrapper, loadList , 20);
+		})
+  	})()
+</script>

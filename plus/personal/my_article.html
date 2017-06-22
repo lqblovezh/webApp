@@ -1,0 +1,72 @@
+<div id="my_article" class="uc-pb-abs uc-pb-fixed" title="我的文章">
+	<header>
+		<a class="left icon-back R-back"></a>
+		<p>我的文章</p>
+		<a class="right rights icon-edit R-go" path="#personal/write_article" href="javascript:void(0)"></a>
+		<a class="right icon-user-delete delete_list" href="javascript:void(0)"></a>
+		<div class="right button-pushs">
+			<a class="icon-user-delete confirm_deletion" href="javascript:void(0)"></a>
+			<a class="icon-user-wrong cancel_delete" href="javascript:void(0)"></a>
+		</div>
+	</header>
+	
+	<div id="my_work_tpl_open" style="display: none;">
+		<li>
+			<a class="uc-ft-lt uc-btn-checkbox" data-id='[notes_works_id]' title=""></a>
+			<div class="R-go" path="#personal/literature_page" path-data="{acl_id:'[notes_works_id]'}">
+				<p class="uc-pb-30 uc-pb-clr">
+					<span>[notes_works_title]</span>
+					<a class="uc-pb-ilbk uc-ft-rt icon-message uc-pl-60 uc-pu-click-icon">[content]</a>
+				</p>
+				<time class="uc-pb-30" datetime="[create_time]">[create_time]</time>
+				<!--<input class="uc-btn-df uc-btnb-green uc-btn-ssm" value="公开">-->
+				<section>[notes_works_content]</section>
+			</div>
+		</li>
+	</div>
+	
+	<div id="my_work_tpl" style="display: none;">
+		<li>
+			<a class="uc-ft-lt uc-btn-checkbox" data-id='[notes_works_id]' href="javascript:;" title=""></a>
+			<div class="R-go" path="#personal/literature_page" path-data="{acl_id:'[notes_works_id]'}">
+				<p class="uc-pb-30 uc-pb-clr">
+					<span>[notes_works_title]</span>
+					<a class="uc-pb-ilbk uc-ft-rt icon-message uc-pl-60 uc-pu-click-icon">[content]</a>
+				</p>
+				<time class="uc-pb-30" datetime="[create_time]">[create_time]</time>
+				<input class="uc-btn-df uc-btnb-yellow uc-btn-ssm" value="私密">
+				<section>[notes_works_content]</section>
+			</div>
+		</li>
+	</div>
+	
+	<div class="page_conten">
+		
+		<ul class="index-list" id="my_work_show"></ul>
+	</div>
+</div>
+<script type="text/javascript">
+  	(function(){
+	  	//获取我的作品
+	  	var $wrapper	= $(".page_conten");
+  		var loadList	= function(page , limit){
+		  	we_chat.ajaxEx(we_chat.urlAddress("user"),{action:"api_get_user_notes",user_id:we_chat.getStorage("user_id"),notes_works_type:"art",page_start:page,page_size:limit},function(json){
+				var oldArry = json.data.content;
+				// 初始化上拉加载的部件及其数据
+				loadMore.initLoad( $wrapper, page, json.data.count, limit );
+				we_chat.handleArry(oldArry,"notes_works_id","api_article_bat_reply",function(data){
+			  		we_chat.miniTemplate({
+			  			tpl	: document.getElementById("my_work_tpl_open"),
+			  			show: document.getElementById("my_work_show"),
+			  		},data,"add");
+			  		//动态绑定
+			  		we_chat.deleteBind();
+				},'art');
+		  	})
+	  	}
+  		loadList(1 , 20);
+  		$wrapper.on("swipeUp",function(){
+			loadMore.handler($wrapper, loadList , 20);
+		})
+  	})()
+</script>

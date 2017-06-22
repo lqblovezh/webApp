@@ -1,0 +1,238 @@
+.mb2 {margin-bottom: .2rem;}
+
+/*height*/
+.h108 {height: 1.08rem;}
+
+/*background*/
+.bgc-f7 {background-color: #f7f7f7;}
+
+.ask-answer-head p{
+	line-height: .58rem;	
+}
+.ask-card>section {
+	padding: .3rem .3rem 0;
+	background-color: #fff;
+	border-top: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+}
+.ask-card>section:first-child {border-top: none;}
+
+.ask-card .user-info {height: 1.15rem;}
+.ask-card .user-info .img {
+	float: left;
+	margin-right: .25rem;
+	width: 1.15rem;
+	height: 1.15rem;
+	border-radius: 50%;
+}
+.ask-card .user-info .img img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+}
+.ask-card .user-info .content {
+	float: left;
+	padding: .025rem 0;
+	width: 5.2rem;
+	height: 1.15rem;
+}
+.ask-card .user-info .content .p1 {
+	line-height: .58rem;
+	font-size: .32rem;
+	color: #333;
+}
+.ask-card .user-info .content .p1 .span2 {
+	margin-left: .1rem;
+	font-size: .26rem;
+	color: #35a2f7;
+}
+
+.ask-card .user-info .content .p1 .button-reward {
+	float: right;
+	width: 1.3rem;
+	font-size: .3rem;
+	color: #fff;
+	text-align: center;
+	background-color: #f19333;
+	border-radius: .1rem;
+}
+.ask-card .user-info .content .p1 .rewarded {
+	float: right;
+	padding: 0 .1rem;
+	font-size: .26rem;
+	color: #ff6060;
+	border: 1px solid #ff6060;
+	border-radius: .1rem;
+}
+
+.ask-card .user-info .content .p2 {
+	line-height: .52rem;
+	font-size: .26rem;
+	color: #959595;
+}
+.ask-card .your-answer {
+	line-height: .4rem;
+	font-size: .3rem;
+	color: #35a2f7;
+}
+.ask-card .other-answer {
+	line-height: .42rem;
+	font-size: .28rem;
+}
+.ask-card .img-group {overflow: hidden;}
+.ask-card .img-group .img {
+	float: left;
+	margin-right: .2rem;
+	width: 1.85rem;
+	height: 1.45rem;
+	border-radius: .1rem;
+}
+.ask-card .img-group .img img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	border-radius: .1rem;
+}
+.ask-card .problem-state strong {
+	margin-right: .26rem;
+	line-height: .42rem;
+	font-size: .28rem;
+}
+.ask-card .problem-state strong span {
+	margin-left: .05rem;
+	color: #ff6060;
+}
+
+.ask-answer-foot,
+.edit-comment-foot {
+	position: fixed;
+	left: 50%;
+	bottom: 0;
+	z-index: 10;
+	margin-left: -3.6rem;
+	padding: 0 .2rem;
+	width: 7.2rem;
+	height: 1rem;
+	background-color: #fff;
+	border-top: 1px solid #ddd;
+}
+.ask-answer-foot .select-photo {
+	float: left;
+	margin: .165rem 0;
+	width: .67rem;
+	height: .67rem;
+	background: url(../../image/icon_ask_footer_photo.png) center center no-repeat;
+	-webkit-background-size: 100% 100%;
+					background-size: 100% 100%;
+}
+.ask-answer-foot input[type="text"] {
+	float: left;
+	margin: .225rem 0;
+	width: 4.74rem;
+	height: .55rem;
+	line-height: .55rem;
+	font-size: .26rem;
+	border: none;
+	border-bottom: 1px solid #ddd;
+}
+.ask-answer-foot input[type="submit"] {
+	float: right;
+	margin: .225rem 0;
+	width: 1.3rem;
+	height: .55rem;
+	line-height: .55rem;
+	font-size: .3rem;
+	color: #fff;
+	text-align: center;
+	background-color: #35a2f7;
+	border: none;
+	border-radius: .1rem;
+}
+.ask-answer-foot input.submited {background-color: #b5b5b5;}
+
+/*弹窗*/
+.pop-select-photo {
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	z-index: 15;
+	display: none;
+	margin-left: -2.8rem;
+	margin-top: -1.53rem;
+	width: 5.6rem;
+	height: 3.06rem;
+	background-color: #fff;
+}
+.pop-select-photo a {
+	width: 100%;
+	height: 1.02rem;
+	line-height: 1.02rem;
+	font-size: .32rem;
+	color: #333;
+	text-align: center;
+}
+.pop-select-photo a.active {
+	background-color: #e5e5e5;
+	border-top: 1px solid #dcdcdc;
+	border-bottom: 1px solid #dcdcdc;
+}
+
+/*删除图片弹窗*/
+.pop-delete-photo {
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	z-index: 15;
+	display: none;
+	margin-left: -2.8rem;
+	margin-top: -1rem;
+	width: 5.6rem;
+	height: 2rem;
+	background-color: #fff;
+}
+.pop-delete-photo div {
+	height: 1.3rem;
+	line-height: 1.3rem;
+	font-size: .32rem;
+	text-align: center;
+}
+.pop-delete-photo section {height: .7rem;}
+.pop-delete-photo section a {
+	float: left;
+	width: 50%;
+	line-height: .7rem;
+	font-size: .32rem;
+	color: #333;
+	text-align: center;
+	background-color: #c9c9c9;
+}
+.pop-delete-photo section a.active {
+	color: #fff;
+	background-color: #35a2f7;
+}
+/*弹窗 end*/
+
+/*底部选取图片*/
+.select-photo-foot {
+	position: fixed;
+	left: 50%;
+	bottom: 0;
+	z-index: 10;
+	margin-left: -3.6rem;
+	padding: .2rem;
+	width: 7.2rem;
+	height: 2.25rem;
+	background-color: #fff;
+	border-top: 1px dashed #ddd;
+}
+.select-photo-foot .img {
+	float: left;
+	margin-right: .2rem;
+}
+.select-photo-foot .img img {
+	display: block;
+	max-width: 1.85rem;
+	max-height: 1.85rem;
+	border-radius: .1rem;
+}

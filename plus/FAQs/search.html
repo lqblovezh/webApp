@@ -1,0 +1,129 @@
+<link rel="stylesheet" type="text/css" href="../css/main.css">
+	<article class="search-page uc-pb-abs uc-pb-fixed ask-answer-index" title="搜索页">
+		<header class="ask-answer-head">
+			<a class="icon-go-back R-back" href="javascript:;" title=""></a>
+			<p>搜索</p>
+		</header><!-- ask-answer-head end -->
+
+		<div class="page_conten">
+			<article class="index-search">
+				<a href="javascript:;" title="" onclick="getInfomatin();"></a>
+				<input type="text" placeholder="请输入搜索关键词" value="">
+			</article>
+			
+			<div id="search_list_tpl" style="display:none;">
+				<section class="mb2">
+					<article class="article R-go" path="#FAQs/interlocution_details" path-data="{'ask_id':'[ask_id]'}">
+						<section class="user-info mb2">
+							<div class="img"><img src="[user_photo]" alt=""></div>
+							<div class="content">
+								<p class="p1">
+									<span class="span1">[user_name]</span>
+									<span class="span2">[user_professional]</span>
+								</p>
+								<p class="p2">[ask_create_time]</p>
+							</div>
+						</section>
+						<div class="your-answer">[ask_title]</div>
+						<section class="answer-info">
+							<div class="img"><img src="[pic_path]" alt=""></div>
+							<div class="content">[content_intro]</div>
+						</section>
+					</article>
+					<article class="icon-group">
+						<section>
+							<img src="../image/icon_ask_xs.png" alt="">
+							<p>[ask_status]<!--<span>[ask_reward]</span>--></p>
+						</section>
+						<section class="R-go" path="#FAQs/interlocution_details" path-data="{'ask_id':'[ask_id]'}">
+							<img src="../image/icon_ask_df.png" alt="">
+							<p>答复<span>[ask_num]</span></p>
+						</section>
+						<section class="to_my_collection" data-id="[ask_id]" data-type="ask">
+							<img src="../image/icon_ask_collect.png" alt="">
+							<p>收藏</p>
+						</section>
+					</article>
+				</section>
+			</div>
+			
+			<div id="search_list_help_tpl" style="display:none;">
+				<section class="mb2">
+					<article class="article R-go" path="#seek-help/help_details" path-data="{'ask_id':'[ask_id]'}">
+						<section class="user-info mb2">
+							<div class="img"><img src="[user_photo]" alt=""></div>
+							<div class="content">
+								<p class="p1">
+									<span class="span1">[user_name]</span>
+									<span class="span2">[user_professional]</span>
+								</p>
+								<p class="p2">[ask_create_time]</p>
+							</div>
+						</section>
+						<div class="your-answer">[ask_title]</div>
+						<section class="answer-info">
+							<div class="img"><img src="[pic_path]" alt=""></div>
+							<div class="content">[content_intro]</div>
+						</section>
+					</article>
+					<article class="icon-group">
+						<section>
+							<img src="../image/icon_ask_xs.png" alt="">
+							<p>[ask_status]<!--<span>[ask_reward]</span>--></p>
+						</section>
+						<section class="R-go" path="#seek-help/help_details" path-data="{'ask_id':'[ask_id]'}">
+							<img src="../image/icon_ask_df.png" alt="">
+							<p>答复<span>[ask_num]</span></p>
+						</section>
+						<section class="to_my_collection" data-id="[ask_id]" data-type="ask">
+							<img src="../image/icon_ask_collect.png" alt="">
+							<p>收藏</p>
+						</section>
+					</article>
+				</section>
+			</div>
+			
+			<div class="tab-ol">
+				<article class="question-card"  id="search_list_show"></article>
+			</div>
+		</div>
+	</article>
+	<!---------- 搜索页 end ---------->
+		
+<script type="text/javascript">
+	(function(w){
+		getInfomatin	= function(){
+			var actionType = we_chat.getUrl("type")=="ask"?"api_ask_search":"api_help_search";
+			var $searchinpVal = $(".index-search input[type=text]").val();//输入搜索内容   
+			
+			if(!$searchinpVal){
+				popup.prompt("请填写完整信息！");
+				return false;
+			}
+					
+			var pushdata      = {
+				action        : actionType,
+				page_start    : "1",
+				page_size     : "100",
+				ask_title     : $searchinpVal
+			}
+			we_chat.ajaxEx(we_chat.urlAddress("common"),pushdata,function(json){
+//				debugger;
+			  	var data 	= json.data.content;
+			  	//模板显示
+			  	if(we_chat.getUrl("type")=="ask"){
+			  		we_chat.miniTemplate({
+				  		tpl	: document.getElementById("search_list_tpl"),
+				  		show: document.getElementById("search_list_show"),
+				  	},data);
+				  	return false;
+			  	}
+				we_chat.miniTemplate({
+			  		tpl	: document.getElementById("search_list_help_tpl"),
+			  		show: document.getElementById("search_list_show"),
+			  	},data);
+			},"no")
+		}
+	})(this);
+</script>	
+	

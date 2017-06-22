@@ -1,0 +1,51 @@
+<link rel="stylesheet" type="text/css" href="../css/c-c-s.css"/>
+<article class="expert-details-page uc-pb-abs uc-pb-fixed" title="专家详情">
+	<header>
+		<a class="left icon-back R-back"></a>
+		<p>专家详情</p>
+	</header>
+
+	<div class="page_conten">
+		<article class="user-head-img">
+			<div class="head-img"><img class="expert_lonin_img" src="../image/pic_index_recommended_img.png" alt=""></div>
+			<div class="user-name">
+				<strong class="expert_lonin_name">...</strong>
+				<strong>专家</strong>
+			</div>
+			<div class="jg expert_business">...</div>
+		</article>
+		<article class="expert-info">
+			<section>
+				<div class="title">编辑邦点评：</div>
+				<p class="gli_comment">...</p>
+			</section>
+			<section>
+				<h2>擅长</h2>
+				<p class="exp_special">...</p>
+			</section>
+			<section>
+				<h2>教育背景</h2>
+				<p class="exp_edu">...</p>
+			</section>
+			<section>
+				<h2>成果及获奖情况</h2>
+				<p class="exp_achieve">...</p>
+			</section>
+		</article>
+	</div>
+</article>
+<script type="text/javascript">
+	(function(){
+		we_chat.ajaxEx(we_chat.urlAddress("common"),{action:"api_get_userInfo",user_id:we_chat.getUrl("user_id")},function(json){
+	  		var userData	=	json.data;
+	  		$(".expert_name").html(userData.user_name);											//姓名
+	  		$(".expert_lonin_img").attr("src",userData.user_photo);								//头像
+	  		$(".expert_lonin_name").html(userData.user_name||userData.user_nickname);			//名字
+	  		$(".expert_business").html(userData.exp_org);										//机构
+	  		$(".gli_comment").html(userData.exp.gli_comment);									//点评
+	  		$(".exp_special").html(userData.exp.exp_special);									//擅长
+	  		$(".exp_edu").html(userData.exp.exp_edu);											//教育背景
+	  		$(".exp_achieve").html(userData.exp.exp_achieve);									//成果奖励
+	  	},"no")
+	})()
+</script>

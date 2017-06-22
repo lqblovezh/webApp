@@ -1,0 +1,143 @@
+.score{
+	background: #FFFFFF;
+	border-bottom: 1px solid #D7D7D7;
+	padding: .3rem;
+}
+.score-select-total{
+	padding-top: .1rem;
+	padding-bottom: .3rem;
+	font-size: .32rem;
+	text-align: center;
+	color: #333;
+}
+.score-select-total .score-label{
+	width: 100%;
+	display: inline-block;
+	text-align: center;
+}
+.score-select-remark{
+	font-size: .26rem;
+	color: #959595;
+	line-height: .48rem;
+	border-top: 1px dashed #D7D7D7;
+	padding: .2rem 1rem;
+}
+.score-other{
+	border-top: 1px dashed #D7D7D7;
+	padding: .3rem 0;
+}
+.score-other .short-answer,
+.score-other .discuss,
+.score-other .calculate,
+.score-other .case,
+.score-other .yesOrNo{
+	font-size: .26rem;
+	color: #333;
+	line-height: .5rem;
+	text-align: center;
+}
+.score-other .score-label{
+	color: #1bba6f;
+}
+.score-total{
+	border-top: 1px dashed #D7D7D7;
+	padding: .3rem 0;
+	font-size: .32rem;
+	text-align: center;
+	color: #333;
+}
+.score-total .score-label{
+	color: #FF6060;
+}
+.button-box{
+	text-align: center;
+}
+button{
+	width: 1.9rem;
+	height: .55rem;
+	text-align: center;
+	line-height: .55rem;
+	font-size: .28rem;
+	font-family: "microsoft yahei";
+	border: none;
+	color: #FFFFFF;
+	background: #f19333;
+	border-radius: .15rem;
+}
+.control{
+	float: left;
+	margin-top: .2rem;
+	width: 100%;
+	background: #FFFFFF;
+	border-top: 1px solid #d7d7d7;
+	border-bottom: 1px solid #d7d7d7;
+}
+.control .look-problems,
+.control .error-problems,
+.control .error-select-problems,
+.control .again-problems{
+	float: left;
+	font-size: .3rem;
+	text-align: center;
+	color: #333;
+	height: 1.8rem;
+	line-height: 2.6rem;
+	background-repeat: no-repeat;
+	display: none;
+}
+.control .look-problems{
+	background-image: url(../../image/look_problems.png);
+	background-size: .6rem .6rem;
+	background-position: center top .3rem;
+}
+.control .error-problems,
+.control .error-select-problems{
+	background-image: url(../../image/error_problems.png);
+	background-size: .6rem .6rem;
+	background-position: center top .3rem;
+}
+.control .again-problems{
+	background-image: url(../../image/again-problems.png);
+	background-size: .6rem .6rem;
+	background-position: center top .3rem;
+}
+
+.main-content[data-look-status=false][data-all-select=false] .control{
+	padding: 0 .8rem;
+}
+.main-content[data-all-select=false][data-look-status=false] .score-other,
+.main-content[data-all-select=false][data-look-status=false] .score-total,
+.main-content[data-all-select=false][data-look-status=false] .button-box{
+	display: none;
+}
+.main-content[data-all-select=false][data-look-status=false] .look-problems,
+.main-content[data-all-select=false][data-look-status=false] .error-problems{
+	width: 50%;
+	display: block;
+}
+.main-content[data-all-select=false][data-look-status=false] .score-select-total .score-label{
+	color: #FF6060;
+}
+.main-content[data-all-select=true] .score-select-remark,
+.main-content[data-all-select=true] .score-other,
+.main-content[data-all-select=true] .score-select-total{
+	display: none;
+}
+.main-content[data-all-select=true] .score-total{
+	border-top: none;
+}
+.main-content[data-all-select=true] .look-problems,
+.main-content[data-all-select=true] .error-problems,
+.main-content[data-all-select=true] .again-problems,
+.main-content[data-look-status=true] .look-problems,
+.main-content[data-look-status=true] .error-problems,
+.main-content[data-look-status=true] .again-problems{
+	width: 33.3333%;
+	display: block;
+}
+.main-content[data-all-select=true] .error-select-problems{
+	display: none;
+}
+.main-content[data-all-select=false][data-look-status=true] .score-select-remark{
+	display: none;
+}

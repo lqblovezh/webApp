@@ -1,0 +1,111 @@
+<article class="profile-name-page uc-pb-abs uc-pb-fixed" title="资料名称">
+	<header>
+		<a class="left icon-back R-back"></a>
+		<p class="recourse_name">...</p>
+	</header>
+	<div class="page_conten uc-pb-fixed">
+		<article class="summary">
+			<div class="recourse_content">...</div>
+			<p class="recourse_time">...</p>
+		</article>
+		<article class="photo-card">
+			<div class="img recourse_content_url"></div>
+			<a class="down_recourse" href="javascript:;" title=""><strong class="recourse_name">...</strong></a>
+		</article>
+	</div>
+	<footer>
+		<div class="profile_resource_my">
+			<!--<a class="look-online" href="javascript:;" title="">在线查看</a>-->
+			<a class="button-download" href="javascript:;" title="">下载</a>
+		</div>
+		<div class="profile_resource_other">
+			<a class="look-online" title="">价格: ￥<span class="purchase_price"></span></a>
+			<a class="button-download purchase_price_payment" href="javascript:;" title="">购买</a>
+		</div>
+		<a id="user_download_recourse" style="display: none;" href=""></a><!--触发下载按钮-->
+	</footer>
+</article>
+<script type="text/javascript">
+	(function(){
+		//动态绑定
+	  	we_chat.deleteBind();
+		
+		//获取资源信息
+		we_chat.ajaxEx(we_chat.urlAddress("user"),{action:"api_getone_resource",resourct_id:we_chat.getUrl("resourct_id"),user_id:we_chat.getStorage('user_id')},function(json){
+			var recourse		= json.data.resource_annex;
+			var resource_type	= recourse.substring(recourse.lastIndexOf(".")+1);
+			var isPic			= ["jpg","bmp","gif","png","jpeg","JPG","BMP","GIF","PNG","JPEG"];
+	  		$(".recourse_name").html(json.data.resource_name);
+	  		$(".recourse_content").html(json.data.resource_intro);
+	  		$(".recourse_time").html(json.data.resource_upload_time);
+			
+			//用户是否已经购买
+			if(json.data.is_buy == "true"){
+		  		$(".profile_resource_my").show();
+		  		$(".profile_resource_my").find("a").on("click",function(){
+		  			//获取下载秘钥
+		  			we_chat.ajaxEx(we_chat.urlAddress("user"),{action:"api_down_story",user_id:we_chat.getStorage("user_id"),type:1,story_id:we_chat.getUrl("resourct_id")},function(json){
+						$("#user_download_recourse").attr("href","../../admin/down_story.php?type=1&secret="+json.data+"&story_id="+we_chat.getUrl("resourct_id")+"&user_id="+we_chat.getStorage('user_id'));
+						user_download_recourse.click();
+		  			})
+		  		});
+			}else{
+				recourse	= "";
+				$(".profile_resource_other").show();
+				$(".purchase_price").html(json.data.resource_money);
+				$(".purchase_price_payment").on("click",function(){
+					if(!we_chat.getStorage('user_id')){
+						route.go({ module: '#personal/user_login', data: {}, status: 'forward'});
+						return false;
+					}
+					
+					//获取用户余额
+					we_chat.ajaxEx(we_chat.urlAddress("user"),{action:"api_user_money",user_id:we_chat.getStorage("user_id")},function(json){
+				  		var user_surplus		= json.data;
+				  		var this_consumption	= Number($(".purchase_price").html());
+				  		var bad_money			= this_consumption-Number(user_surplus);
+				  		
+						if(bad_money>0){//余额不足直接跳到充值界面
+							popup.prompt("当前账户还差 "+bad_money+" 元,是否进行充值?",[{content:'是',callback:function(){
+								popup.hide();
+								route.go({ module: '#personal/user_recharge', data: {}, status: 'forward'});
+							}},{content:'否'}]);
+							return false;
+						}
+						
+						//余额充足可取消或直接购买
+						popup.prompt("您将花费"+this_consumption+"金币，是否继续?",[{content:'是',callback:function(){
+				            we_chat.ajaxEx(
+			            		we_chat.urlAddress("user"),
+			            		{
+			            			action 		:"api_user_consume",
+			            			user_id		:we_chat.getStorage("user_id"),
+			            			resource_id	:we_chat.getUrl("resourct_id"),
+			            			type		:1,
+			            			user_name	:we_chat.getStorage("user_info").user_name
+			            		},
+			            		function(json){
+			            			popup.hide();
+									route.go({ module: '#personal/purchase_information', data: {}, status: 'forward'});
+								}
+		            		);
+						}},{content:'否'}]);
+					})
+				})
+			}
+			$(".recourse_content_url").html("");
+			if($.inArray(resource_type,isPic) != -1){
+				$("<img src='"+recourse+"' alt=''>").appendTo($(".recourse_content_url"));
+				return false;
+			}
+			if(resource_type == "mp4" || resource_type == "MP4"){
+				$('<video src="'+recourse+'" controls="controls">your browser does not support the video tag</video>').appendTo($(".recourse_content_url"));
+				return false;
+			}
+			if(resource_type == "mp3" ||　resource_type == "MP3"){
+				$('<audio src="'+recourse+'" controls="controls">your browser does not support the video tag</audio>').appendTo($(".recourse_content_url"));
+				return false;
+			}
+	  	},"no")
+	})()
+</script>

@@ -1,0 +1,88 @@
+<div id="online_consulting" class="ask-answer-index uc-pb-abs uc-pb-fixed" title="在线咨询">
+	<header>
+		<a class="left icon-back R-back"></a>
+		<p>在线咨询</p>
+	</header>
+	
+	<div id="online_consulting_m_tpl" style="display: none;">
+		<li class="R-go" path="#personal/details_problem" path-data="{'counser_id':'[counser_id]','is_comment':[is_comment]}">
+			<div class="img"><img src="[other_photo]" alt=""></div>
+			<div class="content">
+				<p class="p4">[other_nickname]</p>
+				<time class="time" datetime="[comment_time]">[comment_time]</time>
+			</div>
+			<span class="uc-ft-rt uc-mt-50 message-number">[content]</span>
+		</li>
+	</div>
+	
+	<div id="online_consulting_tpl" style="display: none;">
+		<li class="R-go" path="#personal/details_problem" path-data="{'counser_id':'[counser_id]','is_comment':[is_comment],'expertId':'[exp_user_id]','userId':'[user_id]'}">
+			<div class="img"><img src="[other_photo]" alt=""></div>
+			<div class="content">
+				<p class="p4">[other_nickname]</p>
+				<time class="time" datetime="[comment_time]">[comment_time]</time>
+			</div>
+		</li>
+	</div>
+	
+	<div class="page_conten">
+		<nav class="index-nav">
+			<ul class="table-nav">
+				<li class="active">正在解答</li>
+				<li>已经解答</li>
+			</ul>
+		</nav>
+		<ul class="tab-ol">
+			<li>
+				<article class="index-circle uc-mb-20">
+					<ul id="online_consulting_one_show"></ul>
+				</article>
+			</li>
+			<li>
+				<article class="index-circle uc-mb-20">
+					<ul id="online_consulting_two_show"></ul>
+				</article>
+			</li>
+		</ul>
+	</div>
+</div>
+<script type="text/javascript">
+(function(){
+  	//获取咨询列表-正在解答
+  	var $wrapperOne	= $(".tab-ol").children("li").eq(0);
+	var loadListOne	= function(page , limit){
+	  	we_chat.ajaxEx(we_chat.urlAddress("user"),{action:"api_user_consultation",user_id:we_chat.getStorage("user_id"),is_commnet:"2",page_start:page,page_size:limit},function(json){
+	  		var oldArry = json.data.content;
+	  		// 初始化上拉加载的部件及其数据
+			loadMore.initLoad( $wrapperOne, page, json.data.count, limit );
+	  		we_chat.handleArry(oldArry,"counser_id","api_user_noread_messages",function(data){
+		  		we_chat.miniTemplate({
+		  			tpl	: document.getElementById("online_consulting_m_tpl"),
+		  			show: document.getElementById("online_consulting_one_show"),
+		  		},data,"add");
+		  		//动态绑定
+		  		we_chat.deleteBind();
+	  		},we_chat.getStorage("user_id"))
+	  	})
+	}
+	loadListOne(1 , 10);
+	$wrapperOne.on("swipeUp",function(){
+		loadMore.handler($wrapperOne, loadListOne , 10);
+	})
+	
+	//获取咨询列表-已经解答
+	var $wrapperTwo	= $(".tab-ol").children("li").eq(1);
+	var loadListTwo	= function(page , limit){
+	  	we_chat.ajaxEx(we_chat.urlAddress("user"),{action:"api_user_consultation",user_id:we_chat.getStorage("user_id"),is_commnet:"1",page_start:page,page_size:limit},function(json){
+	  		we_chat.miniTemplate({
+	  			tpl	: document.getElementById("online_consulting_tpl"),
+	  			show: document.getElementById("online_consulting_two_show"),
+	  		},json.data.content,"add");
+	  	})
+  	}
+	loadListTwo(1 , 10);
+	$wrapperTwo.on("swipeUp",function(){
+		loadMore.handler($wrapperTwo, loadListTwo , 10);
+	})
+})()
+</script>

@@ -1,0 +1,63 @@
+<div id="my_information" class="uc-pb-abs uc-pb-fixed" title="我的资料">
+	<header>
+		<a class="left icon-back R-back"></a>
+		<p>我的资料</p>
+		<a class="right rights icon-edit R-go" path="#personal/add_information" href="javascript:void(0)"></a>
+		<a class="right icon-user-delete delete_list" href="javascript:void(0)"></a>
+		<div class="right button-pushs">
+			<a class="icon-user-delete confirm_deletion" data-provide="chenx" href="javascript:void(0)"></a>
+			<a class="icon-user-wrong cancel_delete" href="javascript:void(0)"></a>
+		</div>
+	</header>
+	
+	<div id="my_information_tpl" style="display: none;">
+		<li>
+			<a class="uc-ft-lt uc-btn-checkbox" data-id='[resourct_id]' href="javascript:;"></a>
+			<div class="R-go" path="#personal/profile_name" path-data="{resourct_id:'[resourct_id]'}">
+				<p class="uc-pb-30"><span>[resource_name]</span></p>
+				<time class="uc-pb-30" datetime="2016-02-03 10:00">[resource_upload_time]</time><span class="price">[resource_money] 金币</span><em class="uc-ft-rt">下载：<span id="data_download_quantity">[buy_times]</span>次</em>
+				<section>[resource_intro]</section>
+				<address>
+					<a href="[resource_annex]">[resource_name]</a>    [resource_trans]
+				</address>
+			</div>
+		</li>
+	</div>
+	
+	<div class="page_conten">
+		<ul class="index-list" id="my_information_show"></ul>
+	</div>
+</div>
+<script type="text/javascript">
+	(function(){
+		var types			= "user";
+		if(we_chat.getUrl("user_id")){
+		  	var isUserId	= we_chat.getUrl("user_id");
+		  	$(".right").hide();
+		  	var type		= "no";
+		  	types			= "common"
+		  	var status		= "false";
+	  	}else{
+	  		var isUserId	= we_chat.getStorage("user_id");
+		  	var type		= null;
+	  	}
+		
+	  	//获取专家的资料-type为主人模式
+	  	var $wrapper	= $(".page_conten");
+  		var loadList	= function(page , limit){
+		  	we_chat.ajaxEx(we_chat.urlAddress(types),{action:"api_get_mine_resource",user_id:isUserId,page_start:page,page_size:limit,status:status},function(json){
+		  		// 初始化上拉加载的部件及其数据
+				loadMore.initLoad( $wrapper, page, json.data.count, limit );
+		  		we_chat.miniTemplate({
+		  			tpl	: document.getElementById("my_information_tpl"),
+		  			show: document.getElementById("my_information_show"),
+		  		},json.data.content,'add');
+		  		we_chat.deleteBind();
+		  	},type)
+	  	}
+  		loadList(1 , 20);
+  		$wrapper.on("swipeUp",function(){
+			loadMore.handler($wrapper, loadList , 20);
+		})
+  	})()
+</script>

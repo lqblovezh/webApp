@@ -1,0 +1,38 @@
+/*.main-content{
+	padding: .2rem;
+}
+.button-box{
+	float: left;
+	width: 50%;
+	padding: 0 .15rem;
+};
+.button-box .button{
+	display: inline-block;
+    width: 100%;
+    text-align: center;
+    height: .9rem;
+    line-height: .9rem;
+    border: 1px solid #d2d2d2;
+    border-radius: .15rem;
+    font-size: .32rem;
+    background: #FFFFFF;
+}*/
+.special_practice .main-content{
+	padding: .2rem;
+}
+.special_practice .button-box{
+	float: left;
+	width: 50%;
+	padding: 0 .15rem;
+};
+.special_practice .button-box .button{
+	display: inline-block;
+    width: 100%;
+    text-align: center;
+    height: .9rem;
+    line-height: .9rem;
+    border: 1px solid #d2d2d2;
+    border-radius: .15rem;
+    font-size: .32rem;
+    background: #FFFFFF;
+}

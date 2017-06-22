@@ -1,0 +1,391 @@
+.do_problems section{
+	float: left;
+}
+.do_problems .main-content{
+	padding-bottom: 1.2rem
+}
+.do_problems .answer-area{
+	width: 100%;
+	padding: 0 .3rem;
+	background: #FFFFFF;
+	border-bottom: 1px solid #D7D7D7;
+}
+.do_problems .problems-name{
+	font-size: .32rem;
+	color: #333;
+	line-height: .9rem;
+}
+.do_problems .problems-select{
+	width: 100%;
+	border-top: 1px dashed #d7d7d7;
+}
+.do_problems .problems-select input{
+	display: none;
+}
+.do_problems .problems-select li{
+	width: 100%;
+	height: .76rem;
+	margin-top: .3rem;
+	line-height: .76rem;
+	font-size: .3rem;
+}
+.do_problems .problems-select li:last-child{
+	margin-bottom: .3rem;
+}
+.do_problems .problems-select li label{
+	display: inline-block;
+	width: 100%;
+	height: 100%;
+}
+.do_problems .problems-select li .name{
+	position: absolute;
+	width: .76rem;
+	height: .76rem;
+	text-align: center;
+	color: #333;
+	background: #FFF;
+	border: 1px solid #898989;
+	border-radius: .4rem;
+}
+.do_problems .problems-select li input:checked+label .name{
+	color: #FFF;
+	background: #00b25e;
+	border: 1px solid #00b25e;
+}
+.do_problems .problems-select li input[data-status=true]+label .name{
+	color: #FFF;
+	background: #00b25e;
+	border: 1px solid #00b25e;
+}
+.do_problems .problems-select li input[data-status=false]+label .name{
+	color: #FFF;
+	background: #ff6060;
+	border: 1px solid #ff6060;
+}
+.do_problems .problems-select li .info{
+	padding-left: .90rem;
+}
+.do_problems .problems-reply{
+	width: 100%;
+	padding: .3rem 0;
+}
+.do_problems .problems-reply div[name=answer]{
+	border: 1px solid #d7d7d7;
+	border-radius: .15rem;
+	width: 100%;
+	min-height: 2rem;
+	padding: .15rem;
+	outline: none;
+	font-size: .28rem;
+	line-height: .42rem;
+}
+.do_problems .button-box{
+	margin-top: .2rem;
+	padding: 0 .3rem;
+	width: 100%;
+}
+.do_problems .button-box .submit{
+	width: 100%;
+	line-height: .8rem;
+	text-align: center;
+	color: #FFFFFF;
+	background: #35a2f7;
+	border: none;
+	border-radius: .15rem;
+	display: inline-block;
+}
+.do_problems .problems-result{
+	float: left;
+	margin-top: .2rem;
+	background: #FFF;
+	border-top: 1px solid #D7D7D7;
+	border-bottom: 1px solid #D7D7D7;
+}
+.do_problems .problems-result::before{
+	content: '';
+	display: table;
+}
+.do_problems .problems-result::after{
+	content: '';
+	clear: both;
+}
+.do_problems .problems-result .select-success,
+.do_problems .problems-result .select-error,
+.do_problems .problems-result .reply-score,
+.do_problems .problems-result .select-answer{
+	font-size: .32rem;
+	line-height: .94rem;
+	color: #333;
+	float: left;
+	margin-left: .3rem;
+}
+.do_problems .problems-result .select-success{
+	color: #00b25e;
+	padding-left: .6rem;
+}
+.do_problems .problems-result .select-error{
+	color: #ff6060;
+	padding-left: .6rem;
+}
+.do_problems .problems-result .reply-score{
+	color: #00b25e;
+}
+.do_problems .problems-result .select-answer{
+	font-size: .28rem;
+}
+.do_problems .problems-result .select-success::before,
+.do_problems .problems-result .select-error::before{
+	content: '';
+	display: block;
+	position: absolute;
+	top: 50%;
+	left: 0;
+	margin-top: -0.19rem;
+	width: .38rem;
+	height: .38rem;
+	border: none;
+	border-radius: .38rem;
+}
+.do_problems .problems-result .select-success::before{
+	background: #00b25e;
+	background-image: url(../../image/select-success.png);
+	background-size: .38rem .38rem;
+	background-repeat: no-repeat;
+}
+.do_problems .problems-result .select-error::before{
+	background: #ff6060;
+	background-image: url(../../image/select-error.png);
+	background-size: .38rem .38rem;
+	background-repeat: no-repeat;
+}
+.do_problems .problems-analyze,
+.do_problems .problems-reference,
+.do_problems .problems-commet{
+	width: 100%;
+	margin-top: .2rem;
+	border-top: 1px solid #d7d7d7;
+	border-bottom: 1px solid #d7d7d7;
+	background: #FFFFFF;
+}
+.do_problems .problems-analyze .title,
+.do_problems .problems-reference .title,
+.do_problems .problems-commet .title{
+	font-size: .32rem;
+	color: #333;
+	line-height: .92rem;
+	padding: 0 .3rem;
+	border-bottom: 1px solid #d7d7d7;
+}
+.do_problems .problems-analyze .title::before,
+.do_problems .problems-reference .title::before,
+.do_problems .problems-commet .title::before{
+	content: '';
+	display: block;
+	position: absolute;
+	top: 50%;
+	left: 0;
+	margin-top: -0.325rem;
+	width: .08rem;
+	height: .65rem;
+	background: #35a2f7;
+}
+.do_problems .problems-analyze .info,
+.do_problems .problems-reference .info,
+.do_problems .problems-commet .info{
+	font-size: .28rem;
+	color: #333;
+	padding: .2rem .3rem;
+	line-height: .42rem;
+}
+.do_problems .control{
+	border-top: 1px solid #D7D7D7;
+	position: absolute;
+	padding: 0 .3rem;
+	left: 0;
+	right: 0;
+	height: 1.08rem;
+	bottom: 0;
+	background: #fff;
+	z-index: 2;
+}
+.do_problems .control .collect{
+	width: .8rem;
+	height: 1.08rem;
+	background-image: url(../../image/topic-collect.png);
+	background-size: .55rem .55rem;
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+.do_problems .control .collect.ed{
+	background-image: url(../../image/icon_ask_collected.png);
+}
+.do_problems .control .success-count,
+.do_problems .control .error-count,
+.do_problems .control .problems-count{
+	width: 1rem;
+	height: 1.08rem;
+	text-align: center;
+	line-height: 1.5rem;
+	background-repeat: no-repeat;
+	background-size: .5rem .5rem;
+	background-position: center top .1rem;
+	font-size: .28rem;
+}
+.do_problems .control .success-count{
+	color: #00b25e;
+	background-image: url(../../image/topic-success.png);
+}
+.do_problems .control .error-count{
+	color: #ff6060;
+	background-image: url(../../image/topic-error.png);
+}
+.do_problems .control .problems-count{
+	color: #35A2F7;
+	background-image: url(../../image/topic-list.png);
+}
+.do_problems .problems-list{
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 3;
+	display: none;
+}
+.do_problems .problems-list[data-status=true]{
+	display: block;
+}
+.do_problems .problems-list .problems-list-bg{
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 1;
+	background: rgba( 50, 50, 50, .6);
+}
+.do_problems .problems-list .problems-list-info{
+	position: absolute;
+	height: 5.3rem;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 2;
+	background: #fff;
+	padding: .16rem;
+	overflow-x: hidden;
+	overflow-y: auto;
+	transition-duration: 300ms;
+	transform: translate3d( 0, 5.3rem, 0);
+}
+.do_problems .problems-list .problems-list-info{
+	transform: translate3d( 0, 0, 0);
+}
+.do_problems .problems-list .problems-list-info .problems-topic{
+	width: 1rem;
+	height: 1rem;
+	font-size: .38rem;
+	border: 1px solid #999;
+	border-radius: .5rem;
+	color: #333;
+	background: #FFFFFF;
+	border: 1px solid #999;
+	border-radius: .5rem;
+	text-align: center;
+	line-height: 1rem;
+	margin: .32rem;
+	float: left;
+}
+.do_problems .button-box .submit[data-status=true]{
+	color: #FFFFFF!important;
+    background: #35a2f7!important;
+}
+.do_problems .button-box .submit[data-status=false]{
+	color: #333!important;
+    background: #d7d7d7!important;
+}
+.do_problems[data-type=reply] .problems-reply,
+.do_problems[data-type=select] .problems-select{
+	display: block;
+}
+.do_problems[data-type=select] .problems-reply,
+.do_problems[data-type=reply] .problems-select{
+	display: none;
+}
+.do_problems[data-pattern=exam] .problems-result,
+.do_problems[data-pattern=exam] .problems-analyze,
+.do_problems[data-pattern=exam] .problems-reference{
+	display: none;
+}
+.do_problems .problems-topic[data-status=current]{
+	color: #FFFFFF!important;
+	background: #D7D7D7!important;
+	border: 1px solid #D7D7D7!important;
+}
+.do_problems .problems-topic[data-status=null],
+.problems-list[data-type=error] .problems-topic[data-status=success],
+.problems-list[data-type=success] .problems-topic[data-status=error]{
+	color: #333333!important;
+	background: #FFFFFF!important;
+	border: 1px solid #D7D7D7!important;
+}
+.do_problems .problems-topic[data-status=error]{
+	color: #FFF!important;
+	background: #ff6060!important;
+	border: 1px solid #ff6060!important;
+}
+.do_problems .problems-topic[data-status=success]{
+	color: #FFF!important;
+	background: #00b25e!important;
+	border: 1px solid #00b25e!important;
+}
+.problems-select ul,
+.problems-select ul li,
+.problems-select ul li label,
+.problems-select ul li label .info{
+	display: inline-block;
+	float: left;
+}
+.problems-select ul li,
+.problems-select ul li label{
+	height: initial!important;
+}
+/*	练习时样式	*/
+.main-content .problems-result,
+.main-content .problems-analyze,
+.main-content .problems-reference,
+.main-content[data-answer=false] .problems-result,
+.main-content[data-answer=false] .problems-analyze,
+.main-content[data-answer=false] .problems-reference,
+.main-content[data-answer=false] .problems-commet{
+	display: none;
+}
+.main-content[data-answer=true] .problems-result,
+.main-content[data-answer=true] .problems-analyze,
+.main-content[data-answer=true] .problems-reference{
+	display: block;
+}
+.problems-result{
+	width: 100%;
+}
+.problems-result[data-is-select=false] .select-error,
+.problems-result[data-type=error] .select-success,
+.problems-result[data-type=error] .select-error{
+	display: none;
+}
+.problems-result[data-is-select=true] .select-answer{
+	display: block;
+}
+.problems-result[data-status=true] .select-success,
+.problems-result[data-status=false] .select-error{
+	display: block;
+}
+.problems-result[data-status=false] .select-success,
+.problems-result[data-status=true] .select-error,
+.problems-result[data-is-select=false] .select-answer,
+.problems-result[data-is-select=false] .select-success{
+	display: none;
+}
+.reply-score{
+	display: none;
+}

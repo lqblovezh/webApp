@@ -1,0 +1,222 @@
+<div id="user_registers" class="uc-pb-abs uc-pb-fixed" title="注册">
+	<header>
+		<a class="left icon-back R-back"></a>
+		<p>注册</p>
+	</header>
+	<div class="page_conten user_register" style="background: #fff ;">
+		<div class="user-center-logo"  style="background: #fff;">
+			<div class="logo">
+				<div class="box img_input_remove">
+					<!--<img id="user_info_img" onclick="we_chat.choiceImage(this,true);" src="../image/pic_index_recommended_img.png">-->
+					<img id="user_info_img" src="../image/pic_index_recommended_img.png">
+					<input type="file" style="display: none;" accept="image/jpeg,image/jpg,image/png" onchange="we_chat.user_upload_imgs(this,'only');" id="user_upload_img"/>
+				</div>
+			</div>
+			<div class="is_login" id="is_login">
+				<p style="color: #333;">添加头像</p>
+			</div>
+		</div>
+		<div class="register-submit" style="border-bottom: none;">
+			<p class="uc-bd-boot">
+				<input maxlength="20" type="text" id="" name="user_name" placeholder="输入昵称" value="" />
+			</p>
+			<!--<p class="uc-bd-boot">
+				<input maxlength="20" type="password" id="" name="user_pass" placeholder="输入密码，6-20位，区分大小写 " value="" />
+			</p>
+			<p class="uc-bd-boot">
+				<input maxlength="20" type="password" id="" name="user_pass_s" placeholder="重复密码 " value="" />
+			</p>-->
+		</div>
+		<input type="button" id="user_registeres_btn" class="uc-btn-l uc-btn-df uc-btn-primary" value="注 册" />
+	</div>
+</div>
+<style>
+	.modal_bg{
+		width: 100%;
+		height: 100%;
+		z-index: 100;
+		position: fixed;
+		left:0px;
+		top:0px;
+		background: rgba(0,0,0,.5);
+	}
+	.modal_top{
+		height: 1rem;
+		background: rgba(0,0,0,.5);
+		width: 100%;
+	}
+	.modal_top button{
+		background: #ddd;
+		border-radius: 5px;
+		padding: .15rem .2rem;
+		color: #333;
+		float: right;
+		border: none;
+		margin-right: .5rem;
+		margin-top: .2rem;
+	}
+	.modal_bg div.modal_body{
+
+		border:1px solid #fff;
+		width: 6rem;
+		height: 6rem;
+		position: absolute;
+		top:50%;
+		left:50%;
+		margin-left:-3rem;
+		margin-top:-4rem;
+		overflow: hidden
+	}
+	
+</style>
+<!--<div class="modal_bg">
+	<div class="modal_top"><button type="button" class="clip_img">确定裁剪</button></div>
+	
+	<div class="modal_body">
+		<img src="../image/pic_book_detail_1.png" alt="" style="width: 100%;height: auto;" />
+	</div>
+</div>-->
+<script type="text/javascript">
+	(function(){
+		
+		var code = window.sessionStorage.getItem('code');
+		if( code != null ){
+			var str = '<p class="uc-bd-boot"><input maxlength="20" type="text" name="user_code" value="'+code+'" readonly/></p>';
+			$(".register-submit").append( str );
+		}else{
+			code = '';
+		}
+		//注册按钮
+		var user_registeres = function(){
+			var phone 				= we_chat.getUrl("phone");
+			var user_name			= $("#user_registers").find("input[name=user_name]").val();
+//			var user_pass			= $("#user_registers").find("input[name=user_pass]").val();
+//			var user_pass_s			= $("#user_registers").find("input[name=user_pass_s]").val();
+			var user_img			= $("#user_info_img").data("url");
+			var keyid               = getUrlParam('keyid');
+			
+			
+			
+			// TODO：代码变更：现在密码input将被删除，防止以后产品需要密码，现设置一个固定代码
+			var data ={
+				action:"api_user_register_new",
+				user_nickname:user_name,
+				user_pwd:'123456',
+				user_phonemobi:phone,
+				upfile:user_img,
+				invited_code: code,
+				key: keyid
+			}
+			if(user_name==""){
+				popup.prompt("昵称不能为空");
+				return false;
+			}
+			if(user_name.length<2||user_name.length>10){
+				popup.prompt("昵称长度2-10位");
+				return false;
+			}
+			if( !user_img ){
+				popup.prompt("请上传头像！");
+				return false;
+			}
+
+			we_chat.ajaxEx(we_chat.urlAddress("common"),data,function(json){
+				popup.prompt("注册成功,您可以去完善信息并申请认证",[
+					{content:'完善信息',callback:function(){
+						popup.hide();
+						we_chat.setStorage("user_id",json.data.user_id);
+						we_chat.setStorage("user_info",json.data);
+						route.go({ module: '#personal/personal_settings', data: {'user_id':json.data.user_id}, status: 'forward'});
+						we_chat.removeStorage('lgoImg');
+					}},{content:'去首页',callback:function(){
+						popup.hide();
+						we_chat.setStorage("user_id",json.data.user_id);
+						we_chat.setStorage("user_info",json.data);
+						route.go({ module: '#home/index', data: {}, status: 'forward'});
+						we_chat.removeStorage('lgoImg');
+					}}
+				]);
+			});
+		}
+		
+		$("#user_registeres_btn").on("click",user_registeres);
+		
+		$("body").on('click','.close',function(){
+			$(".modal_bg").remove();
+		});
+		
+		// 获得微信头像
+		var keyid               = getUrlParam('keyid');
+		var logoData = {
+			action:"api_weixin_logo",
+			key: keyid
+		}
+		we_chat.ajaxEx(we_chat.urlAddress("common"),logoData,function(json){
+			$("#user_info_img").attr('src','../../static/img'+json.data).data("url",json.data);
+		});
+		
+		
+		// 触发上传图片
+		$("body").on('click','.clip_img',function(){
+			var fontSize = parseInt($("html").css("fontSize"));
+			var scale    = parseFloat($(".modal_body img").data("scale"));
+			var clipW = parseInt(fontSize*6*scale);
+			var left = parseInt( Math.abs( parseInt( $(".modal_body img").position().left ))*scale );
+			var top = parseInt( Math.abs( parseInt( $(".modal_body img").position().top ))*scale);
+			
+		var FileController 	= we_chat.urlAddress("common");	                  	// 接收上传文件的后台地址 
+        var form = new FormData();
+        form.append("action","api_upfiles_thumb");                    			// 数据
+        form.append("width",clipW);
+        form.append("left",left);
+        form.append("top",top);
+       
+		form.append("upfile_view", $("input[type=file]")[0].files[0] );                           			// 文件对象
+        var xhr = new XMLHttpRequest();
+        xhr.open("post", FileController, true);
+        xhr.onload = function (json) {
+            var data =	JSON.parse(json.currentTarget.response);
+          	$(".modal_bg").remove();
+		  	$("#user_info_img").attr('src','../../static/img'+data.data).data("url",data.data);
+        };
+        xhr.send(form);
+		})
+		
+		document.addEventListener('touchstart',function(e){
+			if( e.target.parentNode.getAttribute("class") == 'modal_body' ){
+				//evt.start(e)
+			}
+			
+		},false)
+		
+		var evt = {
+			start:function(e){
+				var touch = e.touches[0];
+				startPos = {
+					x:touch.pageX,
+					y:touch.pageY,
+				};
+				$('.modal_body img')[0].addEventListener('touchmove',this.move,false);
+				$('.modal_body img')[0].addEventListener('touchend',this.end,false);
+			},
+			move:function(e){
+				if (e.touches.length > 1 || e.scale && e.scale !== 1) return;
+				var touchMove = e.touches[0];
+				endPos = {
+					x:touchMove.pageX - startPos.x,
+					y:touchMove.pageY - startPos.y
+				};
+				var currLeft = parseFloat($(".modal_body img").css("left"));
+				console.log(parseFloat(endPos.x/100));
+				console.log( currLeft );
+				console.log( (currLeft+parseFloat(endPos.x/100)) );
+				$(".modal_body img").css("left",(currLeft+parseFloat(endPos.x/100))+"rem");
+				console.log( parseFloat($(".modal_body img").css("left")) );
+			},
+			end:function(e){
+				$('.modal_body img')[0].removeEventListener('touchmove',this.move,false);
+				$('.modal_body img')[0].removeEventListener('touchend',this.move,false);
+			}
+		}
+	})()
+</script>

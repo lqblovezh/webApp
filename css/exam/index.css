@@ -1,0 +1,156 @@
+#lay-unit{
+	box-sizing: initial;
+	padding-bottom: 0;
+}
+.exam-index .main-content{
+	padding-bottom: .2rem;
+}
+.exam-index .header{
+	z-index: 6;
+}
+.exam-index .header .title::after{
+	content: '';
+	display: inline-block;
+	position: absolute;
+	margin-left: .1rem;
+	top: 0;
+	right: .6rem;
+	width: .5rem;
+	height: 100%;
+	background: url(../../image/icon-pull-down.png);
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: auto 40%;
+}
+.courList{
+	position: absolute;
+	width: 100%;
+	height: 0;
+	overflow: hidden;
+	-webkit-transition: 0.5s;
+	transition: 0.3s;
+}
+.courList li{
+	height: 1rem;
+	line-height: 1rem;
+	width: 100%;
+	text-align: center;
+	background: #fff;
+	border-bottom: 1px solid #eee;
+}
+.exam-index .font{
+	color: #333333;
+	font-size: .3rem;
+	line-height: .7rem;
+}
+.exam-index .test-practice,
+.exam-index .test-history{
+	color: #333333;
+	font-size: .3rem;
+	line-height: .48rem;
+	padding-top: .47rem;
+	display: inline-block;
+	background-repeat: no-repeat;
+	background-size: .45rem .45rem;
+	background-position: top center; 
+}
+.exam-index .test-practice{
+	background-image: url(../../image/icon-test-practice.png);
+}
+.exam-index .test-history{
+	background-image: url(../../image/icon-test-history.png);
+}
+.exam-index .expert{
+	height: 1.95rem;
+	padding: .2rem 0;
+}
+.exam-index .expert .photo{
+	float: left;
+	width: 1.35rem;
+	height: 1.35rem;
+	background-image: url(../../image/pic_index_recommended_img.png);
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+.exam-index .expert .info{
+	padding-left: 1.5rem;
+	width: 100%;
+	height: 1.35rem;
+}
+.exam-index .expert .info .row div{
+	line-height: .45rem;
+	font-size: .28rem;
+	display: inline-block;
+}
+.exam-index .expert .info .name,
+.exam-index .expert .info .job{
+	min-width: 1rem;
+}
+.exam-index .expert .info .name{
+	color: #333333;
+}
+.exam-index .expert .info .job{
+	color: #959595;
+}
+.exam-index .expert .info .expert-org{
+	width: 100%;
+	color: #333333;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.exam-index .expert .info .expert-infos{
+	width: 100%;
+	color: #959595;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.exam-index .circle{
+	height: 1.75rem;
+	padding: .3rem 0;
+}
+.exam-index .circle-icon{
+	width: 1.15rem;
+	height: 1.15rem;
+	float: left;
+	background-image: url(../../image/pic_index_recommended_img.png);
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+.exam-index .circle-info{
+	width: 100%;
+	height: 1.15rem;
+	padding: 0 1.5rem 0 1.3rem;
+}
+.exam-index .circle-info .circle-name{
+	font-size: .3rem;
+	color: #333333;
+	line-height: .65rem;
+}
+.exam-index .circle-info .circle-base{
+	font-size: .28rem;
+	color: #959595;
+	line-height: .5rem;
+}
+.exam-index .circle-join{
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 1.5rem;
+	height: 1.75rem;
+	line-height: 1.75rem;
+}
+.exam-index .circle-join button{
+	width: 1.3rem;
+	height: .55rem;
+	line-height: .55rem;
+	font-size: .3rem;
+	font-family: "microsoft yahei";
+	background: #35a2f7;
+	border: none;
+	color: #fff;
+	border-radius: .15rem;
+}

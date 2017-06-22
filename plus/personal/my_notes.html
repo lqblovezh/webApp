@@ -1,0 +1,76 @@
+<div id="my_notes" class="uc-pb-abs uc-pb-fixed" title="我的笔记">
+	<header>
+		<a class="left icon-back R-back"></a>
+		<p>我的笔记</p>
+		<a class="right rights icon-edit R-go" path="#personal/write_notes" href="javascript:void(0)"></a>
+		<a class="right icon-user-delete delete_list" href="javascript:void(0)"></a>
+		<div class="right button-pushs">
+			<a class="icon-user-delete confirm_deletion" href="javascript:void(0)"></a>
+			<a class="icon-user-wrong cancel_delete" href="javascript:void(0)"></a>
+		</div>
+	</header>
+	
+	<div id="my_notes_tpl" style="display: none;">
+		<li>
+			<a class="uc-ft-lt uc-btn-checkbox" data-id='[notes_works_id]' href="javascript:;" title=""></a>
+			<div class="R-go" path="#personal/notes_info_details" path-data="{notes_id:'[notes_works_id]'}">
+				<time class="uc-pb-30" datetime="[create_time]">[create_time]</time>
+				<p class="uc-pb-30"><span>[notes_works_title]</span><input type="button" class="uc-btn-df uc-btnb-yellow uc-btn-ssm uc-ft-rt" value="私密"></p>
+				<section>[notes_works_content]</section>
+			</div>
+		</li>
+	</div>
+	
+	<div id="my_notes_tpl_open" style="display: none;">
+		<li>
+			<a class="uc-ft-lt uc-btn-checkbox" data-id='[notes_works_id]' href="javascript:;" title=""></a>
+			<div class="R-go" path="#personal/notes_info_details" path-data="{notes_id:'[notes_works_id]'}">
+				<time class="uc-pb-30" datetime="[create_time]">[create_time]</time>
+				<p class="uc-pb-30"><span>[notes_works_title]</span><input type="button" class="uc-btn-df uc-btnb-green uc-btn-ssm uc-ft-rt" value="公开"></p>
+				<section>[notes_works_content]</section>
+			</div>
+		</li>
+	</div>
+	
+	<div class="page_conten">
+		<ul class="index-list" id="my_notes_show"></ul>
+	</div>
+</div>
+<script type="text/javascript">
+  	(function(){
+	  	//获取笔记列表
+	  	var $wrapper	= $(".page_conten");
+  		var loadList	= function(page , limit){
+		  	we_chat.ajaxEx(we_chat.urlAddress("user"),{action:"api_get_user_notes",user_id:we_chat.getStorage("user_id"),notes_works_type:"notes",page_start:page,page_size:limit},function(json){
+	  			if(json.data.content.length==0){
+	  				we_chat.miniTemplate({
+			  			tpl	: document.getElementById("my_notes_tpl_open"),
+			  			show: document.getElementById("my_notes_show"),
+			  		},json.data.content,"add");
+	  				return false;
+	  			}
+	  			// 初始化上拉加载的部件及其数据
+				loadMore.initLoad( $wrapper, page, json.data.count, limit );
+		  		for(var i=0;i<json.data.content.length;i++){
+			  		if(json.data.content[i].read_type == "open"){
+				  		we_chat.miniTemplate({
+				  			tpl	: document.getElementById("my_notes_tpl_open"),
+				  			show: document.getElementById("my_notes_show"),
+				  		},json.data.content[i],"add");
+			  		}else{
+			  			we_chat.miniTemplate({
+				  			tpl	: document.getElementById("my_notes_tpl"),
+				  			show: document.getElementById("my_notes_show"),
+				  		},json.data.content[i],"add");
+			  		}
+		  		}
+		  		//动态绑定
+		  		we_chat.deleteBind();
+		  	})
+	  	}
+  		loadList(1 , 20);
+  		$wrapper.on("swipeUp",function(){
+			loadMore.handler($wrapper, loadList , 20);
+		})
+  	})()
+</script>

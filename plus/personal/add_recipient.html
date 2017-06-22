@@ -1,0 +1,70 @@
+<script type="text/javascript">
+  	$(function(){
+	  	$(".uc-btn-checkbox").on("click",function(){
+	  		if($(this).hasClass("active")){
+		  		$(this).removeClass("active");
+	  		}else{
+	  			$(this).addClass("active");
+	  		}
+	  	})
+	  	
+	  	$(".write_notes_box").find("span").on("click",function(){
+	  		if($(this).hasClass("active")){
+		  		return;
+	  		}else{
+	  			$(this).addClass("active").siblings().removeClass("active");
+	  		}
+	  	})
+	  	
+	  	$(".table-nav").find("li").on("click",function(){
+	  		var i = $(this).index();
+	  		$(this).closest(".page_conten").find(".index-list").hide();
+	  		$(this).addClass("active").siblings().removeClass("active");
+	  		$(this).closest(".page_conten").find(".index-list").eq(i).show();
+	  	})
+  	})
+</script>
+<div class="mongolia_layer"></div>
+<article class="pop-select-photo">
+	<a href="javascript:;" title="">拍照</a>
+	<a class="active" href="javascript:;" title="">从相册中选取</a>
+	<a href="javascript:show_image(true);" title="">取消</a>
+</article>
+
+<div id="add_recipient" style="display: none;" title="添加收信人">
+	<header>
+		<a class="left icon-back"></a>
+		<p>添加收信人</p>
+		<a class="right button-push" href="javascript:void(0)">确定</a>
+	</header>
+	<div class="page_conten">
+	<article class="index-circle uc-mb-20">
+		<ul>
+			<li>
+				<div class="img"><img src="../image/pic_index_recommended_img.png" alt=""></div>
+				<div class="content">
+					<p class="p1">家庭教育交流</p>
+					<p class="p3">职位</p>
+				</div>
+				<a class="uc-ft-rt uc-btn-checkbox" href="javascript:;" title=""></a>
+			</li>
+			<li>
+				<div class="img"><img src="../image/pic_index_recommended_img.png" alt=""></div>
+				<div class="content">
+					<p class="p1">家庭教育交流</p>
+					<p class="p3">职位</p>
+				</div>
+				<a class="uc-ft-rt uc-btn-checkbox" href="javascript:;" title=""></a>
+			</li>
+			<li>
+				<div class="img"><img src="../image/pic_index_recommended_img.png" alt=""></div>
+				<div class="content">
+					<p class="p1">家庭教育交流</p>
+					<p class="p3">职位</p>
+				</div>
+				<a class="uc-ft-rt uc-btn-checkbox active" href="javascript:;" title=""></a>
+			</li>
+		</ul>
+	</article>
+	</div>
+</div>

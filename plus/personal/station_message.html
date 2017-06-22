@@ -1,0 +1,85 @@
+<div id="station_message" class="uc-pb-abs uc-pb-fixed" title="站内消息">
+	<header>
+		<a class="left icon-back R-back"></a>
+		<p>站内消息</p>
+		<!--<a class="right rights icon-edit" path="#personal/write_information" href="javascript:void(0)"></a>
+		<a class="right icon-user-delete delete_list" href="javascript:void(0)"></a>
+		<div class="right button-pushs" style="display: -none;">
+			<a class="confirm_deletion" href="javascript:void(0)">删除</a>
+			<a class="cancel_delete" href="javascript:void(0)">取消</a>
+		</div>-->
+	</header>
+	
+	<div id="station_message_tpl">
+		<li>
+			<a class="uc-ft-lt uc-btn-checkbox" data-id="[message_id]" href="javascript:;" title=""></a>
+			<div>
+				<section class="uc-pb-30">[message_content]</section>
+				<time datetime="2016-02-03 10:00">[message_create_time]</time>
+			</div>
+		</li>
+	</div>
+	
+	<div id="station_message_no_tpl">
+		<li style="color: #35a2f7;">
+			<a class="uc-ft-lt uc-btn-checkbox" data-id="[message_id]" href="javascript:;" title=""></a>
+			<div>
+				<section class="uc-pb-30">[message_content]</section>
+				<time datetime="2016-02-03 10:00">[message_create_time]</time>
+			</div>
+		</li>
+	</div>
+	<div class="page_conten">
+		<!--<nav class="index-nav">
+			<ul class="">
+				<li class="active">系统消息</li>
+				<li>好友消息</li>
+			</ul>
+		</nav>-->
+		<ul class="tab-ol">
+			<li>
+				<ul class="index-list" id="station_message_show"></ul>
+			</li>
+		</ul>
+	</div>
+</div>
+<script type="text/javascript">
+  	(function(){
+	  	we_chat.ajaxEx(we_chat.urlAddress("user"),{action:"api_message_count",user_id:we_chat.getStorage("user_id")},function(json){
+	  		if(we_chat.getUrl("num")){
+	  			var data	= [];
+	  			for(var i=0;i<json.data.sys.length;i++ ){
+	  				data.push(json.data.sys[i].message_id);
+	  			}
+	  			we_chat.ajaxEx(we_chat.urlAddress("user"),{action:"api_sys_message_read",user_id:we_chat.getStorage("user_id"),message_id:data});//告知服务器我已查看
+	  		}
+	  		var data = json.data.sys || [];
+	  		if(data.length==0){
+	  			we_chat.miniTemplate({
+		  			tpl	: document.getElementById("station_message_tpl"),
+		  			show: document.getElementById("station_message_show"),
+		  		},data);
+	  			return false;
+	  		}
+	  		for(var i=0;i<data.length;i++){
+		  		if(data[i]["read"]=="yes"){
+		  			we_chat.miniTemplate({
+			  			tpl	: document.getElementById("station_message_tpl"),
+			  			show: document.getElementById("station_message_show"),
+			  		},data[i],"add");
+		  		}else{
+			  		we_chat.miniTemplate({
+			  			tpl	: document.getElementById("station_message_no_tpl"),
+			  			show: document.getElementById("station_message_show"),
+			  		},data[i],"add");
+		  		}
+	  		}
+	  		we_chat.deleteBind();
+	  	})
+	  	
+	  	// 修复未读消息点击后即时修改显示状态bug
+	  	$(".index-list").on("tap",'li',function(){
+	  		$(this).css("color",'#333');
+	  	})
+  	})()
+</script>

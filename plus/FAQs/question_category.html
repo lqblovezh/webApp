@@ -1,0 +1,113 @@
+	<!---------- 选择提问分类 ---------->
+	<article class="question-categories uc-pb-abs uc-pb-fixed" title="选择提问分类">
+		<header class="ask-answer-head">
+			<a class="icon-go-back R-back" href="javascript:;" title=""></a>
+			<p>提问</p>
+		</header><!-- ask-answer-head end -->
+
+		<div class="page_conten pb225">
+			<article class="form">
+				<section class="title-input">
+					<input type="text" placeholder="输入您的提问主题" value="">
+				</section>
+				<textarea placeholder="描述问题(选填)"></textarea>
+				<section class="title-input">
+					<select class="select_question_tree">
+						<option value="" style="color:#333;">选择问题分类</option>
+					</select>
+				</section>
+			</article>
+		</div>
+		
+		<footer class="many-foot">
+			<section class="sec1 bdt-n">
+				<section class="button-group img_input_remove">
+					<a class="button-photo" href="javascript:;" title="" onclick="we_chat.choiceImage(this);">图片</a>
+					<input type="file" style="display: none;" accept="image/jpeg,image/jpg,image/png" onchange="we_chat.user_upload_imgs(this);" id="user_upload_img"/>
+					<!--<a class="button-xs" href="javascript:;" title="">悬赏：<strong>10金币</strong></a>-->
+					<input type="button" value="发送" onclick="getInfomatinTwo();">
+				</section>
+			</section>
+			<section class="sec2 bdt-n uplaod_img_box"></section>
+			<!--<section class="sec4" style="display:none;">
+				<section>
+					<div>剩余金币数<span>100</span></div>
+					<a href="javascript:;" title="">立即充值</a>
+				</section>
+				<ul>
+					<li class="active"><span>10</span>金币<i></i></li>
+					<li><span>20</span>金币<i></i></li>
+					<li><span>30</span>金币<i></i></li>
+					<li><span>40</span>金币<i></i></li>
+				</ul>
+			</section>-->
+		</footer>
+	</article>
+	<!---------- 选择提问分类 end ---------->
+		
+<script type="text/javascript">
+	//头部select模拟
+	$(function(){
+		$(".ask-answer-head select").change(function(){
+			var getSelectVal = $(".ask-answer-head select option:selected").text();
+			$(".ask-answer-head .clone-select").text(getSelectVal);
+		});
+	});
+	
+	(function(w){
+		//获取分类
+		var getInfomatinOne	    = function(){
+			var pushdata	= {
+			  	action		: "api_get_tree",
+			  	tree_name   : "问答分类"
+			}
+			we_chat.ajaxEx(we_chat.urlAddress("common"),pushdata,function(json){
+			  	var data 	= json.data;
+				$(".select_question_tree option").not(":first").remove();
+				for(var i=0;i<data.length;i++){
+					$("<option value='"+data[i].tree_id+"' style='color:#333;'>"+data[i].tree_name+"</option>").appendTo($(".select_question_tree"));
+				}
+			},"no")
+		}
+		getInfomatinOne();
+		
+		w.getInfomatinTwo	      = function(){
+			if(!we_chat.getStorage("user_id")){
+				window.location.href="../../thirdlogin/weixin_log.php";
+			}
+			var helpinpVal    = $(".form .title-input input[type=text]").val(),//问答主题
+			    helptxtVal    = $(".form textarea").val(),//问题详情
+			    selectVal     = $(".select_question_tree option:selected").html(),//分类名称
+			    selectTreeId  = $(".select_question_tree option:selected").val();//分类id
+//			    reward        = $(".many-foot .sec4 li.active span").text();
+			
+			//上传的图片
+			var imgArray = [],
+			    $imgs    = $(".creat_img img");
+			$imgs.each(function(){
+				imgArray.push($(this).data("url"));
+			});
+			
+			if(!(helpinpVal && selectTreeId )){
+				popup.prompt("请填写完整信息！");
+				return false;
+			}
+			var pushdata          = {
+				action            : "api_add_ask",
+				user_id           : we_chat.getStorage("user_id"),
+				user_name         : we_chat.getStorage("user_info").user_name||we_chat.getStorage("user_info").user_nickname,
+				tree_name         : selectVal,
+				ask_title         : helpinpVal,
+				content_intro     : helptxtVal,
+//			    ask_reward        : reward,
+				pic               : imgArray,
+				tree_id           : selectTreeId
+			}
+			we_chat.ajaxEx(we_chat.urlAddress("user"),pushdata,function(json){
+				route.back();
+			})
+		}
+	  	
+	})(this);
+</script>
+	

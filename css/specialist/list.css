@@ -1,0 +1,102 @@
+section{
+	float: left;
+}
+.approve{
+	position: absolute;
+	top: 0;
+	right: 0;
+	padding-right: .2rem;
+	font-size: .3rem;
+	color: #fff;
+	line-height: .98rem;
+}
+.sequence-list{
+	width: 100%;
+	background: #fff;
+	border-top: 1px solid #D7D7D7;
+}
+.sequence-list .sequence{
+	width: 25%;
+	float: left;
+	line-height: .8rem;
+	color: #333;
+	text-align: center;
+	padding: 0;
+}
+.sequence-list .sequence::after{
+	content: '';
+	position: absolute;
+	top: 50%;
+	right: .3rem;
+	margin-top: -0.05rem;
+	display: block;
+	border: .1rem solid #fff;
+	border-right-color: #bababa;
+	transform: rotate(-90deg);
+	transition-duration: 300ms;
+}
+.sequence-list .sequence[data-status=true]{
+	color: #35A2F7;
+}
+.sequence-list .sequence[data-status=true]::after{
+	border-right-color: #35A2F7;
+}
+.sequence-list .sequence[data-order=desc]::after{
+	margin-top: -0.15rem;
+	transform: rotate(90deg);
+}
+.specialist-list{
+	border-top: 1px solid #D7D7D7;
+	background: #FFFFFF;
+	width: 100%;
+	padding: 0 .2rem;
+}
+.specialist-list .specialist{
+	padding: .4rem .1rem;
+	border-bottom: 1px dashed #D7D7D7;
+}
+.specialist-list .specialist .specialist-photo{
+	width: 1.15rem;
+	height: 1.15rem;
+	float: left;
+	border-radius: .8rem;
+	overflow: hidden;
+	text-align: center;
+	line-height: 1.15rem;
+}
+.specialist-list .specialist .specialist-base{
+	width: 100%;
+	padding-left: 1.4rem;
+	height: 1.15rem;
+}
+.specialist-list .specialist .specialist-base .name,
+.specialist-list .specialist .specialist-base .title,
+.specialist-list .specialist .specialist-base .org,
+.specialist-list .specialist .specialist-base .explain{
+	float: left;
+	width: 100%;
+	display: inline-block;
+	line-height: .32rem;
+}
+.specialist-list .specialist .specialist-base .name{
+	font-size: .32rem;
+	width: initial;
+	height: .5rem;
+}
+.specialist-list .specialist .specialist-base .title{
+	font-size: .28rem;
+	width: initial;
+	line-height: initial;
+	padding-left: .3rem;
+	height: .5rem;
+}
+.specialist-list .specialist .specialist-base .org{
+	font-size: .26rem;
+	color: #959595;
+	height: .4rem;
+}
+.specialist-list .specialist .specialist-base .explain{
+	font-size: .28rem;
+	color: #333;
+	height: .4rem;
+}

@@ -1,0 +1,152 @@
+<!---------- 资讯详情页 ---------->
+<article class="book-detail-page uc-pb-abs uc-pb-fixed" title="资讯详情">
+	<header>
+		<a class="left icon-back R-back"></a>
+		<p>资讯详情</p>
+		<a class="icon-collect right to_my_collection" data-type="art" href="javascript:;" title=""></a>
+		<!--<a class="icon-share right" href="javascript:;" title=""></a>-->
+	</header>
+	
+	<div id="article_reply_tpl" style="display: none;">
+		<section>
+			<article class="user-info mb2">
+				<div class="img"><img src="[user_photo]" alt=""></div>
+				<div class="content">
+					<p class="p1">
+						<span class="span1">[user_name]</span>
+					</p>
+					<p class="p2">[reply_time]</p>
+				</div>
+				<div class="other-answer mb2">[reply_content]</div>
+			</article>
+		</section>
+	</div>
+	
+	<div class="page_conten uc-pb-fixed">
+		<article class="book-summary mb2">
+			<section class="sec-title" style="height: 1.1rem;">
+				<div class="left" id="article_title" style="font-size: .4rem;line-height: .9rem;">...</div>
+			</section>
+			<div class="writings" id="article_content" style="border: none;">...</div>
+			<div class="writings recourse_content_url" >
+				<div>
+					<span class="acl_source"></span>
+					<span class="acl_crt_time"></span>
+					<span class="acl_author"></span>
+				</div>
+			</div>
+		</article><!-- book-summary end -->
+	
+		<article class="ask-card user-comment mb2" id="article_reply_show">
+			<div class="heading">用户评论(<span id="total_review">0</span>)</div>
+		</article>
+	</div>
+	<footer class="edit-comment-foot">
+		<form>
+			<input type="text" placeholder="请输入评论内容" class="user_comment_content" maxlength="100" value="">
+			<input type="button" class="uc-btn-df uc-btn-sms uc-btn-primary uc-ft-rt" onclick="add_one_comment();" value="发送">
+		</form>
+	</footer>
+</article>
+<!---------- 资讯详情页 end ---------->
+<script type="text/javascript">
+	(function(w){
+  		//动态绑定
+	  	we_chat.deleteBind();
+	  	
+	  	if(we_chat.getUrl("collection") == "true"){
+	  		$(".icon-collect").css("background-image","url(../image/icon_already_collect.png)");
+		}
+	  	
+	  	//获取咨询详情
+	  	we_chat.ajaxEx(we_chat.urlAddress("common"),{action:"api_article",acl_id:we_chat.getUrl("acl_id")},function(json){
+	  		$("#article_title").html(json.data.acl_title);//title
+	  		$("#article_content").html(json.data.acl_text);//content
+	  		$(".acl_author").html(json.data.acl_author);
+	  		$(".acl_crt_time").html(json.data.acl_crt_time);
+	  		$(".acl_source").html(json.data.acl_source);
+	  		we_chat.getUsercollection("art");
+	  		var recourse		= json.data.path_file;
+			var resource_type	= recourse.substring(recourse.lastIndexOf(".")+1);
+			var isPic			= ["jpg","bmp","gif","png","jpeg","JPG","BMP","GIF","PNG","JPEG"];
+			var $wrapper		= $(".page_conten");
+	  		var loadList		= function(page , limit){
+			  	we_chat.ajaxEx(we_chat.urlAddress("common"),{action:"api_article_reply",type:"art",acl_id:we_chat.getUrl("acl_id"),page_start:page,page_size:limit},function(json){
+			  		$("#total_review").html(json.data.count);
+			  		var data		= json.data.content;
+					for(var i=0; i<data.length; i++ ){
+						var path		= data[i].user_type=="专家"?"#personal/expert_homepage":"#personal/personal_homepage";
+				  		var $section	= $("<section data-user='"+data[i].user_id+"' data-type='"+data[i].user_type+"'/>").appendTo($("#article_reply_show"));
+				  		var $article	= $("<article class='user-info mb2'/>").appendTo($section);
+				  		$("<div class='img'><img src='"+data[i].user_photo+"' alt=''></div>").appendTo($article);
+				  		var $content	= $("<div class='content'/>").appendTo($article);
+				  		if(data[i].user_id != we_chat.getStorage("user_id") && data[i].user_type != "管理员"){
+					  		$article.attr({"path":path,"path-data":"{user_id:'"+data[i].user_id+"'}"}).addClass("R-go");
+				  		}
+				  		$("<p class='p1'><span class='span1'>"+data[i].user_name+"</span></p>").appendTo($content);
+				  		$("<p class='p2' />").html(data[i].reply_time).appendTo($content);
+				  		$("<div class='other-answer mb2' />").html(data[i].reply_content).appendTo($section);
+					}
+					// 初始化上拉加载的部件及其数据
+					loadMore.initLoad( $wrapper, page, json.data.count, limit );
+			  	})
+		  	}
+	  		loadList(1 , 20);
+	  		$wrapper.on("swipeUp",function(){
+				loadMore.handler($wrapper, loadList , 20);
+			})
+		  	if($.inArray(resource_type,isPic) != -1){
+				$("<img src='"+recourse+"' alt=''>").appendTo($(".recourse_content_url"));
+				return false;
+			}
+			if(resource_type == "mp4" || resource_type == "MP4"){
+				$('<video src="'+recourse+'" controls="controls">your browser does not support the video tag</video>').appendTo($(".recourse_content_url"));
+				return false;
+			}
+			if(resource_type == "mp3" ||　resource_type == "MP3"){
+				$('<audio src="'+recourse+'" controls="controls">your browser does not support the video tag</audio>').appendTo($(".recourse_content_url"));
+				return false;
+			}
+	  	})
+	  	
+	  	//添加一条新评论
+	  	w.add_one_comment		= function(){
+			if(!we_chat.getStorage("user_info")){
+				route.go({ module: '#personal/user_login', data: {}, status: 'forward'});
+				return false;
+			}
+	  		var comment_content	= $(".user_comment_content").val();
+	  		var userData		= we_chat.getStorage("user_info");
+	  		var user_name		= userData.user_name;
+	  		var data			= {
+	  			action			: "api_add_notes_reply",
+	  			acl_id			: we_chat.getUrl("acl_id"),
+	  			user_id			: userData.user_id,
+	  			user_photo		: userData.user_photo.split('/img')[1],
+	  			user_type		: userData.user_type,
+	  			user_name		: user_name,
+	  			reply_content 	: comment_content,
+	  			reply_type		: "art"
+	  		}
+	  		if(!comment_content){
+				$(".user_comment_content").addClass("shake animated infinite").css("border-color","red");
+				setTimeout(function(){
+					$(".user_comment_content").removeClass("shake").css("border-color","#ddd");
+				},1000)
+	  			return false;
+	  		}
+		  	we_chat.ajaxEx(we_chat.urlAddress("user"),data,function(json){
+		  		var $section	= $("<section />");
+		  		var $article	= $("<article class='user-info mb2'/>").appendTo($section);
+		  		$("<div class='img'><img src='"+userData.user_photo+"' alt=''></div>").appendTo($article);
+		  		var $content	= $("<div class='content'/>").appendTo($article);
+		  		$("<p class='p1'><span class='span1'>"+user_name+"</span></p>").appendTo($content);
+		  		$("<p class='p2' />").html(we_chat.getNowFormatDate()).appendTo($content);
+		  		$("<div class='other-answer mb2' />").html(comment_content).appendTo($section);
+		  		$(".user_comment_content").val("");
+		  		$("#article_reply_show").find(".heading").after($section);
+		  		$("#total_review").html(Number($("#total_review").html())+1);
+		  	})
+	  	}
+  	})(this)
+</script>

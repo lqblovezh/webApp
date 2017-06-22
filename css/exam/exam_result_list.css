@@ -1,0 +1,47 @@
+ul{
+	float: left;
+	background: #FFFFFF;
+	border-bottom: 1px solid #D7D7D7;
+	padding: 0 .3rem;
+}
+li{
+	float: left;
+	width: 100%;
+	border-bottom: 1px dashed #D7D7D7;
+	padding: .15rem .1rem;
+}
+li:last-child{
+	border-bottom: none;
+}
+li span.title{
+	display: inline-block;
+	padding-right: 1.2rem;
+	font-size: .32rem;
+	color: #333;
+	width: 100%;
+	line-height: .6rem;
+}
+li span.remark{
+	display: inline-block;
+	position: absolute;
+	top: .15rem;
+	right: .15rem;
+	font-size: .28rem;
+	width: 1rem;
+	line-height: .6rem;
+	text-align: right;
+}
+li span.remark[data-status=true]{
+	color: #FF6060;
+}
+li span.remark[data-status=false]{
+	color: #35A2F7;
+}
+li span.exam-date,
+li span.look-date{
+	display: inline-block;
+	font-size: .28rem;
+	color: #959595;
+	width: 100%;
+	line-height: .5rem;
+}

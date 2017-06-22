@@ -1,0 +1,145 @@
+<div id="details_problem_before" class="uc-pb-abs uc-pb-fixed" title="添加问题">
+	<header>
+		<a class="left icon-back R-back"></a>
+		<p>添加问题</p>
+	</header>
+	<div class="page_conten uc-pb-fixed-2">
+		<ul class="chat_record"></ul>
+	</div>
+	<section class="uc-footer uc-bd-top">
+		<div class="uc-footer-header uc-pud-20 uc-plr-20">
+			<div class="content">
+				<input class="contenteditable" placeholder="请输入内容" contenteditable="true"/>
+			</div>
+			<input type="button" class="uc-btn-df uc-btn-sms uc-btn-primary uc-ft-rt" onclick="add_message();" path="#personal/user_recharge" value="发送" />
+		</div>
+		<div class="uc-footer-content uc-pud-20">
+			<!--<img onclick="upload_text();" src="../image/icon_written_words.png"/>-->
+			<img onclick="img_input.click();" src="../image/icon_p_album.png"/>
+			<input type="file" style="display: none;" id="img_input" onchange="upload_img(this);" name="" id="" value="" />
+		</div>
+	</section>
+</div>
+<script type="text/javascript">
+	(function(w){
+		
+		var upload_file;
+		/*文件上传*/
+	  	w.upload_img		= function(){
+	  		var fileObj 		= document.getElementById("img_input").files[0]; 	// 获取文件对象
+			if(!/image\/\w+/.test(fileObj.type)){									//判断是否是图片格式
+				popup.prompt("请上传正确的图片");
+				return false;
+			}
+	        var reader = new FileReader();
+			reader.readAsDataURL(fileObj);
+			reader.onload 	= function(e){
+				push_page("",this.result);
+			}
+			upload_file		= fileObj;
+	  	}
+		
+		w.upload_text		= function(){
+	  		var counsel_content	= $(".contenteditable").val();
+	  		if(counsel_content.length == 0){
+	  			popup.prompt("请输入您要咨询的问题!");
+	  			return false;
+	  		}
+	  		if(counsel_content.length > 100){
+	  			popup.prompt("最多输入100字!");
+	  			return false;
+	  		}
+			push_page(counsel_content);
+			$(".contenteditable").val("");
+		}
+		
+		w.add_message = function(){		//消息发送按钮事件
+			//获取用户是否还有钱
+			we_chat.ajaxEx(we_chat.urlAddress("user"),{action:"api_user_money",user_id:we_chat.getStorage("user_id")},function(json){
+		  		var user_surplus	= json.data;
+		  		var bad_money		= Number(we_chat.getUrl("price"))-Number(user_surplus);
+				if(Number(user_surplus)<Number(we_chat.getUrl("price"))){
+					popup.prompt("当前账户还差 "+bad_money+" 元,是否进行充值?",[{content:'是',callback:function(){
+						popup.hide();
+						route.go({ module: '#personal/user_recharge', data: {}, status: 'forward'});
+					}},{content:'否'}]);
+				}else{
+			  		var counsel_content	= $(".contenteditable").val();
+					if(!counsel_content){
+						popup.prompt('请填写您要咨询的问题!');
+						return false;
+					}
+					popup.prompt("此次咨询将花费您"+we_chat.getUrl("price")+"金币",[{content:'是',callback:function(){
+				        var form = new FormData();
+				        var FileController 	= we_chat.urlAddress("user");	                  	// 接收上传文件的后台地址 
+				        form.append("action","api_add_advice");                        			// 接口
+						form.append("upfile_view", upload_file);                           		// 文件对象
+						form.append("exp_user_id",we_chat.getUrl("exp_id"));                    // 资料标题
+						form.append("user_id", we_chat.getStorage("user_id"));       			// 上传者id
+						form.append("main_content", counsel_content);       					// 上传问题
+				        var xhr = new XMLHttpRequest();
+				        xhr.open("post", FileController, true);
+				        xhr.onload = function (json) {
+				            var data =	JSON.parse(json.currentTarget.response);
+				            if(data.status){
+				            	we_chat.ajaxEx(
+				            		we_chat.urlAddress("user"),
+				            		{
+				            			action 		: "api_user_consume",
+				            			user_id		: we_chat.getStorage("user_id"),
+				            			exp_id		: we_chat.getUrl("exp_id"),
+				            			resource_id	: data.data,
+				            			type		: 2,
+				            			user_name	: we_chat.getStorage("user_info").user_name
+				            		},
+				            		function(json){
+										route.go({ module: '#personal/online_consulting', data: {}, status: 'forward'});
+									}
+			            		);
+				            }else{
+				            	popup.prompt(data.error);
+				            }
+				            popup.hide();
+				        };
+				        xhr.send(form);
+					}},{content:'否'}]);
+				}
+			})
+	  	}
+		
+		var li_bind_delete	= function(){
+			$(".chat_record").find("li").on("longTap",function(){
+				var _this	= this;
+				popup.prompt("是否删除该条纪录?",[{content:'是',callback:function(){
+					$(_this).remove();
+					popup.hide();
+				}},{content:"否"}]);
+			})
+		}
+		
+		var push_page	= function(data,base64_img){//填充页面数据
+			if($(".chat_record").find("li").length>=2) return false;
+			if($(".chat_record").find("li").find("img").length==2 && base64_img){
+				popup.prompt("只能上传一张图片");
+				return false;
+			}
+			if($(".chat_record").find("li").find("img").length==1 && !base64_img){
+				popup.prompt("只能上传图片和文字");
+				return false;
+			}
+			var $li	= $("<li/>");
+			$li.addClass("right");
+		  	var $section	= $("<section />").appendTo($li);
+		  	$("<img src='"+we_chat.getStorage("user_info").user_photo+"'/>").appendTo($li);
+		  	if(base64_img){
+			  	$("<img/>").attr("src",base64_img).appendTo($section);
+		  	}else{
+			  	$("<p class='user_upload_text'/>").html(data).appendTo($section);
+		  	}
+		  	$li.appendTo($(".chat_record"));
+		  	$(".page_conten").scrollTop($(".chat_record").height());
+		  	return false;
+		  	li_bind_delete();
+	  	}
+	})(this)
+</script>

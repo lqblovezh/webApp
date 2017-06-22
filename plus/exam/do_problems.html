@@ -1,0 +1,194 @@
+<link rel="stylesheet" type="text/css" href="../css/exam/do_problems.css"/>
+<section id="lay-unit" class="do_problems">
+	<header class="header">
+		<section class="R-go back" path="#exam/index"></section>
+		<section class="title topic_type"></section>
+	</header>
+	<section class="main-content">
+		<section class="answer-area">
+			<section class="problems-name">------</section>
+			<section class="problems-select">
+				<ul>
+					<li>
+						<input type="radio" name="answer" id="select_A" />
+						<label for="select_A">
+							<div class="name">A</div>
+							<div class="info">------</div>
+						</label>
+					</li>
+					<li>
+						<input type="radio" name="answer" id="select_B" />
+						<label for="select_B">
+							<div class="name">B</div>
+							<div class="info">------</div>
+						</label>
+					</li>
+					<li>
+						<input type="radio" name="answer" id="select_C" />
+						<label for="select_C">
+							<div class="name">C</div>
+							<div class="info">------</div>
+						</label>
+					</li>
+					<li>
+						<input type="radio" name="answer" id="select_D" />
+						<label for="select_D">
+							<div class="name">D</div>
+							<div class="info">------</div>
+						</label>
+					</li>
+				</ul>
+			</section>
+			<section class="problems-reply">
+				<div name="answer" contenteditable="true">
+					
+				</div>
+			</section>
+		</section>
+		
+		<section class="button-box">
+			<button class="submit">确认</button>
+		</section>
+		
+		<section class="problems-result">
+			<div class="select-success">选择正确</div>
+			<div class="select-error">选择错误</div>
+			<div class="reply-score">本题得分：10分</div>
+			<div class="select-answer">本题正确答案为：A</div>
+		</section>
+		<!--<section class="problems-commet">
+			<div class="title">评论</div>
+			<div class="info"></div>
+		</section>-->
+		<section class="problems-analyze">
+			<div class="title">分析</div>
+			<div class="info">问题分析问题分析问题分析问题分析问题分析问题分析问题分析问题分析问题分析问题分析问题分析问题分析</div>
+		</section>
+		
+		<section class="problems-reference">
+			<div class="title">参考资料</div>
+			<div class="info">参考资料参考资料参考资料参考资料参考资料参考资料参考资料参考资料参考资料参考资料参考资料参考资料参考资料</div>
+		</section>
+	</section>
+	
+	<section class="control">
+		<div class="l">
+			<div class="collect"></div>
+		</div>
+		<div class="r">
+			<div class="success-count l">------</div>
+			<div class="error-count l">------</div>
+			<div class="problems-count l">------</div>
+		</div>
+	</section>
+	
+	<section class="problems-list">
+		<section class="problems-list-bg"></section>
+		<section class="problems-list-info">
+			<button class="problems-topic" data-status="true">1</button>
+			<button class="problems-topic" data-status="false">2</button>
+			<button class="problems-topic" data-status="false">3</button>
+			<button class="problems-topic" data-status="false">4</button>
+			<button class="problems-topic" data-status="true">5</button>
+			<button class="problems-topic" data-status="true">6</button>
+			<button class="problems-topic">7</button>
+			<button class="problems-topic">8</button>
+			<button class="problems-topic">9</button>
+			<button class="problems-topic">10</button>
+			<button class="problems-topic" data-status="true">11</button>
+			<button class="problems-topic" data-status="true">12</button>
+			<button class="problems-topic">13</button>
+			<button class="problems-topic">14</button>
+			<button class="problems-topic">15</button>
+		</section>
+	</section>
+</section>
+<script type="text/javascript">
+
+	(function(_) {
+		_.$m = {};
+		_.$f = {};
+		$('.problems-count,.success-count,.error-count').on('tap', function() {
+			$('.problems-list').removeAttr('data-type');
+			if( $(this).hasClass("success-count") ){
+				$('.problems-list').attr('data-type', 'success');
+			}else if( $(this).hasClass("error-count") ){
+				$('.problems-list').attr('data-type', 'error');
+			}
+			$('.problems-list').attr('data-status', 'true');
+			
+		});
+
+		$('.problems-list-bg').on('tap', function() {
+			$('.problems-list').removeAttr('data-status');
+		});
+		var topic_type;
+		switch (getUrlParam('type')){
+			case 'tr_radio':
+				topic_type	= "专项练习";
+				break;
+			case 'tr_checkbox':
+				topic_type	= "专项练习";
+				break;
+			case 'tr_decide':
+				topic_type	= "专项练习";
+				break;
+			case 'tr_short':
+				topic_type	= "专项练习";
+				break;
+			case 'tr_discuss':
+				topic_type	= "专项练习";
+				break;
+			case 'tr_calculate':
+				topic_type	= "专项练习";
+				break;
+			case 'tr_case':
+				topic_type	= "专项练习";
+				break;
+			case 'order':
+				topic_type	= "顺序练习";
+				break;
+			case 'random':
+				topic_type	= "随机练习";
+				break;
+			default:
+				break;
+		}
+		$(".topic_type").html(topic_type);
+		
+		$('.problems-topic').on('tap', function() {
+			var id = $(this).attr('data-id') || '', //	题目编号
+				pattern = getUrlParam('pattern') || 'practice', //	当前模式（练习或考试）
+				type = getUrlParam('type') || ''; //	当前类型（练习模式下独有：顺序、随机、单选、多选。。。）
+
+			route.go({
+				module: location.hash.split('?')[0],
+				data: {
+					id: id,
+					pattern: pattern,
+					type: type
+				}
+			});
+		});
+		
+		$f.q = function( action, data){
+			var s = false,
+				data = data || {};
+			data.action = action;
+			$.ajax({
+				type: "post",
+				url: "../../api/user/index.php",
+				data: data,
+				dataType: 'json',
+				async: false,
+				success: function( msg){
+					s = msg.status? msg.data: msg.status;
+				}
+			});
+			return s;
+		}
+		$m.pattern = getUrlParam('pattern')
+		$m.type = getUrlParam('type');
+	})(this);
+	//$action.initProblems();
+</script>

@@ -1,0 +1,183 @@
+<div id="personal_partake" class="ask-answer-index uc-pb-abs uc-pb-fixed" title="个人主页">
+	<header>
+		<a class="left icon-back R-back"></a>
+		<p>个人主页</p>
+	</header>
+	
+	<div id="personal_partake_tpl" style="display: none;">
+		<section class="uc-mb-20">
+			<article class="article R-go" path="#FAQs/interlocution_details" path-data="{'ask_id':'[ask_id]'}">
+				<section class="user-info uc-mb-20">
+					<div class="img"><img src="[user_photo]" alt=""></div>
+					<div class="content">
+						<p class="p1">
+							<span class="span1">[user_name]</span>
+							<span class="span2">[user_type]</span>
+						</p>
+						<p class="p2">[ask_create_time]</p>
+					</div>
+				</section>
+				<div class="your-answer">[ask_title]</div>
+				<section class="answer-info">
+					<div class="img"><img src="[pic_path]" alt=""></div>
+					<div class="content">[content_intro]</div>
+				</section>
+			</article>
+			<article class="icon-group">
+				<section>
+					<img src="../image/icon_ask_xs.png" alt="">
+					<p>[ask_status]<!--<span>100</span>--></p>
+				</section>
+				<section class="R-go" path="#FAQs/interlocution_details" path-data="{'ask_id':'[ask_id]'}">
+					<img src="../image/icon_ask_df.png" alt="">
+					<p>答复<span>[ask_num]</span></p>
+				</section>
+				<section class="to_my_collection" data-status="[status]" data-id="[ask_id]">
+					<em></em>
+					<p>[statustext]</p>
+				</section>
+			</article>
+		</section>
+	</div>
+	
+	<div id="personal_help_details_tpl" style="display: none;">
+		<section class="uc-mb-20">
+			<article class="article R-go" path="#seek-help/help_details" path-data="{'ask_id':'[ask_id]'}">
+				<section class="user-info uc-mb-20">
+					<div class="img"><img src="[user_photo]" alt=""></div>
+					<div class="content">
+						<p class="p1">
+							<span class="span1">[user_name]</span>
+							<span class="span2">[user_type]</span>
+						</p>
+						<p class="p2">[ask_create_time]</p>
+					</div>
+				</section>
+				<div class="your-answer">[ask_title]</div>
+				<section class="answer-info">
+					<div class="img"><img src="[pic_path]" alt=""></div>
+					<div class="content">[content_intro]</div>
+				</section>
+			</article>
+			<article class="icon-group">
+				<section>
+					<img src="../image/icon_ask_xs.png" alt="">
+					<p>[ask_status]<!--<span>100</span>--></p>
+				</section>
+				<section class="R-go" path="#seek-help/help_details" path-data="{'ask_id':'[ask_id]'}">
+					<img src="../image/icon_ask_df.png" alt="">
+					<p>答复<span>[ask_num]</span></p>
+				</section>
+				<section class="to_my_collection" data-status='[status]' data-id="[ask_id]">
+					<em></em>
+					<p>[statustext]</p>
+				</section>
+			</article>
+		</section>
+	</div>
+	
+	<div class="page_conten">
+		<div class="user-center-logo">
+			<div class="logo">
+				<div class="box">
+					<img  class="personal_lonin_img" src="../image/pic_index_recommended_img.png">
+				</div>
+			</div>
+			<div class="is_login" id="is_login">
+				<p class="uc-pb-30"><span class="personal_lonin_name">...</span></p>
+				<p class="user-position">普通用户</p>
+			</div>
+			<!--<ul>
+				<li>
+					<a class="uc-pb-ilbk icon-add-friend uc-pl-60 uc-pu-click-icon uc-pb-ilbk">加好友</a>
+				</li>
+				<li>
+					<a class="uc-pb-ilbk icon-mail-ssm uc-pl-60 uc-pu-click-icon uc-pb-ilbk">发私信</a>
+				</li>
+			</ul>				-->
+		</div>
+		<ul class="tab-ol">
+			<li>
+				<article class="question-card" id="personal_partake_show"></article>
+			</li>
+		</ul>
+	</div>
+</div>
+<script type="text/javascript">
+	(function(){
+		if(!we_chat.getUrl("user_id")) return false;
+		var pagetype = we_chat.getUrl("type")=="answer"?0:1;	
+		//获取个人信息
+		we_chat.ajaxEx(we_chat.urlAddress("common"),{action:"api_get_userInfo",user_id:we_chat.getUrl("user_id")},function(json){
+	  		var userData	=	json.data;
+	  		$(".personal_lonin_img").attr("src",json.data.user_photo);								//头像
+	  		$(".personal_lonin_name").html(json.data.user_name||json.data.user_nickname);			//名字
+	  	},'no')
+		
+		//获取我的参与的问答
+		var $wrapper	= $(".page_conten");
+  		var loadList	= function(page , limit){
+		  	we_chat.ajaxEx(we_chat.urlAddress("common"),{action:"api_ask_mine",user_id:we_chat.getUrl("user_id"),ask_type:pagetype,page_start:page,page_size:limit},function(json){
+		  		// 初始化上拉加载的部件及其数据
+				loadMore.initLoad( $wrapper, page, json.data.count, limit );
+				
+				var allData 	= json.data.content;
+			  	//模板显示
+		  		for(var k=0;k<allData.length;k++){
+			  		allData[k]['statustext']	= '收藏';
+		  		}
+				var collectdata	= {
+				  	action		: "api_get_collection",
+				  	user_id     : we_chat.getStorage("user_id"),
+				  	collection_type: we_chat.getUrl("type")=="answer"?"ask":"help"
+				}
+				if(we_chat.getStorage("user_id")){
+					we_chat.ajaxEx(we_chat.urlAddress("user"),collectdata,function(json){
+					  	var data 	= json.data.content;
+					  	for(var i=0;i<data.length;i++){
+					  		for(var k=0;k<allData.length;k++){
+						  		if(data[i]['record_id']==allData[k]['ask_id']){
+							  		allData[k]['status']	 = "true";
+							  		allData[k]['statustext'] = "取消收藏";
+						  		}
+					  		}
+					  	}
+					  	if(!pagetype){
+					  		we_chat.miniTemplate({
+					  			tpl	: document.getElementById("personal_partake_tpl"),
+					  			show: document.getElementById("personal_partake_show"),
+					  		},allData,"add");
+					  		we_chat.deleteBind();
+					  		return false;
+				  		}
+				  		we_chat.miniTemplate({
+				  			tpl	: document.getElementById("personal_help_details_tpl"),
+				  			show: document.getElementById("personal_partake_show"),
+				  		},allData,"add");
+				  		//动态绑定
+				  		we_chat.deleteBind();
+					},"no")
+					return false;
+				}
+				if(!pagetype){
+			  		we_chat.miniTemplate({
+			  			tpl	: document.getElementById("personal_partake_tpl"),
+			  			show: document.getElementById("personal_partake_show"),
+			  		},allData,"add");
+			  		we_chat.deleteBind();
+			  		return false;
+		  		}
+		  		we_chat.miniTemplate({
+		  			tpl	: document.getElementById("personal_help_details_tpl"),
+		  			show: document.getElementById("personal_partake_show"),
+		  		},allData,"add");
+		  		//动态绑定
+		  		we_chat.deleteBind();
+		  	},'no')
+	  	}
+  		loadList(1 , 10);
+  		$wrapper.on("swipeUp",function(){
+			loadMore.handler($wrapper, loadList , 10);
+		})
+	})()
+</script>

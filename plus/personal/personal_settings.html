@@ -1,0 +1,220 @@
+<div id="personal_settings" class="uc-pb-abs uc-pb-fixed" title="个人设置">
+	<header>
+		<a class="left icon-back R-back"></a>
+		<p>个人设置</p>
+		<a class="right rights button-push identity_authentication" path="#personal/identity_authentication" href="javascript:void(0)">认证</a>
+		<a class="right button-push R-back" href="javascript:void(0)">退出</a>
+	</header>
+	<div class="page_conten">
+		<ul class="index-circle-s">
+			<li style="overflow: hidden;">
+				<label style="line-height: 1.1rem;" for="creat-topic">头像</label>
+				<img class="uc-ft-rt" id="user_set_upload" src="../image/pic_index_recommended_img.png" alt="" />
+			</li>
+			<!--<li>
+				<label for="creat-topic">课程</label>
+				<input placeholder="未分班" type="text" maxlength="20" class="user_class_tree" readonly="readonly" id="" value="" />
+			</li>-->
+			<li>
+				<label for="creat-topic"><span style="color:red">*</span>姓名</label>
+				<input placeholder="请输入内容" type="text" maxlength="20" name="user_name" id="" value="" />
+			</li>
+			<li>
+				<label for="creat-topic"><span style="color:red">*</span>用户分类</label>
+				<select name="" id="get_user_tree">
+					<option value="">选择分类</option>
+				</select>
+			</li>
+			<li>
+				<label for="creat-topic"><span style="color:red">*</span>昵称</label>
+				<input placeholder="请输入内容" type="text" maxlength="20" name="user_nickname" id="" value="" />
+			</li>
+			<li>
+				<label for="creat-topic"><span style="color:red">*</span>生日</label>
+				<input placeholder="请输入内容" type="date" maxlength="20" name="birth" id="" value="" />
+			</li>
+			<li>
+				<label for="creat-topic"><span style="color:red">*</span>性别</label>
+				<span class="uc-pb-30 write_notes_box user_sex"  style="padding-left: .4rem;">
+					<span class="active"><a class="uc-btn-box-one"></a>男</span>
+					<span><a class="uc-btn-box-one"></a>女</span>
+				</span>
+			</li>
+		</ul>
+		<ul class="index-circle-s" style="padding-bottom:.5rem">
+			<li>
+				<label for="creat-topic"><span style="color:red">*</span>邮箱</label>
+				<input placeholder="请输入内容" type="text" maxlength="50" name="user_email" id="" value="" />
+			</li>
+			<li>
+				<label for="creat-topic"><span style="color:red">*</span>手机</label>
+				<input placeholder="请输入内容" type="text" maxlength="20" name="user_phonemobi" id="" value="" />
+			</li>
+			<li>
+				<label for="creat-topic"><span style="color:red">*</span>单位</label>
+				<input placeholder="请输入内容" type="text" maxlength="20" name="exp_org" id="" value="" />
+			</li>
+			<li>
+				<label for="creat-topic"><span style="color:red">*</span>职务</label>
+				<input placeholder="请输入内容" type="text" maxlength="20" name="user_professional" id="" value="" />
+			</li>
+			<li>
+				<label for="creat-topic"><span style="color:red">*</span>领域</label>
+				<select name="" id="get_field_tree">
+					<option value="">选择分类</option>
+				</select>
+			</li>
+			<li>
+				<label for="creat-topic"><span style="color:red">*</span>业务</label>
+				<select name="" id="get_service_tree">
+					<option value="">选择分类</option>
+				</select>
+			</li>
+		</ul>
+		<input type="button" class="uc-btn-l uc-btn-df save_personal_btn uc-btn-primary" value="保存" onclick="save_personal();">
+	</div>
+</div>
+<script type="text/javascript">
+	(function(w){
+  		//动态绑定
+	  	we_chat.deleteBind();
+	  	var dataInfo 	= we_chat.getStorage("user_info");
+	  	if(!we_chat.getStorage("user_id")){
+	  		return false;
+	  	}
+	  	$("#user_set_upload").attr("src",dataInfo.user_photo);											//头像
+	  	if(dataInfo.user_name){
+		  	$("input[name='user_name']").val(dataInfo.user_name).css("background","#f3f3f3").attr("readonly",true).closest("li").css("background","#f3f3f3");					//用户名
+	  	}
+	  	if(dataInfo.class_name){																		//显示班级分类
+		  	$(".user_class_tree").attr("placeholder",dataInfo.class_name);
+	  	}
+	  	if( dataInfo.user_birthday ){
+	  		$("input[name='birth']").val(dataInfo.user_birthday).css("background","#f3f3f3").attr("readonly",true).closest("li").css("background","#f3f3f3");					//用户名
+	  	}
+	  	$(".user_class_tree").closest("li").css("background","#f3f3f3").find("input").css("background","#f3f3f3");
+	  	$("input[name='user_nickname']").css("background","#f3f3f3").val(dataInfo.user_nickname).attr("readonly",true).closest("li").css("background","#f3f3f3");				//用户昵称
+	  	if(dataInfo.user_sex == "0"){
+			$(".write_notes_box").find("span").removeClass("active");									//性别
+			$(".write_notes_box").find("span:last-child").addClass("active");
+		}
+	  	if(dataInfo.user_email){
+		  	$("input[name='user_email']").css("background","#f3f3f3").val(dataInfo.user_email).attr("readonly",true).closest("li").css("background","#f3f3f3");//邮箱
+	  	}
+	  	if(dataInfo.user_phonemobi){
+		  	$("input[name='user_phonemobi']").css("background","#f3f3f3").val(dataInfo.user_phonemobi).attr("readonly",true).closest("li").css("background","#f3f3f3");		//手机
+	  	}
+		if(dataInfo.exp_org){
+		  	$("input[name='exp_org']").css("background","#f3f3f3").val(dataInfo.exp_org).attr("readonly",true).closest("li").css("background","#f3f3f3");						//机构
+		}
+	  	if(dataInfo.user_professional){
+		  	$("input[name='user_professional']").css("background","#f3f3f3").val(dataInfo.user_professional).attr("readonly",true).closest("li").css("background","#f3f3f3");	//职称
+	  	}
+	  	var changeClass	= function(id,json,userid){
+	  		for(var i=0; i<json.data.length;i++){
+	  			$("<option />").attr("value",json.data[i].tree_id).html(json.data[i].tree_by_name).appendTo($("#"+id));
+	  		}
+	  		var $selected		= $("#"+id+" option[value='"+dataInfo[userid]+"']");
+	  		if(dataInfo.tree_id && $selected.length != 0 && dataInfo[userid]){
+			  	$selected.attr("selected",true);
+			  	$("#"+id).attr("disabled","disabled").css("background","#f3f3f3");
+			  	$("#"+id).closest("li").css("background","#f3f3f3");
+	  		}
+	  	}
+	  	//获取班级分类
+//	  	we_chat.ajaxEx(we_chat.urlAddress("user"),{action:"api_get_tree",tree_name:"班级分类"},function(json){
+//	  		changeClass('get_class_tree',json,'tree_id_user');
+//	  	})
+	  	//获取用户分类
+	  	we_chat.ajaxEx(we_chat.urlAddress("user"),{action:"api_get_tree",tree_name:"用户分类"},function(json){
+	  		changeClass('get_user_tree',json,'tree_id');
+	  	})
+	  	
+	  	//获取领域分类
+	  	we_chat.ajaxEx(we_chat.urlAddress("user"),{action:"api_get_tree",tree_name:"领域分类"},function(json){
+	  		changeClass('get_field_tree',json,'tree_id_field');
+	  	})
+	  	
+	  	//获取业务分类
+	  	we_chat.ajaxEx(we_chat.urlAddress("user"),{action:"api_get_tree",tree_name:"业务分类"},function(json){
+	  		changeClass('get_service_tree',json,'tree_id_business');
+	  	})
+	  	
+	  	if(dataInfo.exp_org&&dataInfo.user_professional){
+	  		$(".save_personal_btn").hide();
+	  		$(".write_notes_box").find("span").off("click").closest("li").css("background","#f3f3f3");
+	  		$(".identity_authentication").on("click",function(){
+		  		route.go({ module: '#personal/identity_authentication', data: {}, status: 'forward'});
+	  		})
+	  	}else{
+	  		$(".identity_authentication").on("click",function(){
+		  		popup.prompt('请填写完整的个人信息发起认证！')
+	  		})
+	  	}
+	  	
+		w.save_personal	 			= function(){
+			var data				= {};
+			var user_name			= $("input[name='user_name']").val();
+			var user_sex			= $(".write_notes_box").find(".active").text()=="男"?1:0;
+			var user_email			= $("input[name='user_email']").val();
+			var exp_org				= $("input[name='exp_org']").val();
+//			var tree_id_user		= $("#get_class_tree option:selected").val();
+			var birth               = $("input[name='birth']").val().replace('/','-');
+			var user_professional	= $("input[name='user_professional']").val();
+			var tree_id_field		= $("#get_field_tree option:selected").val();
+			var tree_id_business	= $("#get_service_tree option:selected").val();
+			var tree_id				= $("#get_user_tree option:selected").val();
+			console.log( birth );
+			if(!(user_name&&user_email&&exp_org&&tree_id_field&&tree_id&&tree_id_business&&birth)){
+				popup.prompt('请填写完整信息!');
+				return false;
+			}
+			if(!(/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(user_email))){
+				popup.prompt('邮箱不合法!');
+				return false;
+			}
+			data					= {
+				action				: "api_user_set",
+				user_name			: user_name,
+//				tree_id_user		: tree_id_user,
+				user_sex			: user_sex,
+				user_email			: user_email,
+				user_birthday       : birth,
+				exp_org				: exp_org,
+				user_professional	: user_professional,
+				tree_id_field		: tree_id_field,
+				tree_id_business	: tree_id_business,
+				tree_id				: tree_id,
+				user_id				: we_chat.getStorage("user_id")
+			}
+		  	we_chat.ajaxEx(we_chat.urlAddress("user"),data,function(json){
+		  		popup.prompt('保存成功,您可以去申请认证！',[
+					{content:'去申请',callback:function(){
+						popup.hide();
+//						we_chat.setStorage("user_id",json.data.user_id);
+//						we_chat.setStorage("user_info",json.data);
+						route.go({ module: '#personal/identity_authentication', data: {}, status: 'forward'});
+					}},{content:'去首页',callback:function(){
+						popup.hide();
+//						we_chat.setStorage("user_id",json.data.user_id);
+//						we_chat.setStorage("user_info",json.data);
+						route.go({ module: '#home/index', data: {}, status: 'forward'});
+//						we_chat.removeStorage('lgoImg');
+					}}
+				]);
+		  		we_chat.setStorage("user_id",json.data.user_id);
+				we_chat.setStorage("user_info",json.data);
+				$(".identity_authentication").off('click').on("click",function(){
+			  		route.go({ module: '#personal/identity_authentication', data: {}, status: 'forward'});
+		  		})
+		  	});
+		  	
+//		  	$("input,select").on('change',function(){
+//		  		 if( !$('.save_personal_btn').hasClass('uc-btn-primary') ){
+//		  		 	$('.save_personal_btn').addClass('').undelegate('click',save_personal).delegate('click',save_personal);
+//		  		 }
+//		  		
+//		  	})
+		}
+  	})(this)
+</script>

@@ -1,0 +1,116 @@
+<div id="add_information" class="uc-pb-abs uc-pb-fixed" title="添加资料">
+	<header>
+		<a class="left icon-back R-back"></a>
+		<p>添加资料</p>
+		<a class="right button-push" onclick="Save_notes(this);" href="javascript:void(0)">发布</a>
+	</header>
+	<div class="page_conten">
+		<ul class="add-info-list uc-mb-20">
+			<li>
+				<input placeholder="请输入资料标题" type="text" maxlength="20" name="entry_title" id="" value="">
+			</li>
+			<li>
+				<textarea placeholder="请输入资料内容" name="entry_content" rows="" cols=""></textarea>
+			</li>
+		</ul>
+		<section class="uc-footer">
+			<ul class="uc-footer-header uc-pud-20 table-nav">
+				<li class="img_input_remove">
+					<input type="button" onclick="trigger_file()" class="uc-btn-df uc-btn-sms uc-btn-primary" id="" value="附件" />
+					<input type="file" style="display: none;" onchange="change_file(this)" id="user_upload_resource"/>
+				</li>
+				<li>
+					<input type="button" class="uc-btn-df uc-btn-sms uc-btn-primary" id="upload_file" value="价格" />
+				</li>
+			</ul>
+			<ul class="uc-footer-content tab-ol" style="display: none;">
+				<li style="display: block;">
+					<span id="add_content">
+						附件：<span></span>
+					</span>
+					<input type="button" class="uc-btn-df uc-btn-sms uc-btn-warning uc-ft-rt uc-mt-30" id="delete_file" value="删除" />
+				</li>
+				<li>
+					<ul class="table-nav-s">
+						<li class="active">0 金币</li>
+						<li>20 金币</li>
+						<li>30 金币</li>
+						<li>40 金币</li>
+					</ul>
+				</li>
+			</ul>
+		</section>
+	</div>
+</div>
+<script type="text/javascript">
+	(function(w){
+		//动态绑定
+	  	we_chat.deleteBind();
+		
+		var upload_file;
+		
+		$("#delete_file").on("click",function(){
+			$("#add_content").find("span").html("");
+			$(".uc-footer-content").hide();
+		})
+		
+		w.trigger_file			= function(){
+			if($("#add_content").find("span").html() && $(".uc-footer-content").css("display")=="block") return false;
+			user_upload_resource.click();
+		}
+		
+		w.change_file			=function(that){
+			var data	= that.files[0];
+//			if(/image\/\w+/.test(data.type)){									//判断是否是图片格式
+//				popup.prompt("请勿上传图片");
+//				return false;
+//			}
+
+			$(that).remove();
+			$("<input type='file' style='display:none' onchange='change_file(this);' id='user_upload_resource'>").appendTo($(".img_input_remove"));
+			$("#add_content").find("span").html(data.name);
+			$(".uc-footer-content").show();
+			upload_file 		= data; 											// 获取文件对象
+			
+//			//判断条件:只能上传一张附件
+//			if($("#add_content span").find("span").html()!=""){
+//				popup.prompt("只能添加一个附件!");
+//			}
+		}
+		
+		w.Save_notes	 		= function(that){
+			var data			= {};
+			var entry_title		= $("input[name='entry_title']").val();
+			var entry_content	= $("textarea[name='entry_content']").val();
+			var entry_open_type	= parseInt($(".table-nav-s").find(".active").text());
+			var entry_filename	= $("#add_content").find("span").html();
+			if(!(entry_title&&entry_content&&entry_filename&&upload_file)){
+				popup.prompt('请填写完整信息!');
+				return false;
+			}
+			$(that).attr("onclick","");
+	        var FileController 	= we_chat.urlAddress("user");	                  	// 接收上传文件的后台地址 
+	        var form = new FormData();
+	        form.append("action","api_add_resource");                        		// 接口
+			form.append("upfile", upload_file);                           			// 文件对象
+			form.append("resource_name", entry_title);                              // 资料标题
+			form.append("resource_intro", entry_content);                           // 资料简介
+			form.append("resource_money", entry_open_type);                         // 资料价格
+			form.append("tree_id", we_chat.getStorage("user_info").tree_id);        // 上传者分类信息
+			form.append("user_id", we_chat.getStorage("user_id"));       			// 上传者id
+			form.append("user_name",we_chat.getStorage("user_info").user_name)		//上传者姓名
+	        var xhr = new XMLHttpRequest();
+	        xhr.open("post", FileController, true);
+	        xhr.onload = function (json) {
+	            var data =	JSON.parse(json.currentTarget.response);
+	            if(data.status){
+//	            	popup.prompt('添加成功');
+	            	route.back();
+	            }else{
+	            	popup.prompt(data.error);
+	            }
+	        };
+	        xhr.send(form);
+		}
+	})(this)
+</script>

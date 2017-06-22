@@ -1,0 +1,153 @@
+<div id="" class="customer-status-page uc-pb-abs uc-pb-fixed" title="认证用户客人状态">
+	<header>
+		<a class="left icon-back R-back"></a>
+		<p>个人主页</p>
+		<!--<a class="right icon-user-share" href="javascript:void(0)"></a>-->
+	</header>
+
+	<div class="page_conten">
+		<article class="user-head-img">
+			<div class="head-img"><img class="expert_lonin_img" src="../image/pic_index_recommended_img.png" alt=""></div>
+			<div class="user-name">
+				<strong class="expert_name">...</strong>
+				<strong>专家</strong>
+			</div>
+			<div class="jg expert_business">...</div>
+			<div class="summary"><span class="expert_intro">...</span><a href="javascript:;" class="uc-ft-rt R-go personal_check"  path="#personal/expert_detail" >查看详情</a></div>
+		</article>
+
+		<!--<ul class="top-button-group">
+			<li><a class="icon-add-friend" href="javascript:;" title="">加关注</a></li>
+			<li><a class="icon-like" href="javascript:;" title="">点赞</a></li>
+		</ul>-->
+
+		<!--<ul class="number-show">
+			<li>
+				<p class="p1">1000</p>
+				<p class="p2">粉丝数</p>
+			</li>
+			<li>
+				<p class="p1">897</p>
+				<p class="p2">服务人数</p>
+			</li>
+			<li>
+				<p class="p1">897</p>
+				<p class="p2">点赞人数</p>
+			</li>
+		</ul>-->
+
+		<menu>
+			<a class="a1 consultation_price_path" href="javascript:;" title="">
+				<div>在线咨询<br><span class="consultation_price">...</span>元/次</div>
+			</a>
+			<a class="a2 R-go personal_check" path="#personal/question_answer" href="javascript:;" title="">
+				<div>专家问答</div>
+			</a>
+			<a class="a3 R-go personal_check" path="#personal/my_information"  href="javascript:;" title="">
+				<div>资料查看</div>
+			</a>
+			<a class="a4 R-go personal_check" path="#personal/expert_articles_page" href="javascript:;" title="">
+				<div>专家文章</div>
+			</a>
+		</menu>
+
+		<article class="bjb-reviews">
+			<section class="title">编辑邦点评</section>
+			<div class="expert_gli_comment">...</div>
+		</article>
+
+		<dl class="user-evaluation-card expert_user_evaluation">
+			<dt>
+				<h2>用户评价（<span class="exp_commentcount">0</span>人）</h2>
+				<a href="javascript:;" class="R-go all_evaluation" path="#personal/user_evaluation" title="">全部评价&gt;</a>
+			</dt>
+		</dl>
+
+		<!--<dl class="user-evaluation-card">
+			<dt>
+				<h2>专家话题</h2>
+				<a href="javascript:;" title="">全部话题&gt;</a>
+			</dt>
+			<dd>
+				<div class="div1">
+					<h2>帖子标题帖子标题帖子标题</h2>
+					<p class="icon-facebook">100</p>
+				</div>
+				<div class="div2">2016-02-03 10:00</div>
+				<div class="div3">帖子内容评价内容评价内容评价内容评价内容评价内容评价内容评价内容评价内容评价内容</div>
+			</dd>
+			<dd>
+				<div class="div1">
+					<h2>帖子标题帖子标题帖子标题</h2>
+					<p class="icon-facebook">100</p>
+				</div>
+				<div class="div2">2016-02-03 10:00</div>
+				<div class="div3">帖子内容评价内容评价内容评价内容评价内容评价内容评价内容评价内容评价内容评价内容</div>
+			</dd>
+		</dl>-->
+
+	</div>
+</div>
+<script type="text/javascript">
+	(function(){
+		if(!we_chat.getUrl("user_id")) return false;
+		$(".personal_check").attr("path-data","{user_id:'"+we_chat.getUrl("user_id")+"',isTourist:true}");
+		//获取个人信息
+		we_chat.ajaxEx(we_chat.urlAddress("common"),{action:"api_get_userInfo",user_id:we_chat.getUrl("user_id")},function(json){
+	  		var userData	=	json.data;
+	  		$(".expert_name").html(userData.user_name);											//姓名
+	  		$(".expert_lonin_img").attr("src",userData.user_photo);								//头像
+	  		$(".expert_lonin_name").html(userData.user_name||userData.user_nickname);			//名字
+	  		$(".expert_field").attr("placeholder",userData.field_name);							//领域
+	  		$(".expert_business").html(userData.business_name);									//业务
+	  		$(".consultation_price").html(userData.exp.ask_server_money);						//资讯价格
+	  		$(".consultation_price_path").on("click",function(){
+		  		if(we_chat.getStorage("user_id")){
+		  			route.go({ module: '#personal/details_problem_before', data: {'price':userData.exp.ask_server_money,'exp_id':we_chat.getUrl("user_id")}, status: 'forward'});
+		  		}else{
+		  			window.location.href="../../thirdlogin/weixin_log.php";
+		  		}
+	  		})
+	  		if(userData.exp.exp_intro.length>42){
+	  			var exp_intro	= userData.exp.exp_intro.substring(0,42)+"...";
+	  			$(".expert_intro").attr("data-intro",userData.exp.exp_intro);
+	  			$(".expert_intro").html(exp_intro).siblings("a").show();
+	  		}else{
+		  		$(".expert_intro").html(userData.exp.exp_intro);								//介绍
+	  		}
+	  		$(".expert_gli_comment").html(userData.exp.gli_comment || "暂无数据");							//编辑评论
+	  	},"no")
+		
+//		$(".expert_intro").siblings("a").on("click",function(){
+//			if($(".expert_intro").html().length != $(".expert_intro").data("intro").length){
+//				$(".expert_intro").html($(".expert_intro").data("intro"));
+//				$(this).html("收起");
+//			}else{
+//				var exp_intro	= $(".expert_intro").data("intro").substring(0,42)+"...";
+//				$(this).html("查看详情");
+//				$(".expert_intro").html(exp_intro);
+//			}
+//		})
+		
+		//获取专家评论总数
+		we_chat.ajaxEx(we_chat.urlAddress("common"),{action:"api_get_exp_commentcount",exp_user_id:we_chat.getUrl("user_id")},function(json){
+	  		$(".exp_commentcount").html(json.data.count);
+	  		$(".all_evaluation").attr("path-data","{user_id:'"+we_chat.getUrl("user_id")+"'}")
+	  		if(json.data.count<=2){
+	  			$(".all_evaluation").hide();
+	  		}
+	  	},"no")
+		
+		//获取专家评论
+		we_chat.ajaxEx(we_chat.urlAddress("common"),{action:"api_get_comment",exp_user_id:we_chat.getUrl("user_id"),page_start:"1",page_size:"2"},function(json){
+	  		var userData	=	json.data.content;
+			for(var i=0;i<userData.length;i++){
+		  		var $dd			= $("<dd />").appendTo($(".expert_user_evaluation"));
+				var $div1		= $("<div class='div1'><h2>"+userData[i].user.user_name+"</h2></div>").appendTo($dd);
+				$("<p />").html(userData[i].comment_degree).appendTo($div1);
+				$("<div class='div2' />").html(userData[i].comment_time).appendTo($dd);
+				$("<div class='div3' />").html(userData[i].comment_content).appendTo($dd);
+			}
+	  	},"no")
+	})()
+</script>

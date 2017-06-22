@@ -1,0 +1,92 @@
+<div id="write_notes" class="uc-pb-abs uc-pb-fixed" title="写笔记">
+	<header>
+		<a class="left icon-back R-back"></a>
+		<p>写笔记</p>
+		<a class="right button-push" onclick="Save_notes(this);" href="javascript:void(0)">保存</a>
+	</header>
+	<div class="page_conten">
+		<ul class="index-circle-s uc-mb-20">
+			<li>
+				<label for="creat-topic">标题</label>
+				<input placeholder="请输入标题" type="text" maxlength="20" name="entry_title" id="" value="" />
+			</li>
+			<li>
+				<label for="creat-topic">内容</label>
+				<textarea placeholder="请输入内容" name="entry_content" rows="" cols=""></textarea>
+			</li>
+			<li class="img_input_remove">
+				<p class="uc-pb-30 write_notes_box">
+					<span class="active"><a class="uc-btn-box-one"></a>公开</span>
+					<span><a class="uc-btn-box-one"></a>私密</span>
+				</p>
+				<span style="display: block; height: inherit;" class="uplaod_img_box">
+					<img style="width: 1.65rem;vertical-align: text-top;" onclick="we_chat.choiceImage(this);" name="entry_images" src="../image/icon_add_img.png"/>
+				</span>
+				<input type="file" style="display: none;" accept="image/jpeg,image/jpg,image/png" onchange="we_chat.user_upload_imgs(this);" id="user_upload_img"/>
+			</li>
+		</ul>
+	</div>
+</div>
+<script type="text/javascript">
+	(function(w){
+		//动态绑定
+	  	we_chat.deleteBind();
+		
+		var olddata	= [];
+		if(we_chat.getUrl("notes_id")){
+		  	//获取笔记详情
+		  	we_chat.ajaxEx(we_chat.urlAddress("user"),{action:"api_get_notes_detail",acl_id:we_chat.getUrl("notes_id")},function(json){
+		  		olddata = json.data;
+		  		$("input[name='entry_title']").val(json.data[0].notes_works_title);
+		  		$("textarea[name='entry_content']").html(json.data[1][0].notes_works_content);
+		  		for(var i=0;i<json.data[2].length;i++){
+		  			$("<div class='creat_img'><img data-url='"+json.data[2][i]["pic_path"].split("/img")[1]+"' src='"+json.data[2][i]["pic_path"]+"'/><input type='button' class='message-number' onclick='we_chat.delete_img(this)' value='×' /></div>").prependTo($(".uplaod_img_box"));
+		  		}
+		  		if(json.data[0].read_type=="private"){
+		  			$(".write_notes_box").find("span").removeClass("active");
+		  			$(".write_notes_box").find("span:last-child").addClass("active");
+		  		}
+		  	})
+		}
+		
+		w.Save_notes	 		= function(that){
+			var data			= {};
+			var pic_upload		= [];
+			var list			= $(".creat_img>img");
+			var entry_title		= $("input[name='entry_title']").val();
+			var entry_content	= $("textarea[name='entry_content']").val();
+			var entry_open_type	= $(".write_notes_box").find(".active").text()=="公开"?"open":"private";
+			$.each(list, function() {
+				pic_upload.push($(this).data("url"));
+			});
+			if(!(entry_title&&entry_content&&pic_upload)){
+				popup.prompt('请填写完整信息!');
+				return false;
+			}
+			$(that).attr("onclick","");
+			data				= {
+				action				: "api_add_user_notes",
+				notes_works_type	: "notes",
+				notes_works_title	: entry_title,
+				notes_works_content	: entry_content,
+				read_type			: entry_open_type,
+				pic_path			: pic_upload,
+				user_id				: we_chat.getStorage("user_id")
+			}
+			if(olddata.length!=0){
+				data.action			= "api_edit_user_notes";
+				data.note_work_id	= we_chat.getUrl("notes_id");
+//				delete data.user_id;
+//				for(var i=0;i<olddata[2].length){
+//				}
+//				if(entry_title==olddata[0].notes_works_title && entry_content==olddata[1][0].notes_works_content && entry_open_type == olddata[0].read_type){
+//					return false;
+//				}
+			}
+			we_chat.ajaxEx(we_chat.urlAddress("user"),data,function(json){
+//				popup.prompt('保存成功!');
+				route.back();
+			});
+		}
+	})(this)
+</script>

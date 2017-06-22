@@ -1,0 +1,362 @@
+<div id='lay-unit' class='enter-ask-page enter-recourse'>
+	<header class='ask-answer-head'>
+		<a class="icon-go-back R-back" href="javascript:;" title=""></a>
+		<p>求助</p>
+		<a class="icon-problem icon-collect to_my_collection" data-status='' data-type="help"></a>
+		<!--<a class="icon-problem icon-share" href="javascript:;" title=""></a>-->
+	</header>
+
+	<!--求助信息-->
+	<!--<div id="seek_help_detail_tpl" style="display:none;">
+		<section class="mb2">
+			<article class="user-info mb2">
+				<div class="img"><img src="[user_photo]" alt=""></div>
+				<div class="content">
+					<p class="p1">
+						<span class="span1">[user_name]</span>
+						<span class="span2">[user_professional]</span>
+						<a class="button-reward" style="display:none;" href="javascript:;" title="">打赏</a>
+						<strong class="rewarded" style="display:none;">已获打赏：<span>100</span></strong>
+					</p>
+					<p class="p2">[reply_time]</p>
+				</div>
+			</article>
+			<!--<div class="your-answer mb2">[ask_title]</div>--
+			<div class="other-answer mb2">[reply_content]</div>
+			<div class="img-group mb2">
+				<div class="img"><img src="[pic]" alt=""></div>
+				<div class="img"><img src="[pic]" alt=""></div>
+			</div>
+			<a class="annex-download mb2" href="javascript:;" title="" onclick="fileDown(this);">[reply_upload]</a>
+			<input type="hidden" name="reply_id" value="[reply_id]" />
+		</section>
+	</div>-->
+
+	<section class="main-content pb1">
+		<article class="ask-card">
+			<section class="mb2 one_info_fuck">
+				<article class="user-info mb2">
+					<div class="img"><img name="user_photo" src="" alt=""></div>
+					<div class="content">
+						<p class="p1">
+							<span name="user_name" class="span1"></span>
+							<input type="hidden" name="user_id" value="[user_id]" />
+							<span name="user_professional" style="display: none;" class="span2"></span>
+							<a class="button-reward" style="display: none;" href="javascript:;" title="">打赏</a>
+							<strong class="rewarded" style="display: none;">已获打赏：<span>0</span></strong>
+						</p>
+						<p name="ask_create_time" class="p2"></p>
+					</div>
+				</article>
+				<div name="ask_title" class="your-answer mb2">...</div>
+				<div name="content_intro" class="other-answer mb2">...;</div>
+				<div class="img-group mb2" id="pic_group">
+					<!--<div class="img"><img src="" alt=""></div>
+					<div class="img"><img src="" alt=""></div>-->
+				</div>
+				<div class="problem-state mb2">
+					<!--<strong>悬赏<span name="ask_reward"></span></strong>-->
+					<strong>答复<span name="reply_num"></span></strong>
+					<strong name="ask_tree_name" style="color: #a9a9a9;"></strong>
+				</div>
+				<!--<a class="button-state R-go isAppeal" path="#seek-help/state" href="javascript:;" title="">我要申述</a>-->
+				<div class="bjb-reviews mb2">
+					<h2>编辑邦点评：</h2>
+					<p name="gli_comment" class="other-answer"></p>
+				</div>
+			</section>
+		</article>
+		<article class="ask-card seek_help_detail_show"></article>
+	</section>
+	
+	<footer class="many-foot">
+		<section class="sec1 bdt-n img_input_remove">
+			<!--<a class="select-photo" href="javascript:" title=""></a>-->
+			<a class="select-photo annex-upload" href="javascript:" title="" onclick="trigger_file();"></a>
+			<input type="file" style="display: none;" onchange="change_file(this)" id="user_upload_file"/>
+			<input class="enter-recourse" placeholder="请输入回复内容" type="text" value="">
+			<!-- 类名：submited -->
+			<input type="button" value="发送" onclick="Save_notes();">
+		</section>
+		<section class="sec2 bdt-n" style="display:none;"></section>
+		<a id="user_download_recourse" style="display: none;" href=""></a><!--触发下载按钮-->
+		<section class="sec3 bdt-n" style="display:none;">
+			<a class="a1" href="javascript:;" title="">附件：<span></span></a>
+			<a class="a2" href="javascript:;" title="">删除</a>
+		</section>
+	</footer>
+</div>
+
+<script type="text/javascript">
+	(function(w){
+		we_chat.deleteBind();
+		//文件对象
+		var upload_file;
+		var isStatus	= "";
+		var $wrapper	= $(".main-content");
+		
+		//申述按钮
+//		if(we_chat.getStorage("user_id")){
+//			we_chat.ajaxEx(we_chat.urlAddress("user"),{action:"api_have_disputer_permission",ask_id:we_chat.getUrl("ask_id"),user_id:we_chat.getStorage("user_id")},function(json){
+//				if(json.data.is_permission != "true"){
+//					$(".isAppeal").hide();
+//				}
+//			})
+//		}else{
+//			$(".isAppeal").hide();
+//		}
+		
+		//获取一条求助信息
+		$(".seek_help_detail_show").html("");
+		var getInfomatinOne   = function(){
+			var pushdata	= {
+			  	action		: "api_help_getrow",
+			  	ask_id      : we_chat.getUrl("ask_id")
+			}
+			
+			$(".button-state").attr("path-data","{ask_id:'"+pushdata.ask_id+"'}");//传ask_id给申述页面
+			we_chat.getUsercollection("help");
+			we_chat.ajaxEx(we_chat.urlAddress("common"),pushdata,function(json){
+			  	var data 	= json.data[0];
+			  	//获取回复信息
+			  	isStatus	= data;
+			  	getInfomatinTwo(1,20);
+			  	$wrapper.on("swipeUp",function(){
+					loadMore.handler($wrapper, getInfomatinTwo , 20);
+				})
+			  	$(".one_info_fuck").find("img[name=user_photo]").attr("src",data.user.user_photo);            //user_photo
+			  	$(".one_info_fuck").find("span[name=user_name]").html(data.user.user_name);                   //user_name
+			  	$(".one_info_fuck").find("span[name=user_professional]").html(data.user.user_professional);   //user_professional
+			  	$(".one_info_fuck").find("p[name=ask_create_time]").html(data.ask_create_time);               //ask_create_time
+			  	$(".one_info_fuck").find("div[name=ask_title]").html(data.ask_title);                         //ask_title
+			  	$(".one_info_fuck").find("div[name=content_intro]").html(data.content_intro);                 //content_intro
+			  	$(".one_info_fuck").find("span[name=ask_reward]").html(data.ask_reward);                      //ask_reward
+			  	$(".one_info_fuck").find("span[name=reply_num]").html(data.ask_num);                        //reply_num
+			  	$(".one_info_fuck").find("strong[name=ask_tree_name]").html(data.tree_name)				 	 //ask_tree_name
+			  	$(".one_info_fuck").find("p[name=gli_comment]").html(data.gli_comment);                       //gli_comment
+			  	$(".one_info_fuck").find("input[type=hidden][name=user_id]").val(data.user_id);               //user_id
+			  	//pic
+			  	for(var i=0;i<data["pic"].length;i++){
+			  		$("<div class='img'><img class='enlarge_picture' src='"+data["pic"][i]["pic_path"]+"'/></div>").appendTo($("#pic_group"));
+			  	}
+			  	//编辑帮点评
+			  	if($(".one_info_fuck").find("p[name=gli_comment]").html()==""){
+			  		$(".bjb-reviews").hide();
+			  	}
+			})
+		}	
+		
+		//获取回复信息
+		var getInfomatinTwo   = function(page , limit){
+			var pushdata	= {
+			  	action		: "api_help_reply",
+			  	page_start  : page,
+				page_size   : limit,
+			  	ask_id      : we_chat.getUrl("ask_id")
+			}
+		  	if(isStatus.ask_status=='已完结'||isStatus.ask_status=='已打赏'){
+				$(".many-foot").hide();
+				$(".main-content").removeClass("pb1");
+			}else{
+				$(".many-foot").show();
+				$(".main-content").addClass("pb1");
+			}
+			we_chat.ajaxEx(we_chat.urlAddress("common"),pushdata,function(json){
+			  	var data 	= json.data.content;
+//			  	$(".seek_help_detail_show").html("");
+				for(var i=0;i<data.length;i++){
+					var $mb2Sec   = $("<section class='mb2' />"),
+					    $uiArt    = $("<article class='user-info mb2' />"),
+					    $divCont  = $("<div class='content' />"),
+					    $p1P      = $("<p class='p1' />"),
+					    $imgGroup = $("<div class='img-group mb2' />");									
+					
+					$mb2Sec.appendTo($(".seek_help_detail_show"));
+					$uiArt.appendTo($mb2Sec);
+					$("<div class='img'><img src='"+data[i].user.user_photo+"' alt=''></div>").appendTo($uiArt);
+					$divCont.appendTo($uiArt);
+					$p1P.appendTo($divCont);
+					$("<span class='span1'>"+data[i].user.user_name+"</span>").appendTo($p1P);
+					$("<span class='span2'>"+(data[i].user.user_professional||'')+"</span>").appendTo($p1P);
+					if(isStatus.user_id==we_chat.getStorage("user_id")){
+						if(isStatus.ask_status=='评价中'){
+							$("<a class='button-reward' onclick='ask_reward(this)' href='javascript:;' title=''>标记解决</a>").appendTo($p1P);
+						}else{
+							if(data[i].is_best=="1"){
+								$("<a class='button-reward' href='javascript:;' title=''>最佳答案</a>").appendTo($p1P);
+							}
+						}
+					}else{
+						if(data[i].is_best=="1"){
+							$("<a class='button-reward' href='javascript:;' title=''>最佳答案</a>").appendTo($p1P);
+						}
+					}
+					$("<p class='p2'>"+data[i].reply_time+"</p>").appendTo($divCont);
+					$("<div class='other-answer mb2'>"+data[i].reply_content+"</div>").appendTo($mb2Sec);
+					$imgGroup.appendTo($mb2Sec);
+					$("<input type='hidden' name='reply_id'  data-userName='"+data[i]['user'].user_name+"' data-userId='"+data[i]['user'].user_id+"' value='"+data[i].reply_id+"' />").appendTo($mb2Sec);
+					var recourse		= json.data.content[i]['reply_upload'];
+					var isPic			= ["jpg","bmp","gif","png","jpeg","JPG","BMP","GIF","PNG","JPEG"];
+					var resource_type	= recourse.substring(recourse.lastIndexOf(".")+1);
+					if($.inArray(resource_type,isPic) != -1){
+				  		$("<div class='img pic-img'><img class='enlarge_picture' src='"+data[i].reply_upload+"'/></div>").appendTo($imgGroup);
+					}else{
+						$("<a class='annex-download mb2' onclick='fileDown(this);'>"+data[i].reply_upload+"</a>").appendTo($mb2Sec);
+					}
+				}
+				// 初始化上拉加载的部件及其数据
+				loadMore.initLoad( $wrapper, page, json.data.count, limit );
+			})
+		}	
+		
+		getInfomatinOne();
+		
+		//下载附件
+		w.fileDown           = function(that){
+			var ask_id		 = $(that).siblings("input").val();;
+//			var story_id     = $(that).siblings("input[type=hidden][name=story_id]").val();//资源对应id story_id
+			var	user_id      = $(".one_info_fuck").find("input[type=hidden][name=user_id]").val();//楼主id 求助人id
+			var pushdata	 = {
+			  	action		 : "api_down_story",
+			  	user_id       : we_chat.getStorage("user_id"), //用户id
+			  	type         : 2,       
+			  	story_id     : we_chat.getUrl("ask_id"),//资源对应id
+			  	help_user_id : user_id                        //楼主id
+			}
+			we_chat.ajaxEx(we_chat.urlAddress("user"),pushdata,function(json){
+				var data 	= json.data;
+				//下载资源
+				$(".mengcheng").remove()
+//				$("<iframe class='mengcheng'>").attr("src","../../admin/down_story.php?&user_id="+we_chat.getStorage('user_id')+"&type=2&story_id="+ask_id+"&secret="+data).appendTo($("body"));
+				$("#user_download_recourse").attr("href","../../admin/down_story.php?&user_id="+we_chat.getStorage('user_id')+"&type=2&story_id="+ask_id+"&secret="+data);
+				user_download_recourse.click();
+			})
+		}
+		
+		//文件删除按钮
+		$(".many-foot .sec3 .a2").on("click",function(){
+			$(".many-foot .sec3").hide().find("span").html("");
+		})
+		
+		w.ask_reward	= function(that){
+			var thats				= $(that).closest(".user-info").parent().find("input[name='reply_id']");
+			var isThis				= $(that);
+			var pushdata			= {
+			  	action				: "api_ask_give",
+			  	ask_id				: we_chat.getUrl("ask_id"),
+			  	reply_id			: thats.val(),
+			  	ask_type			: 'help',
+			  	user_name			: thats.data("username"),
+			  	user_id     		: thats.data("userid"), 
+			  	user_id_give        : we_chat.getStorage("user_id"),       
+			  	user_name_give    	: we_chat.getStorage("user_info").user_name
+			}
+			we_chat.ajaxEx(we_chat.urlAddress("user"),pushdata,function(json){
+				$(".button-reward").hide();
+				isThis.text("最佳答案").show();
+				isThis.off("click");
+			})
+		}
+		
+		//input文件选择标签
+		w.trigger_file	= function(){
+			if($(".creat_img").length >= 1){
+	            popup.prompt("图片最多上传1张");
+	            return false;
+	        }
+			$("#user_upload_file").click();
+		}
+		
+		//文件上传按钮
+		w.change_file	= function(that){
+			var isPic   = true;
+			var fileObj	= that.files[0];
+			upload_file = fileObj;// 获取文件对象
+			if(!/image\/\w+/.test(fileObj.type)){									//判断是否是图片格式
+				isPic	= false;
+			}
+			$(that).remove();
+			var filees	= $("<input type='file' style='display:none' onchange='change_file(this);' id='user_upload_file'>").appendTo($(".img_input_remove"));
+			if(isPic){
+				var reader = new FileReader();
+				reader.readAsDataURL(fileObj);
+				reader.onload 	= function(e){
+					base64		= this.result;
+			        $(".many-foot .sec2").show();
+			        $(".many-foot .sec3").hide();
+					$("<div class='creat_img'><img src='"+base64+"'/><input type='button' class='message-number' onclick='we_chat.delete_img(this)' value='×' /></div>").appendTo($(".many-foot .sec2"));
+				}
+				return false;
+	        }
+			$(".many-foot .sec3").show();
+			$(".many-foot .sec2").hide();
+			$(".many-foot .sec3 .a1").find("span").html(fileObj.name);
+            $(".many-foot .sec3 .a1").find("span").attr("name",upload_file.name);
+	        
+		}
+		
+		w.Save_notes	 		= function(){
+			if(!we_chat.getStorage("user_info")){
+				route.go({ module: '#personal/user_login', data: {}, status: 'forward'});
+				return false;
+			}
+			var data			= {};
+			var $statInfo       = $(".many-foot .sec1 input[type=text]").val();//申述内容
+			var entry_filename	= $(".many-foot .sec3 .a1").find("span").html();
+			if(!$statInfo){
+				popup.prompt('请输入回复内容!');
+				return false;
+			}
+			if($(".many-foot").find(".sec2").css("display")=="none" && $(".many-foot").find(".sec3").css("display")=="none"){
+				popup.prompt('请上传图片或文件!');
+				return false;
+			}
+			if(!upload_file){
+				popup.prompt('请上传图片或文件!');
+				return false;
+			}
+	        var FileController 	= we_chat.urlAddress("user");	                  	// 接收上传文件的后台地址 
+	        var form = new FormData();
+	        form.append("action","api_add_help_reply");                        		// 接口
+	        form.append("ask_id",we_chat.getUrl("ask_id"));
+			form.append("user_id", we_chat.getStorage("user_id"));       			// 上传者id
+			form.append("user_name", we_chat.getStorage("user_info").user_name);    // 上传者name
+			form.append("user_type", we_chat.getStorage("user_info").user_type);    // 上传者type
+			form.append("user_photo", we_chat.getStorage("user_info").user_photo);  // 上传者头像
+			form.append("reply_content",$statInfo);                               	// 申述内容
+			form.append("upfile_doc", upload_file);                         		// 文件对象
+	        var xhr = new XMLHttpRequest();
+	        xhr.open("post", FileController, true);
+	        xhr.onload = function (json) {
+	            var data =	JSON.parse(json.currentTarget.response);
+	            if(data.status){
+	            	var isPic   = true;
+					if(!/image\/\w+/.test(upload_file.type)){									//判断是否是图片格式
+						isPic	= false;
+					}
+	            	var HTML	= "";
+	            	HTML		+= "<section class='mb2'>";
+	            	HTML		+= "<article class='user-info mb2'>";
+	            	HTML		+= "<div class='img'><img src='"+we_chat.getStorage('user_info').user_photo+"' alt=''></div>";
+	            	HTML		+= "<div class='content'><p class='p1'><span class='span1'>"+we_chat.getStorage('user_info').user_name+"</span><span class='span2'>"+we_chat.getStorage('user_info').user_professional+"</span></p><p class='p2'>"+we_chat.getNowFormatDate();+"</p></div>";
+	            	HTML		+= "</article>";
+	            	HTML		+= "<div class='other-answer mb2'>"+$statInfo+"</div>";
+	            	if(isPic){
+	            		HTML	+= "<div class='img-group mb2'><div class='img pic-img'><img src='"+$(".creat_img").find("img").attr("src")+"'></div></div>";
+	            	}else{
+		            	HTML	+= "<a class='annex-download mb2' onclick='fileDown(this);'>"+upload_file.name+"</a>";
+	            	}
+	            	HTML		+= "</section>";
+	            	$(HTML).prependTo($(".seek_help_detail_show"));
+	            	$(".many-foot .sec1 input[type=text]").val("");
+	            	$(".creat_img").remove();
+	            	$(".many-foot").find("section").not(":first").hide();
+	            	$("span[name=reply_num]").html(Number($("span[name=reply_num]").html())+1);
+	            }else{
+	            	popup.prompt(data.error);
+	            }
+	        };
+	        xhr.send(form);
+		}
+	})(this);
+</script>

@@ -1,0 +1,274 @@
+section{
+	float: left;
+}
+.header{
+	background: linear-gradient( 0deg, #0095ee, #0095ee);
+}
+.base{
+	width: 100%;
+	height: 4.75rem;
+	background: linear-gradient( 0deg, #03acf9, #0095ee);
+}
+.base .photo{
+	width: 2.14rem;
+	height: 2.14rem;
+	margin: .2rem auto;
+	border: 2px solid #FFFFFF;
+	border-radius: 1.5rem;
+	overflow: hidden;
+	box-sizing: initial;
+}
+.base .photo img{
+	text-align: center;
+	line-height: 2.14rem;
+	background: #FFFFFF;
+}
+.base .name-title{
+	font-size: .32rem;
+	color: #FFFFFF;
+	text-align: center;
+}
+.base .org{
+	font-size: .26rem;
+	line-height: .46rem;
+	color: #c1e2fb;
+	text-align: center;
+}
+.base .explain{
+	padding:  .1rem .2rem 0 .2rem;
+	font-size: .26rem;
+	line-height: .46rem;
+	color: #c1e2fb;
+	text-align: left;
+}
+.base .explain a{
+	color: #FFFFFF;
+	display: inline;
+}
+.control-1{
+	width: 100%;
+	height: .85rem;
+	line-height: .85rem;
+}
+.control-1 .concern,
+.control-1 .like{
+	float: left;
+	text-align: center;
+	font-size: .26rem;
+	width: 50%;
+	height: 100%;
+	color: #FFFFFF;
+	background: #058cc9;
+}
+.control-1 .concern span{
+	display: inline-block;
+	padding-left: .5rem;
+	background-image: url(../../image/specialist-concern.png);
+	background-size: .48rem .48rem;
+	background-repeat: no-repeat;
+	background-position: center left;
+}
+.control-1 .like span{
+	display: inline-block;
+	padding-left: .5rem;
+	background-image: url(../../image/specialist-like.png);
+	background-size: .48rem .48rem;
+	background-repeat: no-repeat;
+	background-position: center left;
+}
+.control-1 .concern::after{
+	content: '';
+	float: right;
+	display: inline-block;
+	width: 1px;
+	height: 100%;
+	background: linear-gradient( rgba( 255, 255, 255, 0), rgba( 255, 255, 255, .3), rgba( 255, 255, 255, 0));
+}
+.control-2{
+	width: 100%;
+	background: #FFFFFF;
+	border-bottom: 1px solid #D7D7D7;
+}
+.control-2 .fans-count,
+.control-2 .serve-count,
+.control-2 .like-count{
+	float: left;
+	width: 33.3333%;
+	height: 1.2rem;
+	padding: 0.2rem 0;
+}
+.control-2 .fans-count::after,
+.control-2 .serve-count::after{
+	content: '';
+	position: absolute;
+	top: 50%;
+	right: 0;
+	margin-top: -0.4rem;
+	height: .8rem;
+	width: 1px;
+	background: #ccc;
+}
+.control-2 .count{
+	display: inline-block;
+	font-size: .28rem;
+	color: #444444;
+	width: 100%;
+	line-height: .45rem;
+	text-align: center;
+}
+.control-2 .name{
+	display: inline-block;
+	font-size: .26rem;
+	color: #999999;
+	width: 100%;
+	line-height: .45rem;
+	text-align: center;
+}
+.service{
+	margin-top: .2rem;
+	border-top: 1px solid #D7D7D7;
+	width: 100%;
+	background: #ffffff;
+}
+.service section{
+	width: 100%;
+	border-bottom: 1px solid #D7D7D7;
+}
+.service .consult,
+.service .FAQs,
+.service .datum{
+	width: 33.3333%;
+}
+.service .notes,
+.service .article{
+	width: 50%;
+}
+.service .consult,
+.service .FAQs,
+.service .notes{
+	border-right: 1px solid #D7D7D7;
+}
+.service .consult,
+.service .FAQs,
+.service .datum,
+.service .notes,
+.service .article{
+	float: left;
+	height: 1.5rem;
+	font-size: .28rem;
+	color: #444444;
+	text-align: center;
+}
+.service span{
+	text-align: center;
+	line-height: 1.5rem;
+	display: inline-block;
+	padding-left: .6rem;
+}
+.service .consult span{
+	line-height: .5rem;
+	position: relative;
+	top: 50%;
+	margin-top: -0.5rem;
+}
+.service span{
+	background-size: .5rem .5rem;
+	background-repeat: no-repeat;
+	background-position: center left;
+}
+.service .consult span{
+	background-image: url(../../image/specialist-consult.png);
+}
+.service .FAQs span{
+	background-image: url(../../image/specialist-FAQs.png);
+}
+.service .datum span{
+	background-image: url(../../image/specialist-datum.png);
+}
+.service .notes span{
+	background-image: url(../../image/specialist-notes.png);
+}
+.service .article span{
+	background-image: url(../../image/specialist-article.png);
+}
+.sys-comment,
+.comment,
+.topic{
+	width: 100%;
+	margin-top: .2rem;
+	border-top: 1px solid #d7d7d7;
+	border-bottom: 1px solid #d7d7d7;
+	background: #FFFFFF;
+	padding: 0 .2rem;
+}
+.sys-comment .title,
+.comment .title,
+.topic .title{
+	text-align: left;
+	color: #333;
+	font-size: .32rem;
+	line-height: .92rem;
+	border-bottom: 1px dashed #D7D7D7;
+}
+.sys-comment .content{
+	font-size: .28rem;
+	color: #666;
+	line-height: .46rem;
+	padding: .2rem 0;
+}
+.comment li,
+.topic li{
+	width: 100%;
+	border-bottom: 1px dashed #D7D7D7;
+}
+.comment li:last-child,
+.topic li:last-child{
+	border-bottom: none;
+}
+.comment li .comment-user,
+.topic li .topic-name{
+	padding-top: .24rem;
+	font-size: .32rem;
+	color: #333;
+	text-align: left;
+}
+.comment li .comment-date,
+.topic li .topic-date{
+	padding-top: .2rem;
+	font-size: .26rem;
+	color: #959595;
+	text-align: left;
+}
+.comment li .comment-rank,
+.topic li .topic-reply-count{
+	position: absolute;
+	top: .3rem;
+	right: 0;
+	line-height: .46rem;
+	font-size: .26rem;
+}
+.comment li .comment-content,
+.topic li .topic-contnet{
+	font-size: .28rem;
+	color: #666;
+	text-align: left;
+	line-height: .42rem;
+	padding: .2rem 0;
+}
+.comment li .comment-rank{
+	color: #63ca58;
+}
+.topic li .topic-reply-count{
+	color: #333;
+	padding-left: .5rem;
+	background-image: url(../../image/specialist-reply.png);
+	background-size: .46rem .46rem;
+	background-repeat: no-repeat;
+	background-position: center left;
+}
+.show-all{
+	color: #219af8;
+	font-size: .28rem;
+	line-height: 1rem;
+	padding-right: .3rem;
+}

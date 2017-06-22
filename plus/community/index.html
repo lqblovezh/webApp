@@ -1,0 +1,92 @@
+<div id="Community_index" class="uc-pb-abs" title="社区">
+	<header>
+		<p>社区</p>
+	</header>
+	
+	<div style="display: none;" id="Community_index_exp_tpl">
+		<li class="R-go" path="#personal/expert_homepage" path-data="{'user_id':'[user_id]'}">
+			<div class="img"><img src="[user_photo]" alt=""></div>
+			<div class="content">
+				<p class="p1">[user_name]</p>
+				<p class="p2">[exp_org]</p>
+				<p class="p2">[user_regtime]</p>
+			</div>
+		</li>
+	</div>
+	
+	<div style="display: none;" id="Community_index_ask_tpl">
+		<li class="uc-li-init R-go" path="#FAQs/interlocution_details" path-data="{'ask_id':'[ask_id]'}">
+			<div class="content">
+				<p class="p1">[ask_title]</p>
+			</div>
+			<a class="uc-ft-rt uc-btn-df uc-btn-sms uc-btn-primary" href="javascript:;" title="">[ask_status]</a>
+		</li>
+	</div>
+	
+	<div style="display: none;" id="Community_index_help_tpl">
+		<li class="uc-li-init R-go" path="#seek-help/help_details" path-data="{'ask_id':'[ask_id]'}">
+			<div class="content">
+				<p class="p1">[ask_title]</p>
+			</div>
+			<a class="uc-ft-rt uc-btn-df uc-btn-sms uc-btn-primary" href="javascript:;" title="">[ask_status]</a>
+		</li>
+	</div>
+	
+	<div class="page_conten">
+		<article class="index-circle mb2">
+			<section class="sec-title">
+				<div class="left">编辑</div>
+				<a class="icon-more R-go" path="#specialist/search" href="javascript:;" title="">></a>
+			</section>
+			<ul id="Community_index_exp_show"></ul>
+		</article>
+		
+		<article class="index-circle mb2">
+			<section class="sec-title">
+				<div class="left">问答</div>
+				<a class="icon-more R-go" path="#FAQs/index" href="javascript:;" title="">></a>
+			</section>
+			<ul id="Community_index_ask_show"></ul>
+		</article>
+		
+		<!--暂时屏蔽 by xiaoer 09.30
+			<article class="index-circle mb2">
+			<section class="sec-title">
+				<div class="left">求助</div>
+				<a class="icon-more R-go" path="#seek-help/index" href="javascript:;" title="">></a>
+			</section>
+			<ul id="Community_index_help_show"></ul>
+		</article>-->
+	</div>
+</div>
+<script type="text/javascript">
+	(function(){
+		//获取随机专家-3条
+		we_chat.ajaxEx(we_chat.urlAddress("common"),{action:"api_get_exprand",user_id:we_chat.getStorage("user_id")},function(json){
+	  		var data 	= json.data.content;
+	  		we_chat.miniTemplate({
+	  			tpl	: document.getElementById("Community_index_exp_tpl"),
+	  			show: document.getElementById("Community_index_exp_show"),
+	  		},json.data);	
+	  	})
+		
+		//获取最新问题-3条
+		we_chat.ajaxEx(we_chat.urlAddress("common"),{action:"api_ask_list",page_start:1,page_size:3},function(json){
+	  		var data 	= json.data.content;
+	  		we_chat.miniTemplate({
+	  			tpl	: document.getElementById("Community_index_ask_tpl"),
+	  			show: document.getElementById("Community_index_ask_show"),
+	  		},json.data.content);	
+	  	},"no")
+		
+		//获取求助-3条
+		// 暂时屏蔽 by xiaoer 09.30
+//		we_chat.ajaxEx(we_chat.urlAddress("common"),{action:"api_help_list",page_start:1,page_size:3},function(json){
+//	  		var data 	= json.data.content;
+//	  		we_chat.miniTemplate({
+//	  			tpl	: document.getElementById("Community_index_help_tpl"),
+//	  			show: document.getElementById("Community_index_help_show"),
+//	  		},json.data.content);	
+//	  	},"no")
+	})()
+</script>

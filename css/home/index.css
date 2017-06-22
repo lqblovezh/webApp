@@ -1,0 +1,290 @@
+/*index-page*/
+#lay-unit{
+	padding-bottom: 0;
+}
+
+.mb2 {margin-bottom: .2rem;}
+
+/*height*/
+.h108 {height: 1.08rem;}
+
+/*background*/
+.bgc-f7 {background-color: #f7f7f7;}
+
+
+.index-page .index-head {
+	/*position: relative;
+	padding: .26rem;*/
+	position: absolute;
+	width: 100%;
+	height: .98rem;
+	background-color: #35a2f7;
+}
+.index-page .index-head p {
+	width: 100%;
+	height: 100%;
+	/*line-height: .98rem;*/
+	font-size: .38rem;
+	color: #fff;
+	text-align: center;
+}
+.index-page .index-head a.icon-mail {
+	position: absolute;
+	right: .26rem;
+	top: .26rem;
+	z-index: 2;
+	width: .56rem;
+	height: .56rem;
+	background: url(../../image/icon-head-mail.png) no-repeat center center;
+	-webkit-background-size: 100% 100%;
+	background-size: 100% 100%;
+}
+
+.index-search {
+	position: relative;
+	padding: .2rem;
+	width: 100%;
+}
+.index-search input {
+	padding: 0 .2rem;
+	padding-left: .75rem;
+	width: 100%;
+	height: .7rem;
+	line-height: .7rem;
+	font-size: .26rem;
+	background-color: #fff;
+	border: 1px solid #ddd;
+	border-radius: .7rem;
+}
+.index-search input:focus {border-color: #50abd9;}
+
+.index-page .ask-help {
+	overflow: hidden;
+	padding: .12rem 0;
+	background-color: #fff;
+	border-top: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+}
+.index-page .ask-help a {
+	float: left;
+	width: 50%;
+	height: 1.4rem;
+	text-align: center;
+}
+.index-page .ask-help .ask {border-right: 1px solid #ddd;} 
+.index-page .ask-help a img {
+	width: 1.01rem;
+	height: 1.01rem;
+}
+.index-page .ask-help a span {
+	display: block;
+	line-height: .4rem;
+	font-size: .3rem;
+	color: #333;
+}
+
+.index-page .index-menu {
+	overflow: hidden;
+	padding: .1rem;
+	background-color: #fff;
+	border-top: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+}
+.index-page .index-menu a {
+	float: left;
+	width: 33.3%;
+	height: .8rem;
+	line-height: .8rem;
+	font-size: .3rem;
+	color: #333;
+	text-align: center;
+	border-right: 1px solid #ddd;
+}
+.index-page .index-menu a:last-child {border-right: none;}
+
+.index-page .index-banner {
+	width: 100%;
+	height: 2rem;
+	border-top: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+}
+.swiper-container {
+  width: 100%;
+  height: 100%;
+}
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: #fff;
+
+  /* Center slide text vertically */
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+}
+.swiper-slide a img {display: block;}
+.index-page .index-banner .swiper-container-horizontal>.swiper-pagination-bullets {bottom: .1rem;}
+.index-page .index-banner .swiper-pagination-bullet {
+	width: .2rem;
+	height: .2rem;
+	background-color: #fff;
+	border: 1px solid #ddd;
+	-webkit-opacity: 1;
+			-ms-opacity: 1;
+					opacity: 1;
+}
+.index-page .index-banner .swiper-pagination-bullet-active {background-color: #35a2f7;}
+
+.index-page .index-add-info {
+	width: 100%;
+	height: .8rem;
+	line-height: .8rem;
+	font-size: .32rem;
+	color: #fff;
+	text-align: center;
+	background-color: #35a2f7;
+}
+
+.sec-title {
+	padding: .1rem 0;
+	height: .85rem;
+	border-top: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+}
+.sec-title .left {
+	float: left;
+	padding-left: .3rem;
+	line-height: .65rem;
+	font-size: .3rem;
+	color: #333;
+	border-left: .08rem solid #35a2f7;
+}
+.sec-title .icon-replace {
+	float: right;
+	margin-right: .3rem;
+	padding-left: .4rem;
+	line-height: .65rem;
+	font-size: .26rem;
+	color: #35a2f7;
+	background: url(../../image/icon-index-replace.png) left center no-repeat;
+	-webkit-background-size: .34rem .34rem;
+					background-size: .34rem .34rem;
+}
+
+.index-page .index-circle {background-color: #fff;}
+.index-page .index-circle ul {
+	padding: 0 .3rem;
+	border-bottom: 1px solid #ddd;
+}
+.index-page .index-circle ul li {
+	padding: .3rem 0;
+	height: 2.2rem;
+	border-bottom: 1px dashed #ddd;
+}
+.index-page .index-circle ul li:last-child {border-bottom: none;}
+.index-page .index-circle ul li .img {
+	float: left;
+	margin-right: .25rem;
+	width: 1.6rem;
+	height: 1.6rem;
+	border-radius: 50%;
+}
+.index-page .index-circle ul li .img img {
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+}
+.index-page .index-circle ul li .content {
+	float: left;
+	padding: .035rem 0;
+	width: 3.65rem;
+	height: 1.15rem;
+}
+.index-page .index-circle ul li .content p {
+	overflow: hidden;
+	height: .54rem;
+	line-height: .54rem;
+}
+.index-page .index-circle ul li .content .p1 {
+	font-size: .3rem;
+	color: #333;
+}
+.index-page .index-circle ul li .content .p2 {
+	font-size: .28rem;
+	color: #999;
+}
+.index-page .index-circle ul li .button-join {
+	float: right;
+	margin: .3rem 0;
+	width: 1.3rem;
+	height: .55rem;
+	line-height: .55rem;
+	font-size: .3rem;
+	color: #fff;
+	text-align: center;
+	background-color: #35a2f7;
+	border-radius: .1rem;
+}
+
+.index-page .index-news {background-color: #fff;}
+.index-page .index-news ul {
+	padding: 0 .2rem;
+	border-bottom: 1px solid #ddd;
+}
+.index-page .index-news ul li {
+	padding: .3rem 0;
+	height: 2rem;
+	border-bottom: 1px dashed #ddd;
+}
+.index-page .index-news ul li:last-child {border-bottom: none;}
+.index-page .index-news ul li a {
+	width: 100%;
+	height: 100%;
+}
+.index-page .index-news ul li .img {
+	float: left;
+	margin-right: .15rem;
+	width: 2.4rem;
+	height: 1.5rem;
+}
+.index-page .index-news ul li .img img {
+	width: 100%;
+	height: 100%;
+}
+/*.index-page .index-news ul li .content {
+	float: right;
+	width: 5.55rem;
+	height: 1.4rem;
+}*/
+.index-page .index-news ul li .content div {
+	overflow: hidden;
+	height: .92rem;
+	line-height: .46rem;
+	font-size: .3rem;
+	color: #333;
+}
+.index-page .index-news ul li .content dl {
+	margin-top: .1rem;
+	height: .38rem;
+	line-height: .38rem;
+	color: #999;
+}
+.index-page .index-news ul li .content dl dt {
+	float: left;
+	font-size: .28rem;
+}
+.index-page .index-news ul li .content dl dd {
+	float: right;
+	margin-left: .3rem;
+	font-size: .24rem;
+}
+.index-page .index-news ul li .content dl dd span {color: #35a2f7;}

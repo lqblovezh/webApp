@@ -1,0 +1,54 @@
+<article id="" class="online-consultation-page uc-pb-abs uc-pb-fixed" title="评价">
+	<header>
+		<a class="left icon-back R-back"></a>
+		<p>评价</p>
+	</header>
+	<div class="page_conten">
+		<form>
+			<article class="assess-page">
+				<div class="title">您对此次专家咨询的评价</div>
+				<ul class="table-nav-s">
+					<li class="active">
+						<input type="checkbox">
+						<label>非常满意</label>
+					</li>
+					<li>
+						<input type="checkbox">
+						<label>一般</label>
+					</li>
+					<li>
+						<input type="checkbox">
+						<label>不满意</label>
+					</li>
+				</ul>
+				<textarea id="comment_content" maxlength="150" placeholder="评价内容,最多150字"></textarea>
+			</article>
+			<a class="button-way" id="mak_sure_btn" href="javascript:;" title="">确定提交</a>
+		</form>
+	</div>
+</article>
+<script type="text/javascript">
+	(function(){
+  		we_chat.deleteBind();
+	  	//获取我的资料
+	  	
+	  	//发送评价请求
+	  	var mak_sure	= function(){
+	  		var comment_degree		= $(".table-nav-s").find(".active").text().trim();
+	  		var comment_content		= $("#comment_content").val();
+	  		if(!comment_content.length){
+	  			popup.prompt("请填写评价信息");
+	  			return false;
+	  		}
+	  		if(comment_content.length>150){
+	  			popup.prompt("评价内容长度不能超过150!");
+	  			return false;
+	  		}
+		  	we_chat.ajaxEx(we_chat.urlAddress("user"),{action:"api_add_commment",counser_id:we_chat.getUrl("counser_id"),comment_degree:comment_degree,comment_content:comment_content},function(json){
+		  		route.go({ module: '#personal/online_consulting', data: {}, status: 'forward'});
+		  	})
+	  	}
+	  	
+	  	$("#mak_sure_btn").on("click",mak_sure);
+  	})()
+</script>
